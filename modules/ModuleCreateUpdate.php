@@ -23,15 +23,15 @@ class ModuleCreateUpdate extends \Module
 	{
 		if (TL_MODE == 'BE')
 		{
-			$this->Templateemplate = new \BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
-			$this->Templateemplate->wildcard = '### FRONTENDEDIT CREATE/UPDATE ###';
-			$this->Templateemplate->title = $this->headline;
-			$this->Templateemplate->id = $this->id;
-			$this->Templateemplate->link = $this->name;
-			$this->Templateemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+			$objTemplate->wildcard = '### FRONTENDEDIT CREATE/UPDATE ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
-			return $this->Templateemplate->parse();
+			return $objTemplate->parse();
 		}
 
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
@@ -44,41 +44,17 @@ class ModuleCreateUpdate extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
-		$this->intId = $this->objModel->instanceId = \Input::get('id');
-		$this->objModel->arrDefaultValues = $this->arrDefaultValues;
+		$this->instanceId = \Input::get('id');
 
-		$this->loadInstance($this->intId);
-
-		$objForm = new CreateUpdateForm($this->objModel);
+		if ($this->instanceId)
+			$objForm = new CreateUpdateForm($this->objModel, $this->instanceId);
+		else
+			$objForm = new CreateUpdateForm($this->objModel);
 		
 		$this->Template->form = $objForm->generate();
 
 		// if created, redirect to the corresponding url
-		if ($objForm->isSubmitted() && !$objForm->doNotSubmit() && !$this->intId)
-			\Controller::redirect(XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), 'id', $objForm->getInstanceId()));
-	}
-
-	protected function loadInstance($intId)
-	{
-		if (!$intId)
-			return;
-
-		$strModel = $GLOBALS['TL_MODELS'][$this->formHybridDataContainer];
-		if (($objModel = call_user_func_array(array($strModel, 'findByPk'), array($intId))) !== null)
-		{
-			$this->arrDefaultValues = deserialize($this->arrDefaultValues, true);
-
-			// add instance properties as "default" values
-			$arrInstanceValues = array();
-			foreach (array_merge(array_keys($this->arrDefaultValues), deserialize($this->formHybridEditable, true)) as $strName)
-			{
-				if (isset($objModel->$strName))
-					$arrInstanceValues[$strName] = $objModel->{$strName};
-				else
-					$arrInstanceValues[$strName] = $this->arrDefaultValues[$strName];
-			}
-
-			$this->objModel->arrDefaultValues = array_merge($this->arrDefaultValues, $arrInstanceValues);
-		}
+		if ($objForm->isSubmitted() && !$objForm->doNotSubmit() && !$this->instanceId)
+			\Controller::redirect(XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), 'id', $objForm->getSubmission()->id));
 	}
 }

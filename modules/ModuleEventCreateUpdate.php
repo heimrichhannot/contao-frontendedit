@@ -13,13 +13,21 @@ namespace HeimrichHannot\FrontendEdit;
 
 class ModuleEventCreateUpdate extends ModuleCreateUpdate
 {
-	protected $arrDefaultValues;
-
 	public function __construct($objModule, $strColumn='main')
 	{
-		$this->arrDefaultValues = array(
-			'pid' => $objModule->pidEvent,
-			'source' => 'default'
+		$objModule->formHybridAddDefaultValues = true;
+		$objModule->formHybridDefaultValues = array_merge(
+			deserialize($this->formHybridDefaultValues, true),
+			array(
+				array(
+					'field' => 'pid',
+					'value' => $objModule->pidEvent
+				),
+				array(
+					'field' => 'source',
+					'value' => 'default'
+				)
+			)
 		);
 		parent::__construct($objModule, $strColumn);
 	}

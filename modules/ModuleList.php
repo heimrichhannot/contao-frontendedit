@@ -24,15 +24,15 @@ class ModuleList extends \Module
 	{
 		if (TL_MODE == 'BE')
 		{
-			$this->Templateemplate = new \BackendTemplate('be_wildcard');
+			$objTemplate = new \BackendTemplate('be_wildcard');
 
-			$this->Templateemplate->wildcard = '### FRONTENDEDIT LIST ###';
-			$this->Templateemplate->title = $this->headline;
-			$this->Templateemplate->id = $this->id;
-			$this->Templateemplate->link = $this->name;
-			$this->Templateemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+			$objTemplate->wildcard = '### FRONTENDEDIT LIST ###';
+			$objTemplate->title = $this->headline;
+			$objTemplate->id = $this->id;
+			$objTemplate->link = $this->name;
+			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
-			return $this->Templateemplate->parse();
+			return $objTemplate->parse();
 		}
 
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
@@ -46,11 +46,18 @@ class ModuleList extends \Module
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
 
-		if (\Input::get('delete'))
+		if ($intId = \Input::get(FRONTENDEDIT_ACT_DELETE))
 		{
-			$this->deleteInstance(\Input::get('delete'));
+			$this->deleteInstance($intId);
 			// return to the list
-			\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), 'delete'));
+			\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE));
+		}
+
+		if ($intId = \Input::get(FRONTENDEDIT_ACT_PUBLISH))
+		{
+			$this->publishInstance($intId);
+			// return to the list
+			\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH));
 		}
 
 		$this->arrSkipInstances = deserialize($this->skipInstances, true);
@@ -60,10 +67,8 @@ class ModuleList extends \Module
 
 	protected function deleteInstance($intId)
 	{
-		// important: set the concrete table
-		FrontendEditInstanceModel::setTable($this->formHybridDataContainer);
-
-		if (($objInstance = FrontendEditInstanceModel::findByPk($intId)) !== null)
+		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
 		{
 			$dc = new DC_Hybrid($this->formHybridDataContainer, $objInstance);
 
@@ -80,6 +85,16 @@ class ModuleList extends \Module
 			$objInstance->delete();
 		}
 	}
+
+	protected function publishInstance($intId)
+	{
+		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		{
+			$objInstance->published = !$objInstance->published;
+			$objInstance->save();
+		}
+	}
 	
 	protected function getItems()
 	{
@@ -88,8 +103,7 @@ class ModuleList extends \Module
 		$arrValues = array();
 		$arrOptions = array();
 
-		// important: set the concrete table
-		FrontendEditInstanceModel::setTable($this->formHybridDataContainer);
+		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
 		// offset
 		$offset = intval($this->skipFirst);
@@ -103,9 +117,9 @@ class ModuleList extends \Module
 
 		// total number of items
 		if (count($arrColumns) > 0)
-			$intTotal = FrontendEditInstanceModel::countBy($arrColumns, $arrValues, $arrOptions);
+			$intTotal = $strInstanceClass::countBy($arrColumns, $arrValues, $arrOptions);
 		else
-			$intTotal = FrontendEditInstanceModel::countAll($arrOptions);
+			$intTotal = $strInstanceClass::countAll($arrOptions);
 
 		$this->Template->empty = false;
 
@@ -127,9 +141,9 @@ class ModuleList extends \Module
 
 		// Get the items
 		if (count($arrColumns) > 0)
-			$objInstances = FrontendEditInstanceModel::findBy($arrColumns, $arrValues, $arrOptions);
+			$objInstances = $strInstanceClass::findBy($arrColumns, $arrValues, $arrOptions);
 		else
-			$objInstances = FrontendEditInstanceModel::findAll($arrOptions);
+			$objInstances = $strInstanceClass::findAll($arrOptions);
 
 		if ($objInstances !== null)
 		{
@@ -150,8 +164,11 @@ class ModuleList extends \Module
 				}
 
 				// delete url
-				global $objPage;
-				$arrItem['deleteUrl'] = $this->generateFrontendUrl($objPage->row()) . '?delete=' . $objInstances->id;
+				$arrItem['deleteUrl'] = XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE , $objInstances->id);
+
+				// publish url
+				$arrItem['isPublished'] = $objInstances->published;
+				$arrItem['publishUrl'] = XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH , $objInstances->id);
 
 				$arrItems[] = $arrItem;
 			}

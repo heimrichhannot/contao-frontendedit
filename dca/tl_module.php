@@ -10,11 +10,26 @@
 
 $dca = &$GLOBALS['TL_DCA']['tl_module'];
 
-$dca['palettes']['frontendedit_create_update'] = '{title_legend},name,headline,type;{config_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$dca['palettes']['frontendedit_list'] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,instance_sorting,jumpToDetails,hideFilter,showItemCount,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes,addDetailsCol,addDeleteCol;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$dca['palettes'][MODULE_FRONTENDEDIT_CREATE_UPDATE] = '{title_legend},name,headline,type;{config_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$dca['palettes'][MODULE_FRONTENDEDIT_LIST] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,instance_sorting,jumpToDetails,hideFilter,showItemCount,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes,addDetailsCol,addDeleteCol,addPublishCol;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-// concrete modules
-$dca['palettes']['frontendedit_event_create_update'] = str_replace('formHybridSubPalettes', 'formHybridSubPalettes,pidEvent', $dca['palettes']['frontendedit_create_update']);
+// events
+$dca['palettes'][MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE] = str_replace(
+	array('formHybridDataContainer,formHybridPalette', 'formHybridSubPalettes'),
+	array('', 'formHybridSubPalettes,pidEvent'),
+	$dca['palettes']['frontendedit_create_update']
+);
+$dca['palettes'][MODULE_FRONTENDEDIT_EVENT_LIST] = str_replace(
+	array('formHybridDataContainer,formHybridPalette', 'formHybridSubPalettes'),
+	array('', 'formHybridSubPalettes,pidEvent'),
+	$dca['palettes']['frontendedit_list']
+);
+
+/**
+ * Callbacks
+ */
+// set the data container for concrete frontend edit modules (event, news, ...)
+$dca['config']['onsubmit_callback'][] = array('\HeimrichHannot\FrontendEdit\FrontendEdit', 'setFormHybridDataContainer');
 
 /**
  * Fields
@@ -54,11 +69,15 @@ $dca['fields']['addDeleteCol'] = array(
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
-/**
- * Concrete fields
- */
+$dca['fields']['addPublishCol'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addPublishCol'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
 
-// Calendar events
+// events
 \Controller::loadDataContainer('tl_calendar_events');
 $dcaEvents = &$GLOBALS['TL_DCA']['tl_calendar_events'];
 

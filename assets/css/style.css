@@ -1,0 +1,8 @@
+.mod_frontendedit_list .actions {
+	white-space: nowrap;
+	text-align: right;
+}
+
+.mod_frontendedit_list .actions a {
+	margin-left: 5px;
+}

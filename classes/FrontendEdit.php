@@ -30,19 +30,6 @@ class FrontendEdit extends \Controller {
 		return $arrOptions;
 	}
 
-	public static function setFormHybridDataContainer(\DataContainer &$objDataContainer)
-	{
-		if (($objModule = \ModuleModel::findByPk($objDataContainer->activeRecord->id)) !== null)
-		{
-			switch ($objModule->type) {
-				case MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE:
-				case MODULE_FRONTENDEDIT_EVENT_LIST:
-					\Database::getInstance()->prepare('UPDATE tl_module SET formHybridDataContainer = ? WHERE id = ?')->execute('tl_calendar_events', $objDataContainer->activeRecord->id);
-					break;
-			}
-		}
-	}
-
 	public static function checkPermission($strTable, $intId)
 	{
 		$strInstanceClass = \Model::getClassFromTable($strTable);
@@ -51,6 +38,8 @@ class FrontendEdit extends \Controller {
 		{
 			return ($objInstance->useMemberAuthor && $objInstance->memberAuthor == \FrontendUser::getInstance()->id);
 		}
+
+		return false;
 	}
 
 }

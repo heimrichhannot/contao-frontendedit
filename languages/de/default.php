@@ -11,6 +11,7 @@ $GLOBALS['TL_LANG']['frontendedit']['memberAuthor'] = array('Autor (Mitglied)', 
 /**
  * Messages
  */
+$GLOBALS['TL_LANG']['frontendedit']['itemsFound'] = 'Es wurden %s Datensätze gefunden.';
 $GLOBALS['TL_LANG']['frontendedit']['empty'] = 'Es wurden keine Datensätze gefunden. Haben Sie bereits welche angelegt?';
 $GLOBALS['TL_LANG']['frontendedit']['editTitle'] = 'Bearbeiten';
 $GLOBALS['TL_LANG']['frontendedit']['deleteTitle'] = 'Löschen';

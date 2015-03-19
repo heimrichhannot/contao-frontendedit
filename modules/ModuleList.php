@@ -84,6 +84,8 @@ class ModuleList extends \Module
 		$this->arrEditable = deserialize($this->formHybridEditable, true);
 		$this->addDefaultValues = $this->formHybridAddDefaultValues;
 		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
+		$this->Template->currentSorting = $this->getCurrentSorting();
+		$this->Template->header = $this->getHeader();
 		list($this->Template->items, $this->Template->count) = $this->getItems();
 	}
 
@@ -163,10 +165,10 @@ class ModuleList extends \Module
 		$arrOptions['limit']  = $limit;
 		$arrOptions['offset'] = $offset;
 
-//		if ($this->ticket_sorting !== '') {
-//			$order = str_replace( array('_asc', '_desc'), array(' ASC', ' DESC'), $this->ticket_sorting);
-//			$arrOptions['order']  = ($order === 'random') ? 'RAND()' : 'tl_ticket.' . $order;
-//		}
+		$arrCurrentSorting = $this->getCurrentSorting();
+
+		$arrOptions['order']  = ($arrCurrentSorting['order'] === 'random') ? 'RAND()' :
+			($this->formHybridDataContainer . '.' . $arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
 
 		// Get the items
 		if (count($arrColumns) > 0)
@@ -216,6 +218,76 @@ class ModuleList extends \Module
 		}
 
 		return array($arrItems, $intTotal);
+	}
+
+	protected function getCurrentSorting()
+	{
+		// user specified
+		if (\Input::get('order') && \Input::get('sort'))
+		{
+			$arrCurrentSorting = array(
+				'order' => \Input::get('order'),
+				'sort' => \Input::get('sort')
+			);
+		}
+		// initial
+		elseif ($this->instanceSorting)
+		{
+			if ($this->instanceSorting == 'random')
+				$arrCurrentSorting = array(
+					'order' => 'random'
+				);
+			else
+				$arrCurrentSorting = array(
+					'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->instanceSorting),
+					'sort' => (strpos($this->instanceSorting, '_desc') !== false ? 'desc' : 'asc')
+				);
+		}
+		// default -> the first editable field
+		else
+		{
+			$arrCurrentSorting = array(
+				'order' => $this->arrEditable[0],
+				'sort' => 'asc'
+			);
+		}
+
+		return $arrCurrentSorting;
+	}
+
+	protected function getHeader()
+	{
+		$arrHeader = array();
+		$arrCurrentSorting = $this->getCurrentSorting();
+
+		foreach ($this->arrEditable as $strName)
+		{
+			$isCurrentOrderField = ($strName == $arrCurrentSorting['order']);
+
+			$arrField = array(
+				'field' => $strName
+			);
+
+			if ($isCurrentOrderField)
+			{
+				$arrField['class'] = ($arrCurrentSorting['sort'] == 'asc' ? 'asc' : 'desc');
+				$arrField['link'] = XCommonEnvironment::addParametersToUri(XCommonEnvironment::getCurrentUrl(), array(
+					'order' => $strName,
+					'sort' => ($arrCurrentSorting['sort'] == 'asc' ? 'desc' : 'asc')
+				));
+			}
+			else
+			{
+				$arrField['link'] = XCommonEnvironment::addParametersToUri(XCommonEnvironment::getCurrentUrl(), array(
+					'order' => $strName,
+					'sort' => 'asc'
+				));
+			}
+
+			$arrHeader[] = $arrField;
+		}
+
+		return $arrHeader;
 	}
 
 	protected function splitResults($offset, $intTotal, $limit)

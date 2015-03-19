@@ -25,7 +25,7 @@ class FrontendEdit extends \Controller {
 			}
 		}
 
-		sort($arrOptions);
+		asort($arrOptions);
 
 		return $arrOptions;
 	}
@@ -40,6 +40,16 @@ class FrontendEdit extends \Controller {
 					\Database::getInstance()->prepare('UPDATE tl_module SET formHybridDataContainer = ? WHERE id = ?')->execute('tl_calendar_events', $objDataContainer->activeRecord->id);
 					break;
 			}
+		}
+	}
+
+	public static function checkPermission($strTable, $intId)
+	{
+		$strInstanceClass = \Model::getClassFromTable($strTable);
+
+		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		{
+			return ($objInstance->useMemberAuthor && $objInstance->memberAuthor == \FrontendUser::getInstance()->id);
 		}
 	}
 

@@ -1,40 +1,35 @@
-<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div class="<?php echo $this->class; ?> frontendedit-list block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 	<?php if ($this->headline): ?>
 		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 	<?php endif; ?>
 
+	<?php if ($this->noPermission): ?>
+		<div class="alert alert-danger">
+			<?php echo $this->errorMessage; ?>
+		</div>
+	<?php else: ?>
 	<div class="items block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-		<?php if ($this->headline): ?>
-		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-	<?php endif; ?>
+		<?php if ($this->showItemCount): ?>
+			<span class="count">Es wurden <?php echo $this->count; ?> Objekte gefunden.</span>
+		<?php endif; ?>
 
-	<?php if ($this->showItemCount): ?>
-		<span class="count">Es wurden <?php echo $this->count; ?> Objekte gefunden.</span>
-	<?php endif; ?>
-
-	<?php if (!$this->empty): ?>
-		<div class="items table-responsive">
-			<table class="table table-striped table-hover">
-				<thead>
+		<?php if (!$this->empty): ?>
+			<div class="items table-responsive">
+				<table class="table table-striped table-hover">
+					<thead>
 					<tr>
 						<?php foreach (array_keys($this->items[0]['fields']) as $i => $strName): ?>
 							<th class="<?php echo $strName; ?> col_<?php if ($i == 0):?> first<?php endif ?><?php if ($i >= count($this->items) - 1): ?> last<?php endif; ?>">
-								<?php if ($strName != 'id'): ?>
-									<?php echo $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$strName][0] ?: $strName; ?>
-								<?php else: ?>
-									#
-								<?php endif; ?>
+								<?php echo $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$strName][0] ?: $strName; ?>
 							</th>
 						<?php endforeach; ?>
 						<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?><th class="actions"></th><?php endif; ?>
 					</tr>
-				</thead>
-				<tbody>
+					</thead>
+					<tbody>
 					<?php foreach ($this->items as $i => $item): ?>
 						<tr class="col_<?php if ($i == 0):?> first<?php endif ?><?php if ($i >= count($this->items) - 1): ?> last<?php endif; ?>">
-							<th scope="row"><?php echo $item['fields']['id']; ?></th>
 							<?php foreach ($item['fields'] as $strName => $varValue): ?>
-								<?php if ($strName == 'id') continue; ?>
 								<td class="<?php echo $strName; ?>"><?php echo $varValue; ?></td>
 							<?php endforeach; ?>
 							<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?>
@@ -52,12 +47,13 @@
 							<?php endif; ?>
 						</tr>
 					<?php endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<?php echo $this->pagination; ?>
-	<?php else: ?>
-		<p class="empty">Es wurden keine Objekte gefunden.</p>
+					</tbody>
+				</table>
+			</div>
+			<?php echo $this->pagination; ?>
+		<?php else: ?>
+			<p class="alert alert-warning empty"><?php echo $GLOBALS['TL_LANG']['frontendedit']['empty']; ?></p>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	</div>

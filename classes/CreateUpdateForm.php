@@ -13,11 +13,10 @@ namespace HeimrichHannot\FrontendEdit;
 
 class CreateUpdateForm extends \HeimrichHannot\FormHybrid\Form
 {
-	protected $strTemplate = 'formhybrid_frontendedit';
-
 	public function __construct($objModule, $instanceId = 0)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
+		$objModule->formHybridTemplate = 'formhybrid_frontendedit';
 
 		parent::__construct($objModule, $instanceId);
 	}

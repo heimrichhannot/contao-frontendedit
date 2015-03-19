@@ -10,8 +10,8 @@
 
 $dca = &$GLOBALS['TL_DCA']['tl_module'];
 
-$dca['palettes'][MODULE_FRONTENDEDIT_CREATE_UPDATE] = '{title_legend},name,headline,type;{config_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$dca['palettes'][MODULE_FRONTENDEDIT_LIST] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,instance_sorting,jumpToDetails,hideFilter,showItemCount,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes,addDetailsCol,addDeleteCol,addPublishCol;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$dca['palettes'][MODULE_FRONTENDEDIT_CREATE_UPDATE] = '{title_legend},name,headline,type;{config_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes,formHybridAddDefaultValues;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$dca['palettes'][MODULE_FRONTENDEDIT_LIST] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,instance_sorting,jumpToDetails,hideFilter,showItemCount,addDetailsCol,addDeleteCol,addPublishCol,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridEditableSkip,formHybridSubPalettes,formHybridAddDefaultValues;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // events
 $dca['palettes'][MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE] = str_replace(
@@ -57,7 +57,7 @@ $dca['fields']['addDetailsCol'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDetailsCol'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50'),
+	'eval'                    => array('tl_class' => 'w50 clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 

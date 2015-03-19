@@ -24,6 +24,14 @@ class ModuleEventCreateUpdate extends ModuleCreateUpdate
 					'value' => $objModule->pidEvent
 				),
 				array(
+					'field' => 'useMemberAuthor',
+					'value' => true
+				),
+				array(
+					'field' => 'memberAuthor',
+					'value' => \FrontendUser::getInstance()->id
+				),
+				array(
 					'field' => 'source',
 					'value' => 'default'
 				)

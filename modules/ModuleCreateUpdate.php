@@ -47,7 +47,16 @@ class ModuleCreateUpdate extends \Module
 		$this->instanceId = \Input::get('id');
 
 		if ($this->instanceId)
-			$objForm = new CreateUpdateForm($this->objModel, $this->instanceId);
+		{
+			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $this->instanceId))
+				$objForm = new CreateUpdateForm($this->objModel, $this->instanceId);
+			else
+			{
+				$this->Template->noPermission = true;
+				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				return;
+			}
+		}
 		else
 			$objForm = new CreateUpdateForm($this->objModel);
 		

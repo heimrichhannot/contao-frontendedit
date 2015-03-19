@@ -37,6 +37,8 @@ class ModuleList extends \Module
 
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
 		\System::loadLanguageFile($this->formHybridDataContainer);
+
+		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 		
 		return parent::generate();
 	}
@@ -48,20 +50,40 @@ class ModuleList extends \Module
 
 		if ($intId = \Input::get(FRONTENDEDIT_ACT_DELETE))
 		{
-			$this->deleteInstance($intId);
-			// return to the list
-			\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE));
+			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $intId))
+			{
+				$this->deleteInstance($intId);
+				// return to the list
+				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE));
+			}
+			else
+			{
+				$this->Template->noPermission = true;
+				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				return;
+			}
 		}
 
 		if ($intId = \Input::get(FRONTENDEDIT_ACT_PUBLISH))
 		{
-			$this->publishInstance($intId);
-			// return to the list
-			\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH));
+			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $intId))
+			{
+				$this->publishInstance($intId);
+				// return to the list
+				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH));
+			}
+			else
+			{
+				$this->Template->noPermission = true;
+				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				return;
+			}
 		}
 
 		$this->arrSkipInstances = deserialize($this->skipInstances, true);
 		$this->arrEditable = deserialize($this->formHybridEditable, true);
+		$this->addDefaultValues = $this->formHybridAddDefaultValues;
+		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
 		list($this->Template->items, $this->Template->count) = $this->getItems();
 	}
 
@@ -104,6 +126,13 @@ class ModuleList extends \Module
 		$arrOptions = array();
 
 		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+		// set default filter values
+		foreach ($this->arrDefaultValues as $arrDefaultValue)
+		{
+			$arrColumns[] = $arrDefaultValue['field'] . '=?';
+			$arrValues[] = $arrDefaultValue['value'];
+		}
 
 		// offset
 		$offset = intval($this->skipFirst);
@@ -151,11 +180,18 @@ class ModuleList extends \Module
 			{
 				$arrItem = array();
 
-				// always pass id
-				$arrItem['fields']['id'] = $objInstances->id;
-
 				foreach ($this->arrEditable as $strName)
-					$arrItem['fields'][$strName] = $objInstances->{$strName};
+				{
+					$varValue = $objInstances->{$strName};
+					// Convert timestamps
+					if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
+					{
+						$objDate = new \Date($varValue);
+						$varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};
+					}
+
+					$arrItem['fields'][$strName] = $varValue;
+				}
 
 				// details url
 				if (($objPageJumpTo = XCommonEnvironment::getPageObjectById($this->jumpToDetails)) !== null)

@@ -39,7 +39,7 @@ class ModuleList extends \Module
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
-		
+
 		return parent::generate();
 	}
 	
@@ -50,7 +50,7 @@ class ModuleList extends \Module
 
 		if ($intId = \Input::get(FRONTENDEDIT_ACT_DELETE))
 		{
-			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $intId))
+			if ($this->checkPermission($intId))
 			{
 				$this->deleteInstance($intId);
 				// return to the list
@@ -66,7 +66,7 @@ class ModuleList extends \Module
 
 		if ($intId = \Input::get(FRONTENDEDIT_ACT_PUBLISH))
 		{
-			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $intId))
+			if ($this->checkPermission($intId))
 			{
 				$this->publishInstance($intId);
 				// return to the list
@@ -129,11 +129,26 @@ class ModuleList extends \Module
 
 		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-		// set default filter values
-		foreach ($this->arrDefaultValues as $arrDefaultValue)
+		// filters
+		// archives
+		if ($this->filterArchives)
 		{
-			$arrColumns[] = $arrDefaultValue['field'] . '=?';
-			$arrValues[] = $arrDefaultValue['value'];
+			$arrFilterArchives = deserialize($this->filterArchives, true);
+
+			if (!empty($arrFilterArchives))
+			{
+				$arrColumns[] = 'pid IN (' . implode(',', $arrFilterArchives) . ')';
+			}
+		}
+
+		// set default filter values
+		if ($this->addDefaultValues)
+		{
+			foreach ($this->arrDefaultValues as $arrDefaultValue)
+			{
+				$arrColumns[] = $arrDefaultValue['field'] . '=?';
+				$arrValues[] = $this->replaceInsertTags($arrDefaultValue['value']);
+			}
 		}
 
 		// offset
@@ -335,6 +350,25 @@ class ModuleList extends \Module
 		}
 	
 		return array($offset, $limit);
+	}
+
+	public function checkPermission($intId)
+	{
+		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+		if ($this->addUpdateDeleteConditions && ($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		{
+			$arrConditions = deserialize($this->updateDeleteConditions, true);
+
+			if (!empty($arrConditions))
+				foreach ($arrConditions as $arrCondition)
+				{
+					if ($objInstance->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+						return false;
+				}
+		}
+
+		return true;
 	}
 
 }

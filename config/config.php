@@ -21,6 +21,9 @@ define('MODULE_FRONTENDEDIT_CREATE_UPDATE', 'frontendedit_create_update');
 define('MODULE_FRONTENDEDIT_LIST', 'frontendedit_list');
 define('MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE', 'frontendedit_event_create_update');
 define('MODULE_FRONTENDEDIT_EVENT_LIST', 'frontendedit_event_list');
+define('MODULE_FRONTENDEDIT_MEMBER_CREATE_UPDATE', 'frontendedit_member_create_update');
+define('MODULE_FRONTENDEDIT_FRONTENDUSER_CREATE_UPDATE', 'frontendedit_frontenduser_create_update');
+define('MODULE_FRONTENDEDIT_MEMBER_LIST', 'frontendedit_member_list');
 
 /**
  * Frontend modules
@@ -32,6 +35,9 @@ array_insert(
 			MODULE_FRONTENDEDIT_LIST          => 'HeimrichHannot\FrontendEdit\ModuleList',
 			MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleEventCreateUpdate',
 			MODULE_FRONTENDEDIT_EVENT_LIST => 'HeimrichHannot\FrontendEdit\ModuleEventList',
+			MODULE_FRONTENDEDIT_MEMBER_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleMemberCreateUpdate',
+			MODULE_FRONTENDEDIT_FRONTENDUSER_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserCreateUpdate',
+			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList'
 		)
 	)
 );

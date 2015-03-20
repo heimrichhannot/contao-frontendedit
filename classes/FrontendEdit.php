@@ -36,10 +36,14 @@ class FrontendEdit extends \Controller {
 
 		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
 		{
-			return ($objInstance->useMemberAuthor && $objInstance->memberAuthor == \FrontendUser::getInstance()->id);
+			switch ($strTable)
+			{
+				case 'tl_member':
+					return ($objInstance->id == \FrontendUser::getInstance()->id);
+				default:
+					return ($objInstance->useMemberAuthor && $objInstance->memberAuthor == \FrontendUser::getInstance()->id);
+			}
 		}
-
-		return false;
 	}
 
 }

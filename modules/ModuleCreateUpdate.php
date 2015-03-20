@@ -44,7 +44,7 @@ class ModuleCreateUpdate extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
-		$this->instanceId = \Input::get('id');
+		$this->instanceId = $this->instanceId ?: \Input::get('id');
 
 		if ($this->instanceId)
 		{

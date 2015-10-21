@@ -10,6 +10,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\HastePlus\Environment;
+
 class FrontendEdit extends \Controller {
 
 	public static function getMembersAsOptions()
@@ -28,22 +30,6 @@ class FrontendEdit extends \Controller {
 		asort($arrOptions);
 
 		return $arrOptions;
-	}
-
-	public static function checkPermission($strTable, $intId)
-	{
-		$strInstanceClass = \Model::getClassFromTable($strTable);
-
-		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
-		{
-			switch ($strTable)
-			{
-				case 'tl_member':
-					return ($objInstance->id == \FrontendUser::getInstance()->id);
-				default:
-					return ($objInstance->useMemberAuthor && $objInstance->memberAuthor == \FrontendUser::getInstance()->id);
-			}
-		}
 	}
 
 }

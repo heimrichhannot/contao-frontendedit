@@ -11,6 +11,11 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-class ModuleMemberCreateUpdate extends ModuleCreateUpdate
+class ModuleFrontendUserDetails extends ModuleDetails
 {
+	public function generate()
+	{
+		$this->intId = \FrontendUser::getInstance()->id;
+		return parent::generate();
+	}
 }

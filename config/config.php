@@ -13,16 +13,15 @@
  * Constants
  */
 define('FRONTENDEDIT_NAME_SAVE', 'save');
+define('FRONTENDEDIT_NAME_SAVE_RETURN', 'save_return');
 define('FRONTENDEDIT_ACT_DELETE', 'delete');
 define('FRONTENDEDIT_ACT_PUBLISH', 'publish');
+define('FRONTENDEDIT_NAME_FILTER', 'filter');
 
 // module names
-define('MODULE_FRONTENDEDIT_CREATE_UPDATE', 'frontendedit_create_update');
+define('MODULE_FRONTENDEDIT_DETAILS', 'frontendedit_details');
 define('MODULE_FRONTENDEDIT_LIST', 'frontendedit_list');
-define('MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE', 'frontendedit_event_create_update');
-define('MODULE_FRONTENDEDIT_EVENT_LIST', 'frontendedit_event_list');
-define('MODULE_FRONTENDEDIT_MEMBER_CREATE_UPDATE', 'frontendedit_member_create_update');
-define('MODULE_FRONTENDEDIT_FRONTENDUSER_CREATE_UPDATE', 'frontendedit_frontenduser_create_update');
+define('MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS', 'frontendedit_frontenduser_details');
 define('MODULE_FRONTENDEDIT_MEMBER_LIST', 'frontendedit_member_list');
 
 /**
@@ -30,13 +29,10 @@ define('MODULE_FRONTENDEDIT_MEMBER_LIST', 'frontendedit_member_list');
  */
 array_insert(
 	$GLOBALS['FE_MOD'], count($GLOBALS['FE_MOD']) - 1, array(
-		'Frontend-Bearbeitung' => array(
-			MODULE_FRONTENDEDIT_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleCreateUpdate',
+		'frontendedit' => array(
+			MODULE_FRONTENDEDIT_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleDetails',
 			MODULE_FRONTENDEDIT_LIST          => 'HeimrichHannot\FrontendEdit\ModuleList',
-			MODULE_FRONTENDEDIT_EVENT_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleEventCreateUpdate',
-			MODULE_FRONTENDEDIT_EVENT_LIST => 'HeimrichHannot\FrontendEdit\ModuleEventList',
-			MODULE_FRONTENDEDIT_MEMBER_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleMemberCreateUpdate',
-			MODULE_FRONTENDEDIT_FRONTENDUSER_CREATE_UPDATE => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserCreateUpdate',
+			MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails',
 			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList'
 		)
 	)

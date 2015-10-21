@@ -1,0 +1,63 @@
+<div class="<?php echo $this->class; ?> frontendedit-list block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+	<?php if ($this->headline): ?>
+		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+	<?php endif; ?>
+
+	<?php if ($this->noPermission): ?>
+		<div class="alert alert-danger">
+			<?php echo $this->errorMessage; ?>
+		</div>
+	<?php else: ?>
+		<div class="items block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+			<?php if ($this->showItemCount): ?>
+				<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['frontendedit']['itemsFound'], $this->count); ?></span>
+			<?php endif; ?>
+
+			<?php if (!$this->empty): ?>
+				<div class="items table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<?php foreach ($this->header as $i => $arrField): ?>
+									<th class="<?php echo $arrField['field']; ?> col_<?php echo $i+1; ?><?php if ($i == 0):?> first<?php endif ?><?php if ($i >= count($this->header) - 1): ?> last<?php endif; ?>">
+										<a href="<?php echo $arrField['link']; ?>">
+											<?php if ($arrField['class']): ?><i class="fa <?php echo $arrField['class'] == 'asc' ? 'fa-caret-up' : 'fa-caret-down'; ?>"></i><?php endif; ?>
+											<?php echo $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$arrField['field']][0] ?: $arrField['field']; ?>
+										</a>
+									</th>
+								<?php endforeach; ?>
+								<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?><th class="actions"></th><?php endif; ?>
+							</tr>
+						</thead>
+						<tbody>
+						<?php foreach ($this->items as $i => $item): ?>
+							<tr class="col_<?php echo $i+1; ?><?php if ($i == 0):?> first<?php endif ?><?php if ($i >= count($this->items) - 1): ?> last<?php endif; ?>">
+								<?php foreach ($item['fields'] as $strName => $varValue): ?>
+									<?php if ($strName == 'id') continue; ?>
+									<td class="<?php echo $strName; ?>"><?php echo $varValue; ?></td>
+								<?php endforeach; ?>
+								<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?>
+									<td class="actions">
+										<?php if ($this->addPublishCol): ?>
+											<?php if ($item['isPublished']): ?>
+												<a class="publish fa fa-eye" href="<?php echo $item['publishUrl']; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>"></a>
+											<?php else: ?>
+												<a class="unpublish fa fa-eye-slash" href="<?php echo $item['publishUrl']; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>"></a>
+											<?php endif; ?>
+										<?php endif; ?>
+										<?php if ($this->addDetailsCol && $item['detailsUrl']): ?><a class="edit fa fa-edit" href="<?php echo $item['detailsUrl']; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>"></a><?php endif; ?>
+										<?php if ($this->addDeleteCol): ?><a class="remove fa fa-trash" href="<?php echo $item['deleteUrl']; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>"></a><?php endif; ?>
+									</td>
+								<?php endif; ?>
+							</tr>
+						<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				<?php echo $this->pagination; ?>
+			<?php else: ?>
+				<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+</div>

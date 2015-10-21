@@ -11,13 +11,12 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybrid\Submission;
-use HeimrichHannot\XCommonEnvironment;
+use HeimrichHannot\HastePlus\Environment;
 
-class ModuleCreateUpdate extends \Module
+class ModuleDetails extends \Module
 {
-	protected $strTemplate = 'mod_frontendedit_create_update';
+	protected $strTemplate = 'mod_frontendedit_details';
+	protected $arrSubmitCallbacks = array();
 
 	public function generate()
 	{
@@ -25,7 +24,7 @@ class ModuleCreateUpdate extends \Module
 		{
 			$objTemplate = new \BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### FRONTENDEDIT CREATE/UPDATE ###';
+			$objTemplate->wildcard = '### FRONTENDEDIT DETAILS ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -44,12 +43,12 @@ class ModuleCreateUpdate extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
-		$this->instanceId = $this->instanceId ?: \Input::get('id');
+		$this->intId = $this->intId ?: \Input::get('id');
 
-		if ($this->instanceId)
+		if ($this->intId)
 		{
-			if (FrontendEdit::checkPermission($this->formHybridDataContainer, $this->instanceId))
-				$objForm = new CreateUpdateForm($this->objModel, $this->instanceId);
+			if ($this->checkPermission($this->intId))
+				$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks, $this->intId);
 			else
 			{
 				$this->Template->noPermission = true;
@@ -58,12 +57,32 @@ class ModuleCreateUpdate extends \Module
 			}
 		}
 		else
-			$objForm = new CreateUpdateForm($this->objModel);
+			$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks);
 		
 		$this->Template->form = $objForm->generate();
+	}
 
-		// if created, redirect to the corresponding url
-		if ($objForm->isSubmitted() && !$objForm->doNotSubmit() && !$this->instanceId)
-			\Controller::redirect(XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), 'id', $objForm->getSubmission()->id));
+	public function checkPermission($intId)
+	{
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+		if ($this->addUpdateConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
+		{
+			$arrConditions = deserialize($this->updateConditions, true);
+
+			if (!empty($arrConditions))
+				foreach ($arrConditions as $arrCondition)
+				{
+					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+						return false;
+				}
+		}
+
+		return true;
+	}
+
+	public function setSubmitCallbacks(array $callbacks)
+	{
+		$this->arrSubmitCallbacks = $callbacks;
 	}
 }

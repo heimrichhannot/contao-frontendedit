@@ -12,13 +12,12 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybrid\Submission;
+use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\XCommonEnvironment;
 
-class ModuleList extends \Module
+class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 {
-	protected $strTemplate = 'mod_frontendedit_list';
-	protected $arrSkipInstances = array();
+	protected $strTemplate = 'mod_frontendedit_list_table';
 
 	public function generate()
 	{
@@ -35,24 +34,16 @@ class ModuleList extends \Module
 			return $objTemplate->parse();
 		}
 
-		\DataContainer::loadDataContainer($this->formHybridDataContainer);
-		\System::loadLanguageFile($this->formHybridDataContainer);
-
-		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
-
 		return parent::generate();
 	}
 	
 	protected function compile()
 	{
-		$this->Template->headline = $this->headline;
-		$this->Template->hl = $this->hl;
-
 		if ($intId = \Input::get(FRONTENDEDIT_ACT_DELETE))
 		{
 			if ($this->checkPermission($intId))
 			{
-				$this->deleteInstance($intId);
+				$this->deleteItem($intId);
 				// return to the list
 				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE));
 			}
@@ -68,7 +59,7 @@ class ModuleList extends \Module
 		{
 			if ($this->checkPermission($intId))
 			{
-				$this->publishInstance($intId);
+				$this->publishItem($intId);
 				// return to the list
 				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH));
 			}
@@ -80,21 +71,15 @@ class ModuleList extends \Module
 			}
 		}
 
-		$this->arrSkipInstances = deserialize($this->skipInstances, true);
-		$this->arrEditable = deserialize($this->formHybridEditable, true);
-		$this->addDefaultValues = $this->formHybridAddDefaultValues;
-		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
-		$this->Template->currentSorting = $this->getCurrentSorting();
-		$this->Template->header = $this->getHeader();
-		list($this->Template->items, $this->Template->count) = $this->getItems();
+		parent::compile();
 	}
 
-	protected function deleteInstance($intId)
+	protected function deleteItem($intId)
 	{
-		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
-		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		if (($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
-			$dc = new DC_Hybrid($this->formHybridDataContainer, $objInstance);
+			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem);
 
 			// call ondelete callbacks
 			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))
@@ -106,264 +91,51 @@ class ModuleList extends \Module
 				}
 			}
 
-			$objInstance->delete();
+			$objItem->delete();
 		}
 	}
 
-	protected function publishInstance($intId)
+	protected function publishItem($intId)
 	{
-		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
-		if (($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		if (($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
-			$objInstance->published = !$objInstance->published;
-			$objInstance->save();
+			$objItem->published = !$objItem->published;
+			$objItem->save();
 		}
 	}
-	
-	protected function getItems()
+
+	public function addColumns($objItem, &$arrItem)
 	{
-		$arrItems = array();
-		$arrColumns = array();
-		$arrValues = array();
-		$arrOptions = array();
+		parent::addColumns($objItem, $arrItem);
 
-		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
-
-		// filters
-		// archives
-		if ($this->filterArchives)
+		// delete url
+		if ($this->addDeleteCol)
 		{
-			$arrFilterArchives = deserialize($this->filterArchives, true);
-
-			if (!empty($arrFilterArchives))
-			{
-				$arrColumns[] = 'pid IN (' . implode(',', $arrFilterArchives) . ')';
-			}
+			$arrItem['addDeleteCol'] = true;
+			$arrItem['deleteUrl'] = Environment::addParameterToUri(Environment::getUrl(), FRONTENDEDIT_ACT_DELETE , $objItem->id);
 		}
 
-		// set default filter values
-		if ($this->addDefaultValues)
+		// publish url
+		if ($this->addPublishCol)
 		{
-			foreach ($this->arrDefaultValues as $arrDefaultValue)
-			{
-				$arrColumns[] = $arrDefaultValue['field'] . '=?';
-				$arrValues[] = $this->replaceInsertTags($arrDefaultValue['value']);
-			}
+			$arrItem['addPublishCol'] = true;
+			$arrItem['publishUrl'] = Environment::addParameterToUri(Environment::getUrl(), FRONTENDEDIT_ACT_PUBLISH , $objItem->id);
 		}
-
-		// offset
-		$offset = intval($this->skipFirst);
-
-		// limit
-		$limit = null;
-		if ($this->numberOfItems > 0)
-		{
-			$limit = $this->numberOfItems;
-		}
-
-		// total number of items
-		if (count($arrColumns) > 0)
-			$intTotal = $strInstanceClass::countBy($arrColumns, $arrValues, $arrOptions);
-		else
-			$intTotal = $strInstanceClass::countAll($arrOptions);
-
-		$this->Template->empty = false;
-
-		if ($intTotal < 1)
-		{
-			$this->Template->empty = true;
-		}
-
-		// split results
-		list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit);
-
-		$arrOptions['limit']  = $limit;
-		$arrOptions['offset'] = $offset;
-
-		$arrCurrentSorting = $this->getCurrentSorting();
-
-		$arrOptions['order']  = ($arrCurrentSorting['order'] === 'random') ? 'RAND()' :
-			($this->formHybridDataContainer . '.' . $arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
-
-		// Get the items
-		if (count($arrColumns) > 0)
-			$objInstances = $strInstanceClass::findBy($arrColumns, $arrValues, $arrOptions);
-		else
-			$objInstances = $strInstanceClass::findAll($arrOptions);
-
-		if ($objInstances !== null)
-		{
-			while ($objInstances->next())
-			{
-				$arrItem = array();
-
-				foreach ($this->arrEditable as $strName)
-				{
-					$varValue = $objInstances->{$strName};
-					// Convert timestamps
-					if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
-					{
-						$objDate = new \Date($varValue);
-						$varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};
-					}
-
-					$arrItem['fields'][$strName] = $varValue;
-				}
-
-				// details url
-				if (($objPageJumpTo = XCommonEnvironment::getPageObjectById($this->jumpToDetails)) !== null)
-				{
-					$arrItem['detailsUrl'] = $this->generateFrontendUrl($objPageJumpTo->row()) . '?id=' . $objInstances->id;
-				}
-
-				// delete url
-				$arrItem['deleteUrl'] = XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE , $objInstances->id);
-
-				// publish url
-				$arrItem['isPublished'] = $objInstances->published;
-				$arrItem['publishUrl'] = XCommonEnvironment::addParameterToUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH , $objInstances->id);
-
-				$arrItems[] = $arrItem;
-			}
-		}
-		else
-		{
-			$this->Template->empty = true;
-			return;
-		}
-
-		return array($arrItems, $intTotal);
-	}
-
-	protected function getCurrentSorting()
-	{
-		// user specified
-		if (\Input::get('order') && \Input::get('sort'))
-		{
-			$arrCurrentSorting = array(
-				'order' => \Input::get('order'),
-				'sort' => \Input::get('sort')
-			);
-		}
-		// initial
-		elseif ($this->instanceSorting)
-		{
-			if ($this->instanceSorting == 'random')
-				$arrCurrentSorting = array(
-					'order' => 'random'
-				);
-			else
-				$arrCurrentSorting = array(
-					'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->instanceSorting),
-					'sort' => (strpos($this->instanceSorting, '_desc') !== false ? 'desc' : 'asc')
-				);
-		}
-		// default -> the first editable field
-		else
-		{
-			$arrCurrentSorting = array(
-				'order' => $this->arrEditable[0],
-				'sort' => 'asc'
-			);
-		}
-
-		return $arrCurrentSorting;
-	}
-
-	protected function getHeader()
-	{
-		$arrHeader = array();
-		$arrCurrentSorting = $this->getCurrentSorting();
-
-		foreach ($this->arrEditable as $strName)
-		{
-			$isCurrentOrderField = ($strName == $arrCurrentSorting['order']);
-
-			$arrField = array(
-				'field' => $strName
-			);
-
-			if ($isCurrentOrderField)
-			{
-				$arrField['class'] = ($arrCurrentSorting['sort'] == 'asc' ? 'asc' : 'desc');
-				$arrField['link'] = XCommonEnvironment::addParametersToUri(XCommonEnvironment::getCurrentUrl(), array(
-					'order' => $strName,
-					'sort' => ($arrCurrentSorting['sort'] == 'asc' ? 'desc' : 'asc')
-				));
-			}
-			else
-			{
-				$arrField['link'] = XCommonEnvironment::addParametersToUri(XCommonEnvironment::getCurrentUrl(), array(
-					'order' => $strName,
-					'sort' => 'asc'
-				));
-			}
-
-			$arrHeader[] = $arrField;
-		}
-
-		return $arrHeader;
-	}
-
-	protected function splitResults($offset, $intTotal, $limit)
-	{
-		$total = $intTotal - $offset;
-	
-		// Split the results
-		if ($this->perPage > 0 && (!isset($limit) || $this->numberOfItems > $this->perPage))
-		{
-			// Adjust the overall limit
-			if (isset($limit))
-			{
-				$total = min($limit, $total);
-			}
-	
-			// Get the current page
-			$id = 'page_s' . $this->id;
-			$page = \Input::get($id) ?: 1;
-	
-			// Do not index or cache the page if the page number is outside the range
-			if ($page < 1 || $page > max(ceil($total/$this->perPage), 1))
-			{
-				global $objPage;
-				$objPage->noSearch = 1;
-				$objPage->cache = 0;
-	
-				// Send a 404 header
-				header('HTTP/1.1 404 Not Found');
-				return;
-			}
-	
-			// Set limit and offset
-			$limit = $this->perPage;
-			$offset += (max($page, 1) - 1) * $this->perPage;
-	
-			// Overall limit
-			if ($offset + $limit > $total)
-			{
-				$limit = $total - $offset;
-			}
-	
-			// Add the pagination menu
-			$objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
-			$this->Template->pagination = $objPagination->generate("\n  ");
-		}
-	
-		return array($offset, $limit);
 	}
 
 	public function checkPermission($intId)
 	{
-		$strInstanceClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-		if ($this->addUpdateDeleteConditions && ($objInstance = $strInstanceClass::findByPk($intId)) !== null)
+		if ($this->addUpdateDeleteConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
 			$arrConditions = deserialize($this->updateDeleteConditions, true);
 
 			if (!empty($arrConditions))
 				foreach ($arrConditions as $arrCondition)
 				{
-					if ($objInstance->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
 						return false;
 				}
 		}

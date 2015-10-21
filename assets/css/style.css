@@ -1,8 +1,8 @@
-.frontendedit-list .actions {
+.formhybrid-list .actions {
 	white-space: nowrap;
 	text-align: right;
 }
 
-.frontendedit-list .actions a {
+.formhybrid-list .actions a {
 	margin-left: 5px;
 }

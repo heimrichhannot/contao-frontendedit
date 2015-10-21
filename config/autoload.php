@@ -26,17 +26,19 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Modules
-	'HeimrichHannot\FrontendEdit\ModuleMemberList'               => 'system/modules/frontendedit/modules/ModuleMemberList.php',
-	'HeimrichHannot\FrontendEdit\ModuleEventList'                => 'system/modules/frontendedit/modules/ModuleEventList.php',
-	'HeimrichHannot\FrontendEdit\ModuleCreateUpdate'             => 'system/modules/frontendedit/modules/ModuleCreateUpdate.php',
-	'HeimrichHannot\FrontendEdit\ModuleEventCreateUpdate'        => 'system/modules/frontendedit/modules/ModuleEventCreateUpdate.php',
-	'HeimrichHannot\FrontendEdit\ModuleList'                     => 'system/modules/frontendedit/modules/ModuleList.php',
-	'HeimrichHannot\FrontendEdit\ModuleMemberCreateUpdate'       => 'system/modules/frontendedit/modules/ModuleMemberCreateUpdate.php',
-	'HeimrichHannot\FrontendEdit\ModuleFrontendUserCreateUpdate' => 'system/modules/frontendedit/modules/ModuleFrontendUserCreateUpdate.php',
+	'HeimrichHannot\FrontendEdit\ModuleMemberList'          => 'system/modules/frontendedit/modules/ModuleMemberList.php',
+	'HeimrichHannot\FrontendEdit\ModuleDetails'             => 'system/modules/frontendedit/modules/ModuleDetails.php',
+	'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails' => 'system/modules/frontendedit/modules/ModuleFrontendUserDetails.php',
+	'HeimrichHannot\FrontendEdit\ModuleMemberDetails'       => 'system/modules/frontendedit/modules/ModuleMemberDetails.php',
+	'HeimrichHannot\FrontendEdit\ModuleList'                => 'system/modules/frontendedit/modules/ModuleList.php',
 
 	// Classes
-	'HeimrichHannot\FrontendEdit\CreateUpdateForm'               => 'system/modules/frontendedit/classes/CreateUpdateForm.php',
-	'HeimrichHannot\FrontendEdit\FrontendEdit'                   => 'system/modules/frontendedit/classes/FrontendEdit.php',
+	'HeimrichHannot\FrontendEdit\FrontendEdit'              => 'system/modules/frontendedit/classes/FrontendEdit.php',
+	'HeimrichHannot\FrontendEdit\DetailsForm'               => 'system/modules/frontendedit/classes/DetailsForm.php',
+
+	// Models
+	'HeimrichHannot\FrontendEdit\FrontendEditQueryBuilder'  => 'system/modules/frontendedit/models/FrontendEditQueryBuilder.php',
+	'HeimrichHannot\FrontendEdit\FrontendEditModel'         => 'system/modules/frontendedit/models/FrontendEditModel.php',
 ));
 
 
@@ -45,7 +47,9 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'mod_frontendedit_create_update' => 'system/modules/frontendedit/templates',
-	'mod_frontendedit_list'          => 'system/modules/frontendedit/templates',
-	'formhybrid_frontendedit'        => 'system/modules/frontendedit/templates',
+	'mod_frontendedit_details'             => 'system/modules/frontendedit/templates',
+	'mod_frontendedit_list'                => 'system/modules/frontendedit/templates',
+	'mod_frontendedit_list_table_old'      => 'system/modules/frontendedit/templates',
+	'frontendedit_list_item_table_default' => 'system/modules/frontendedit/templates',
+	'mod_frontendedit_list_table'          => 'system/modules/frontendedit/templates',
 ));

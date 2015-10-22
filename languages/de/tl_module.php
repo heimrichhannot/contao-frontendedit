@@ -26,7 +26,12 @@ $GLOBALS['TL_LANG']['tl_module']['pageTitleField']						= array('Seitentitelfeld
 $GLOBALS['TL_LANG']['tl_module']['additionalSql']						= array('Zusätzliches SQL', 'Geben Sie hier SQL ein, welches nach dem SELECT-Statement eingefügt wird (bspw. INNER JOIN tl_tag ON tl_calendar_events.id = tl_tag.tid).');
 $GLOBALS['TL_LANG']['tl_module']['hideUnpublishedInstances']			= array('Unveröffentlichte Instanzen verstecken', 'Wählen Sie diese Option, um unveröffentlichte Instanzen zu verstecken.');
 $GLOBALS['TL_LANG']['tl_module']['emptyText']							= array('Meldung bei leerer Ergebnismenge', 'Geben Sie hier die Meldung ein, die erscheinen soll, wenn keine Ergebnisse gefunden wurden (mit ##<Feldname>## können Filtereingaben eingefügt werden).');
-
+$GLOBALS['TL_LANG']['tl_module']['noIdBehavior']						= array('Verhalten bei leerem ID-Parameter', 'Wählen Sie hier das Verhalten des Moduls aus, wenn kein ID-Parameter übergeben wurde.');
+$GLOBALS['TL_LANG']['tl_module']['noIdBehavior']['create']				= 'Neue Instanz erstellen';
+$GLOBALS['TL_LANG']['tl_module']['noIdBehavior']['create_until']		= 'Neue Instanz erstellen, sofern es noch keine gibt';
+$GLOBALS['TL_LANG']['tl_module']['noIdBehavior']['redirect']			= 'Zu bestehender Instanz umleiten';
+$GLOBALS['TL_LANG']['tl_module']['redirectId']							= array('Bestehende Instanz', 'Wählen Sie die Instanz zu der weitergeleitet werden soll, wenn kein ID-Parameter verfügbar ist..');
+$GLOBALS['TL_LANG']['tl_module']['existingConditions']					= array('Bedingungen für das Auffinden bestehender Instanzen', 'Geben Sie hier Bedingungen ein, die für das Auffinden bestehender Instanzen gelten müssen.');
 
 // events
 $GLOBALS['TL_LANG']['tl_module']['filterArchives']						= array('Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.');

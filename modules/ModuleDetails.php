@@ -43,7 +43,35 @@ class ModuleDetails extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
+
 		$this->intId = $this->intId ?: \Input::get('id');
+
+		switch ($this->noIdBehavior && !$this->intId)
+		{
+			case 'create_until':
+				$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+				if ($this->existingConditions && !empty($arrConditions = deserialize($this->existingConditions, true)))
+				{
+					$arrColumns = array();
+					$arrValues = array();
+
+					foreach ($arrConditions as $arrCondition)
+					{
+						$arrColumns[] = $arrCondition['field'] . '=?';
+						$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
+					}
+
+					if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+					{
+						\Controller::redirect(Environment::addParameterToUri(Environment::getUrl(), 'id', $objItem->id));
+					}
+				}
+				break;
+			case 'redirect':
+				$this->intId = $this->redirectId;
+				break;
+		}
 
 		if ($this->intId)
 		{

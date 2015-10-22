@@ -13,7 +13,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridSubPalettes,formHybridAddDefaultValues,setPageTitle,formHybridSendSubmissionViaEmail;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},noIdBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridSubPalettes,formHybridAddDefaultValues,setPageTitle,formHybridSendSubmissionViaEmail;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridSubPalettes'),
 	array('addDetailsCol,addDeleteCol,addPublishCol,', 'formHybridSubPalettes,addUpdateDeleteConditions'),
@@ -90,12 +90,27 @@ $arrDca['fields']['pageTitleField'] = array
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
-$arrDca['fields']['additionalSql'] = array
+$arrDca['fields']['noIdBehavior'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalSql'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'default'                 => 'create',
+	'options'                 => array('create', 'create_until', 'redirect'),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'submitOnChange' => true),
+	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$arrDca['fields']['existingConditions'] = $arrDca['fields']['formHybridDefaultValues'];
+$arrDca['fields']['existingConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['existingConditions'];
+
+$arrDca['fields']['redirectId'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['redirectId'],
 	'exclude'                 => true,
 	'inputType'               => 'text',
-	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
+	'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
@@ -115,6 +130,12 @@ class tl_module_frontendedit {
 			{
 				$arrDca['palettes'][$objModule->type] = str_replace('formHybridAddDefaultValues',
 					'addUpdateConditions,formHybridAddDefaultValues', $arrDca['palettes'][$objModule->type]);
+
+				if ($objModule->noIdBehavior == 'create_until')
+					$arrDca['palettes'][$objModule->type] = str_replace('noIdBehavior', 'noIdBehavior,existingConditions', $arrDca['palettes'][$objModule->type]);
+
+				if ($objModule->noIdBehavior == 'redirect')
+					$arrDca['palettes'][$objModule->type] = str_replace('noIdBehavior', 'noIdBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
 			}
 
 			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(

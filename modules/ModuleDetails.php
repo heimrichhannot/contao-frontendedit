@@ -46,37 +46,42 @@ class ModuleDetails extends \Module
 
 		$this->intId = $this->intId ?: \Input::get('id');
 
-		switch ($this->noIdBehavior && !$this->intId)
+		if (!$this->intId)
 		{
-			case 'create_until':
-				$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+			switch ($this->noIdBehavior)
+			{
+				case 'create_until':
+					$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-				if ($this->existingConditions && !empty($arrConditions = deserialize($this->existingConditions, true)))
-				{
-					$arrColumns = array();
-					$arrValues = array();
-
-					foreach ($arrConditions as $arrCondition)
+					if ($this->existingConditions && !empty($arrConditions = deserialize($this->existingConditions, true)))
 					{
-						$arrColumns[] = $arrCondition['field'] . '=?';
-						$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
-					}
+						$arrColumns = array();
+						$arrValues = array();
 
-					if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
-					{
-						\Controller::redirect(Environment::addParameterToUri(Environment::getUrl(), 'id', $objItem->id));
+						foreach ($arrConditions as $arrCondition)
+						{
+							$arrColumns[] = $arrCondition['field'] . '=?';
+							$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
+						}
+
+						if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+						{
+							\Controller::redirect(Environment::addParameterToUri(Environment::getUrl(), 'id', $objItem->id));
+						}
 					}
-				}
-				break;
-			case 'redirect':
-				$this->intId = $this->redirectId;
-				break;
+					break;
+				case 'redirect':
+					\Controller::redirect(Environment::addParameterToUri(Environment::getUrl(), 'id', $this->redirectId));
+					break;
+			}
 		}
 
 		if ($this->intId)
 		{
 			if ($this->checkPermission($this->intId))
+			{
 				$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks, $this->intId);
+			}
 			else
 			{
 				$this->Template->noPermission = true;

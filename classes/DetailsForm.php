@@ -38,6 +38,9 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
 
+		// set flag if completed
+		\Database::getInstance()->prepare('UPDATE tl_module SET formHybridIsComplete=? WHERE id=?')->execute(true, $this->objModule->id);
+
 		if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks))
 		{
 			foreach ($this->arrSubmitCallbacks as $arrCallback)

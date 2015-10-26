@@ -24,3 +24,4 @@ $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm'] = 'Möchten Sie den Datensa
 $GLOBALS['TL_LANG']['frontendedit']['publishTitle'] = 'Veröffentlichen';
 $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle'] = 'Verstecken';
 $GLOBALS['TL_LANG']['frontendedit']['noPermission'] = 'Zum Bearbeiten dieses Datensatzes fehlt Ihnen die Berechtigung.';
+$GLOBALS['TL_LANG']['frontendedit']['notExisting'] = 'Der von Ihnen angeforderte Datensatz wurde nicht gefunden.';

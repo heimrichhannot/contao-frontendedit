@@ -78,6 +78,13 @@ class ModuleDetails extends \Module
 
 		if ($this->intId)
 		{
+			if (!$this->checkEntityExists($this->intId))
+			{
+				$this->Template->noPermission = true;
+				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['notExisting'];
+				return;
+			}
+
 			if ($this->checkPermission($this->intId))
 			{
 				$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks, $this->intId);
@@ -93,6 +100,12 @@ class ModuleDetails extends \Module
 			$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks);
 		
 		$this->Template->form = $objForm->generate();
+	}
+
+	public function checkEntityExists($intId)
+	{
+		if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer))
+			return $strItemClass::findByPk($intId) !== null;
 	}
 
 	public function checkPermission($intId)

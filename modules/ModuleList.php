@@ -39,13 +39,15 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 	
 	protected function compile()
 	{
-		if ($intId = \Input::get(FRONTENDEDIT_ACT_DELETE))
+		if (\Input::get('act') == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id'))
 		{
 			if ($this->checkPermission($intId))
 			{
 				$this->deleteItem($intId);
 				// return to the list
-				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_DELETE));
+				\Controller::redirect(XCommonEnvironment::removeParametersFromUri(XCommonEnvironment::getCurrentUrl(),
+					array('act', 'id')
+				));
 			}
 			else
 			{
@@ -55,13 +57,15 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 		}
 
-		if ($intId = \Input::get(FRONTENDEDIT_ACT_PUBLISH))
+		if (\Input::get('act') == FRONTENDEDIT_ACT_PUBLISH && $intId = \Input::get('id'))
 		{
 			if ($this->checkPermission($intId))
 			{
 				$this->publishItem($intId);
 				// return to the list
-				\Controller::redirect(XCommonEnvironment::removeParameterFromUri(XCommonEnvironment::getCurrentUrl(), FRONTENDEDIT_ACT_PUBLISH));
+				\Controller::redirect(XCommonEnvironment::removeParametersFromUri(XCommonEnvironment::getCurrentUrl(),
+					array('act', 'id')
+				));
 			}
 			else
 			{
@@ -105,22 +109,59 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		}
 	}
 
-	public function addColumns($objItem, &$arrItem)
+	public function addColumns()
 	{
-		parent::addColumns($objItem, $arrItem);
+		parent::addColumns();
+
+		global $objPage;
+
+		// create
+		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage)
+		{
+			$this->Template->createUrl = Environment::addParameterToUri(
+				$this->generateFrontendUrl($objPageJumpTo->row()),
+				'act', FRONTENDEDIT_ACT_CREATE
+			);
+		}
+	}
+
+	public function addItemColumns($objItem, &$arrItem)
+	{
+		parent::addItemColumns($objItem, $arrItem);
+
+		global $objPage;
+
+		// edit
+		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage)
+		{
+			$arrItem['addEditCol'] = true;
+			$arrItem['editUrl'] = Environment::addParametersToUri(
+				$this->generateFrontendUrl($objPageJumpTo->row()),
+				array(
+					'act' => FRONTENDEDIT_ACT_EDIT,
+					'id' => $objItem->id
+				)
+			);
+		}
 
 		// delete url
 		if ($this->addDeleteCol)
 		{
 			$arrItem['addDeleteCol'] = true;
-			$arrItem['deleteUrl'] = Environment::addParameterToUri(Environment::getUrl(), FRONTENDEDIT_ACT_DELETE , $objItem->id);
+			$arrItem['deleteUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
+				'act' => FRONTENDEDIT_ACT_DELETE,
+				'id'  => $objItem->id
+			));
 		}
 
 		// publish url
 		if ($this->addPublishCol)
 		{
 			$arrItem['addPublishCol'] = true;
-			$arrItem['publishUrl'] = Environment::addParameterToUri(Environment::getUrl(), FRONTENDEDIT_ACT_PUBLISH , $objItem->id);
+			$arrItem['publishUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
+				'act' => FRONTENDEDIT_ACT_PUBLISH,
+				'id'  => $objItem->id
+			));
 		}
 	}
 

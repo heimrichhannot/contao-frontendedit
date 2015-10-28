@@ -13,9 +13,9 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\HastePlus\Environment;
 
-class ModuleDetails extends \Module
+class ModuleFormValidator extends \Module
 {
-	protected $strTemplate = 'mod_frontendedit_details';
+	protected $strTemplate = 'mod_frontendedit_form_validator';
 	protected $arrSubmitCallbacks = array();
 
 	public function generate()

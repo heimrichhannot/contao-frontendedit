@@ -4,6 +4,11 @@
 	<?php endif; ?>
 
 	<?php echo $this->filterForm; ?>
+
+	<?php if ($this->addCreateButton): ?>
+		<a class="create" href="<?= $this->createUrl ?>"><?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?></a>
+	<?php endif ?>
+
 	<div class="items block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 		<?php if ($this->showItemCount): ?>
 			<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
@@ -22,7 +27,7 @@
 									</a>
 								</th>
 							<?php endforeach; ?>
-							<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?>
+							<?php if ($this->addDetailsCol || $this->addEditCol || $this->addDeleteCol || $this->addPublishCol): ?>
 								<th class="actions"></th>
 							<?php endif; ?>
 						</tr>

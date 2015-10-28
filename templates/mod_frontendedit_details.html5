@@ -3,7 +3,7 @@
 		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 	<?php endif; ?>
 
-	<?php if ($this->noPermission): ?>
+	<?php if ($this->error): ?>
 		<div class="alert alert-danger">
 			<?php echo $this->errorMessage; ?>
 		</div>

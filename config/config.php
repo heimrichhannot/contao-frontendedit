@@ -14,6 +14,9 @@
  */
 define('FRONTENDEDIT_NAME_SAVE', 'save');
 define('FRONTENDEDIT_NAME_SAVE_RETURN', 'save_return');
+define('FRONTENDEDIT_ACT_SHOW', 'show');
+define('FRONTENDEDIT_ACT_CREATE', 'create');
+define('FRONTENDEDIT_ACT_EDIT', 'edit');
 define('FRONTENDEDIT_ACT_DELETE', 'delete');
 define('FRONTENDEDIT_ACT_PUBLISH', 'publish');
 define('FRONTENDEDIT_NAME_FILTER', 'filter');
@@ -23,6 +26,7 @@ define('MODULE_FRONTENDEDIT_DETAILS', 'frontendedit_details');
 define('MODULE_FRONTENDEDIT_LIST', 'frontendedit_list');
 define('MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS', 'frontendedit_frontenduser_details');
 define('MODULE_FRONTENDEDIT_MEMBER_LIST', 'frontendedit_member_list');
+define('MODULE_FRONTENDEDIT_FORM_VALIDATOR', 'frontendedit_form_validator');
 
 /**
  * Frontend modules
@@ -33,7 +37,8 @@ array_insert(
 			MODULE_FRONTENDEDIT_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleDetails',
 			MODULE_FRONTENDEDIT_LIST          => 'HeimrichHannot\FrontendEdit\ModuleList',
 			MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails',
-			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList'
+			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList',
+			MODULE_FRONTENDEDIT_FORM_VALIDATOR => 'HeimrichHannot\FrontendEdit\ModuleFormValidator'
 		)
 	)
 );

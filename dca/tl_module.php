@@ -13,12 +13,13 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},noIdBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridSubPalettes,formHybridAddDefaultValues,setPageTitle,formHybridSendSubmissionViaEmail,formHybridIsComplete;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridIsComplete;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
-	array('addDetailsCol', 'formHybridSubPalettes'),
-	array('addDetailsCol,addDeleteCol,addPublishCol,', 'formHybridSubPalettes,addUpdateDeleteConditions'),
+	array('addDetailsCol', 'formHybridAddDefaultValues'),
+	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
+$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,publishedField,invertPublishedField,formHybridAddDefaultValues,formHybridSendSubmissionViaEmail;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS] = $arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS];
@@ -31,10 +32,14 @@ $arrDca['palettes']['__selector__'][]                = 'addUpdateDeleteCondition
 $arrDca['palettes']['__selector__'][]                = 'addUpdateConditions';
 $arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
 $arrDca['palettes']['__selector__'][]                = 'setPageTitle';
+$arrDca['palettes']['__selector__'][]                = 'addCreateButton';
+$arrDca['palettes']['__selector__'][]                = 'addEditCol';
 $arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addUpdateConditions'] = 'updateConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['setPageTitle'] = 'pageTitleField';
+$arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel';
+$arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
 
 /**
  * Callbacks
@@ -46,11 +51,30 @@ $arrDca['config']['onload_callback'][] = array('tl_module_frontendedit', 'adjust
 /**
  * Fields
  */
+$arrDca['fields']['addEditCol'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addEditCol'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['jumpToEdit'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToEdit'],
+	'exclude'                 => true,
+	'inputType'               => 'pageTree',
+	'foreignKey'              => 'tl_page.title',
+	'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'w50 clr'),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'",
+	'relation'                => array('type'=>'hasOne', 'load'=>'eager')
+);
+
 $arrDca['fields']['addDeleteCol'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDeleteCol'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50'),
+	'eval'                    => array('tl_class' => 'w50 clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -90,14 +114,14 @@ $arrDca['fields']['pageTitleField'] = array
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
-$arrDca['fields']['noIdBehavior'] = array
+$arrDca['fields']['createBehavior'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['createBehavior'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'default'                 => 'create',
 	'options'                 => array('create', 'create_until', 'redirect'),
-	'reference'               => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+	'reference'               => &$GLOBALS['TL_LANG']['tl_module']['createBehavior'],
 	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'submitOnChange' => true),
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
@@ -112,6 +136,43 @@ $arrDca['fields']['redirectId'] = array
 	'inputType'               => 'text',
 	'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
 	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$arrDca['fields']['addCreateButton'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['createButtonLabel'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['createButtonLabel'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$arrDca['fields']['jumpToCreate'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToCreate'],
+	'exclude'                 => true,
+	'inputType'               => 'pageTree',
+	'foreignKey'              => 'tl_page.title',
+	'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'w50'),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'",
+	'relation'                => array('type'=>'hasOne', 'load'=>'eager')
+);
+
+$arrDca['fields']['defaultArchive'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['defaultArchive'],
+	'inputType'               => 'select',
+	'options_callback'        => array('tl_module_formhybrid_list', 'getArchives'),
+	'eval'                    => array('chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true),
+	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
 
 class tl_module_frontendedit {
@@ -131,11 +192,11 @@ class tl_module_frontendedit {
 				$arrDca['palettes'][$objModule->type] = str_replace('formHybridAddDefaultValues',
 					'addUpdateConditions,formHybridAddDefaultValues', $arrDca['palettes'][$objModule->type]);
 
-				if ($objModule->noIdBehavior == 'create_until')
-					$arrDca['palettes'][$objModule->type] = str_replace('noIdBehavior', 'noIdBehavior,existingConditions', $arrDca['palettes'][$objModule->type]);
+				if ($objModule->createBehavior == 'create_until')
+					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,existingConditions', $arrDca['palettes'][$objModule->type]);
 
-				if ($objModule->noIdBehavior == 'redirect')
-					$arrDca['palettes'][$objModule->type] = str_replace('noIdBehavior', 'noIdBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
+				if ($objModule->createBehavior == 'redirect')
+					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
 			}
 
 			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(

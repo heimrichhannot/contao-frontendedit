@@ -3,8 +3,18 @@
 		<?php if ($strName == 'id') continue; ?>
 		<td class="<?php echo $strName; ?>"><?php echo $varValue; ?></td>
 	<?php endforeach; ?>
-	<?php if ($this->addDetailsCol || $this->addDeleteCol || $this->addPublishCol): ?>
+	<?php if ($this->addDetailsCol || $this->addEditCol || $this->addDeleteCol || $this->addPublishCol): ?>
 		<td class="actions">
+			<?php if ($this->addEditCol): ?>
+				<a class="edit" href="<?php echo $this->editUrl; ?>">
+					<?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
+				</a>
+			<?php endif; ?>
+			<?php if ($this->addDeleteCol): ?>
+				<a class="delete" href="<?php echo $this->deleteUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>">
+					<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>
+				</a>
+			<?php endif; ?>
 			<?php if ($this->addPublishCol): ?>
 				<?php if ($this->isPublished): ?>
 					<a class="publish" href="<?php echo $this->publishUrl; ?>">
@@ -17,13 +27,8 @@
 				<?php endif; ?>
 			<?php endif; ?>
 			<?php if ($this->addDetailsCol && $this->detailsUrl): ?>
-				<a class="edit" href="<?php echo $this->detailsUrl; ?>">
-					<?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
-				</a>
-			<?php endif; ?>
-			<?php if ($this->addDeleteCol): ?>
-				<a class="delete" href="<?php echo $this->deleteUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>">
-					<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>
+				<a class="details" href="<?php echo $this->detailsUrl; ?>">
+					<?php echo $GLOBALS['TL_LANG']['frontendedit']['detailsTitle']; ?>
 				</a>
 			<?php endif; ?>
 		</td>

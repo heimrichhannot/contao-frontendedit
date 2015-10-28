@@ -8,3 +8,4 @@ $GLOBALS['TL_LANG']['FMD'][MODULE_FRONTENDEDIT_DETAILS] = array('Frontendedit-De
 $GLOBALS['TL_LANG']['FMD'][MODULE_FRONTENDEDIT_LIST] = array('Frontendedit-Liste', '');
 $GLOBALS['TL_LANG']['FMD'][MODULE_FRONTENDEDIT_MEMBER_LIST] = array('Frontendedit-Liste (Mitglieder)', '');
 $GLOBALS['TL_LANG']['FMD'][MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS] = array('Frontendedit-Details (Eingeloggtes Mitglied)', '');
+$GLOBALS['TL_LANG']['FMD'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = array('Formularvalidator', '');

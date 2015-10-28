@@ -13,7 +13,6 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\HastePlus\Environment;
-use HeimrichHannot\XCommonEnvironment;
 
 class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 {
@@ -36,7 +35,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
 		return parent::generate();
 	}
-	
+
 	protected function compile()
 	{
 		if (\Input::get('act') == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id'))
@@ -45,7 +44,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->deleteItem($intId);
 				// return to the list
-				\Controller::redirect(XCommonEnvironment::removeParametersFromUri(XCommonEnvironment::getCurrentUrl(),
+				\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
 					array('act', 'id')
 				));
 			}
@@ -63,7 +62,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->publishItem($intId);
 				// return to the list
-				\Controller::redirect(XCommonEnvironment::removeParametersFromUri(XCommonEnvironment::getCurrentUrl(),
+				\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
 					array('act', 'id')
 				));
 			}
@@ -83,7 +82,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 		if (($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
-			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem);
+			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
 			// call ondelete callbacks
 			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))

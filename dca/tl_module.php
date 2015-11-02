@@ -13,13 +13,13 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridIsComplete;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridAddDefaultValues'),
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
-$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,publishedField,invertPublishedField,formHybridAddDefaultValues,formHybridSendSubmissionViaEmail;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,publishedField,invertPublishedField,formHybridAddDefaultValues,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS] = $arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS];
@@ -90,11 +90,15 @@ $arrDca['fields']['addUpdateDeleteConditions'] = $arrDca['fields']['formHybridAd
 $arrDca['fields']['addUpdateDeleteConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['addUpdateDeleteConditions'];
 $arrDca['fields']['updateDeleteConditions'] = $arrDca['fields']['formHybridDefaultValues'];
 $arrDca['fields']['updateDeleteConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['updateDeleteConditions'];
+unset($arrDca['fields']['updateDeleteConditions']['eval']['columnFields']['label']);
+unset($arrDca['fields']['updateDeleteConditions']['eval']['columnFields']['hidden']);
 
 $arrDca['fields']['addUpdateConditions'] = $arrDca['fields']['formHybridAddDefaultValues'];
 $arrDca['fields']['addUpdateConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'];
 $arrDca['fields']['updateConditions'] = $arrDca['fields']['formHybridDefaultValues'];
 $arrDca['fields']['updateConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['updateConditions'];
+unset($arrDca['fields']['updateConditions']['eval']['columnFields']['label']);
+unset($arrDca['fields']['updateConditions']['eval']['columnFields']['hidden']);
 
 $arrDca['fields']['setPageTitle'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['setPageTitle'],
@@ -204,6 +208,13 @@ class tl_module_frontendedit {
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_list_item_');
+			}
+
+			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+					$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleDetails'))
+			{
+				unset($arrDca['fields']['itemTemplate']['options_callback']);
+				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_item');
 			}
 		}
 	}

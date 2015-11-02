@@ -3,11 +3,8 @@
 		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 	<?php endif; ?>
 
-	<?php if ($this->error): ?>
-		<div class="alert alert-danger">
-			<?php echo $this->errorMessage; ?>
-		</div>
-	<?php else: ?>
-		<?php echo $this->form ?: ''; ?>
-	<?php endif; ?>
+	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+
+	<?php echo $this->form ?: ''; ?>
+	<?php echo $this->item ?: ''; ?>
 </div>

@@ -29,11 +29,12 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FrontendEdit\ModuleMemberList'          => 'system/modules/frontendedit/modules/ModuleMemberList.php',
 	'HeimrichHannot\FrontendEdit\ModuleDetails'             => 'system/modules/frontendedit/modules/ModuleDetails.php',
 	'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails' => 'system/modules/frontendedit/modules/ModuleFrontendUserDetails.php',
-	'HeimrichHannot\FrontendEdit\ModuleMemberDetails'       => 'system/modules/frontendedit/modules/ModuleMemberDetails.php',
+	'HeimrichHannot\FrontendEdit\ModuleFormValidator'       => 'system/modules/frontendedit/modules/ModuleFormValidator.php',
 	'HeimrichHannot\FrontendEdit\ModuleList'                => 'system/modules/frontendedit/modules/ModuleList.php',
 
 	// Classes
 	'HeimrichHannot\FrontendEdit\FrontendEdit'              => 'system/modules/frontendedit/classes/FrontendEdit.php',
+	'HeimrichHannot\FrontendEdit\ValidatorForm'             => 'system/modules/frontendedit/classes/ValidatorForm.php',
 	'HeimrichHannot\FrontendEdit\DetailsForm'               => 'system/modules/frontendedit/classes/DetailsForm.php',
 
 	// Models
@@ -48,8 +49,7 @@ ClassLoader::addClasses(array
 TemplateLoader::addFiles(array
 (
 	'mod_frontendedit_details'             => 'system/modules/frontendedit/templates',
-	'mod_frontendedit_list'                => 'system/modules/frontendedit/templates',
-	'mod_frontendedit_list_table_old'      => 'system/modules/frontendedit/templates',
+	'frontendedit_item_default'            => 'system/modules/frontendedit/templates',
 	'frontendedit_list_item_table_default' => 'system/modules/frontendedit/templates',
 	'mod_frontendedit_list_table'          => 'system/modules/frontendedit/templates',
 ));

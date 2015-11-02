@@ -50,8 +50,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$this->Template->noPermission = true;
-				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
 				return;
 			}
 		}
@@ -68,8 +67,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$this->Template->noPermission = true;
-				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
 				return;
 			}
 		}

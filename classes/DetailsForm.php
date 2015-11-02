@@ -38,9 +38,6 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
 
-		// set flag if completed
-		\Database::getInstance()->prepare('UPDATE tl_module SET formHybridIsComplete=? WHERE id=?')->execute(true, $this->objModule->id);
-
 		if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks))
 		{
 			foreach ($this->arrSubmitCallbacks as $arrCallback)
@@ -57,14 +54,14 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 	
 	protected function generateSubmitField()
 	{
-		$this->arrFields[FRONTENDEDIT_NAME_SAVE] = $this->generateField(FRONTENDEDIT_NAME_SAVE, array(
+		$this->arrFields[FRONTENDEDIT_BUTTON_SAVE] = $this->generateField(FRONTENDEDIT_BUTTON_SAVE, array(
 			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['frontendedit']['save']
+			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE]
 		));
 
-//		$this->arrFields[FRONTENDEDIT_NAME_SAVE_RETURN] = $this->generateField(FRONTENDEDIT_NAME_SAVE_RETURN, array(
+//		$this->arrFields[FRONTENDEDIT_BUTTON_SAVE_RETURN] = $this->generateField(FRONTENDEDIT_BUTTON_SAVE_RETURN, array(
 //			'inputType' => 'submit',
-//			'label'		=> &$GLOBALS['TL_LANG']['frontendedit']['save_return'],
+//			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE_RETURN],
 //			'eval'		=> array('class' => 'btn btn-gray')
 //		));
 	}

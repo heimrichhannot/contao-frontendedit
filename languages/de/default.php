@@ -6,6 +6,7 @@
 $GLOBALS['TL_LANG']['frontendedit']['save'][0] = 'Speichern';
 $GLOBALS['TL_LANG']['frontendedit']['save_return'][0] = 'Speichern & zurück';
 $GLOBALS['TL_LANG']['frontendedit']['filter'][0] = 'Filtern';
+$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SUBMIT][0] = 'Absenden';
 
 /**
  * Fields

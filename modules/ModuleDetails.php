@@ -12,11 +12,13 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleDetails extends \Module
 {
 	protected $strTemplate = 'mod_frontendedit_details';
 	protected $arrSubmitCallbacks = array();
+	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\DetailsForm';
 
 	public function generate()
 	{
@@ -43,10 +45,14 @@ class ModuleDetails extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
+		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
+		$strAction = \Input::get('act');
+		$objForm = null;
+		$this->arrEditable = deserialize($this->formHybridEditable, true);
 
 		$this->addDefaultArchive();
 
-		if (\Input::get('act') == FRONTENDEDIT_ACT_CREATE || !\Input::get('act'))
+		if ($strAction == FRONTENDEDIT_ACT_CREATE)
 		{
 			if (isset($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']) && is_array($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']))
 			{
@@ -96,7 +102,8 @@ class ModuleDetails extends \Module
 					break;
 			}
 
-			$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks);
+			$objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks);
+			$this->Template->form = $objForm->generate();
 		}
 		else
 		{
@@ -104,39 +111,101 @@ class ModuleDetails extends \Module
 
 			if (!$this->intId)
 			{
-				$this->Template->error = true;
-				$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noIdFound'];
+				StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id);
 				return;
 			}
 			else
 			{
 				if (!$this->checkEntityExists($this->intId))
 				{
-					$this->Template->error = true;
-					$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['notExisting'];
+					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['notExisting'], $this->id);
 					return;
 				}
 
 				if ($this->checkPermission($this->intId))
 				{
-					$objForm = new DetailsForm($this->objModel, $this->arrSubmitCallbacks, $this->intId);
+					switch ($strAction)
+					{
+						case FRONTENDEDIT_ACT_EDIT:
+							$objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId);
+							$this->Template->form = $objForm->generate();
+							break;
+						case FRONTENDEDIT_ACT_DELETE:
+							$this->deleteItem($this->intId);
+							// return to the list
+							\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
+								array('act', 'id')
+							));
+							break;
+						default:
+							// no param -> show details only
+							$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+							if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
+							{
+								$arrItem = $this->generateFields($objItem);
+
+								$this->Template->item = $this->parseItem($arrItem);
+							}
+						break;
+					}
 				}
 				else
 				{
-					$this->Template->error = true;
-					$this->Template->errorMessage = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noPermission'], $this->id);
 					return;
 				}
 			}
 		}
+	}
 
-		$this->Template->form = $objForm->generate();
+	protected function parseItem($arrItem, $strClass='', $intCount=0)
+	{
+		$objTemplate = new \FrontendTemplate($this->itemTemplate);
+
+		$objTemplate->setData($arrItem);
+		$objTemplate->class = $strClass;
+		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
+		$objTemplate->addDetailsCol = $this->addDetailsCol;
+
+		// HOOK: add custom logic
+		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
+			{
+				$this->import($callback[0]);
+				$this->$callback[0]->$callback[1]($objTemplate, $arrItem, $this);
+			}
+		}
+
+		return $objTemplate->parse();
 	}
 
 	public function checkEntityExists($intId)
 	{
 		if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer))
 			return $strItemClass::findByPk($intId) !== null;
+	}
+
+	protected function deleteItem($intId)
+	{
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		if (($objItem = $strItemClass::findByPk($intId)) !== null)
+		{
+			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
+
+			// call ondelete callbacks
+			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))
+			{
+				foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->$callback[0]->$callback[1]($dc);
+				}
+			}
+
+			$objItem->delete();
+		}
 	}
 
 	public function checkPermission($intId)
@@ -177,5 +246,40 @@ class ModuleDetails extends \Module
 
 			$this->objModel->formHybridDefaultValues = serialize($this->objModel->formHybridDefaultValues);
 		}
+	}
+
+	protected function generateFields($objItem)
+	{
+		$arrItem = array();
+
+		// always add id
+		$arrItem['fields']['id'] = $objItem->id;
+
+		foreach ($this->arrEditable as $strName)
+		{
+			$varValue = $objItem->{$strName};
+			// Convert timestamps
+			if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
+			{
+				$objDate = new \Date($varValue);
+				$varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};
+			}
+
+			$arrItem['fields'][$strName] = $varValue;
+		}
+
+		// add raw values
+		foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
+		{
+			$arrItem['raw'][$strField] = $objItem->{$strName};
+		}
+
+		if ($this->publishedField)
+		{
+			$arrItem['isPublished'] = ($this->invertPublishedField ?
+				!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
+		}
+
+		return $arrItem;
 	}
 }

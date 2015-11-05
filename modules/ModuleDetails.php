@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -143,6 +145,9 @@ class ModuleDetails extends \Module
 
 							if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
 							{
+								// redirect on specific field value
+								DC_Hybrid::doFieldDependentRedirect($this, $objItem);
+
 								$arrItem = $this->generateFields($objItem);
 
 								$this->Template->item = $this->parseItem($arrItem);

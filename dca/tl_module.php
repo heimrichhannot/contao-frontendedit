@@ -13,7 +13,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},defaultAction,createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridAddDefaultValues'),
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),
@@ -177,6 +177,16 @@ $arrDca['fields']['defaultArchive'] = array
 	'options_callback'        => array('tl_module_formhybrid_list', 'getArchives'),
 	'eval'                    => array('chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true),
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
+);
+
+$arrDca['fields']['defaultAction'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['defaultAction'],
+	'inputType'               => 'select',
+	'options'                 => array(FRONTENDEDIT_ACT_SHOW, FRONTENDEDIT_ACT_CREATE, FRONTENDEDIT_ACT_EDIT,
+									   FRONTENDEDIT_ACT_DELETE, FRONTENDEDIT_ACT_PUBLISH),
+	'eval'                    => array('tl_class' => 'w50', 'includeBlankOption' => true),
+	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
 class tl_module_frontendedit {

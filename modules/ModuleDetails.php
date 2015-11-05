@@ -46,7 +46,7 @@ class ModuleDetails extends \Module
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
-		$strAction = \Input::get('act');
+		$strAction = $this->defaultAction ?: \Input::get('act');
 		$objForm = null;
 		$this->arrEditable = deserialize($this->formHybridEditable, true);
 
@@ -96,7 +96,7 @@ class ModuleDetails extends \Module
 					\Controller::redirect(Environment::addParametersToUri(Environment::getUrl(),
 						array(
 							'act' => FRONTENDEDIT_ACT_EDIT,
-							'id' => $this->redirectId
+							'id' => $this->replaceInsertTags($this->redirectId)
 						)
 					));
 					break;

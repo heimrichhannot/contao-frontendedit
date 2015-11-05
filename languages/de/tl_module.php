@@ -37,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_module']['addCreateButton']						= array('"Neu"-Button h
 $GLOBALS['TL_LANG']['tl_module']['jumpToCreate']						= array('Weiterleitungsseite (Neu)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn eine neue Instanz erstellt wird.');
 $GLOBALS['TL_LANG']['tl_module']['createButtonLabel']					= array('Beschriftung des "Neu"-Buttons', 'Überschreiben Sie hier hier die standardmäßige Beschriftung des "Neu"-Buttons.');
 $GLOBALS['TL_LANG']['tl_module']['defaultArchive']						= array('Standardarchiv', 'Wählen Sie hier das Archiv aus, das neuen Instanzen zugeordnet werden soll.');
+$GLOBALS['TL_LANG']['tl_module']['defaultAction']						= array('Standardaktion', 'Wenn Sie eine Aktion vorgeben möchten, die standardmäßig gesetzt wird, wählen Sie diese hier.');
 
 // events
 $GLOBALS['TL_LANG']['tl_module']['filterArchives']						= array('Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.');

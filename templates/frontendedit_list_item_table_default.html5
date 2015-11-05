@@ -18,11 +18,11 @@
 			<?php if ($this->addPublishCol): ?>
 				<?php if ($this->isPublished): ?>
 					<a class="publish" href="<?php echo $this->publishUrl; ?>">
-						<?php echo $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>
+						<?php echo $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle']; ?>
 					</a>
 				<?php else: ?>
 					<a class="unpublish" href="<?php echo $this->publishUrl; ?>">
-						<?php echo $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle']; ?>
+						<?php echo $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>
 					</a>
 				<?php endif; ?>
 			<?php endif; ?>

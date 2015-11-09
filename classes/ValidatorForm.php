@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\StatusMessages\StatusMessage;
+
 class ValidatorForm extends DetailsForm
 {
 	protected function modifyDC()
@@ -43,5 +45,16 @@ class ValidatorForm extends DetailsForm
 			'inputType' => 'submit',
 			'label'		=> &$GLOBALS['TL_LANG']['frontendedit']['submit']
 		));
+	}
+
+	public function runOnValidationError($arrInvalidFields)
+	{
+		StatusMessage::addError(
+			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'], implode(', ', array_map(function($val) {
+				return $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$val]['label'][0] ?: $val;
+			}, $arrInvalidFields))),
+			$this->objModule->id
+		);
+		\Controller::reload();
 	}
 }

@@ -53,7 +53,7 @@ class ValidatorForm extends DetailsForm
 		StatusMessage::addError(
 			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'],
 				implode(', ', array_map(function($val) use ($arrDca) {
-					return '<li>' . ($arrDca['fields'][$val]['label'][0] ?: $val) . '</li>';
+					return $arrDca['fields'][$val]['label'][0] ?: $val;
 				}, $arrInvalidFields))),
 			$this->objModule->id
 		);

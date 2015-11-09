@@ -28,4 +28,4 @@ $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle'] = 'Verstecken';
 $GLOBALS['TL_LANG']['frontendedit']['noPermission'] = 'Für einen Zugriff auf diesen Datensatz fehlt Ihnen die Berechtigung.';
 $GLOBALS['TL_LANG']['frontendedit']['notExisting'] = 'Der von Ihnen angeforderte Datensatz wurde nicht gefunden.';
 $GLOBALS['TL_LANG']['frontendedit']['noIdFound'] = 'Kein ID-Parameter gefunden.';
-$GLOBALS['TL_LANG']['frontendedit']['validationFailed'] = 'Sie haben die folgenden Felder noch nicht korrekt ausgefüllt: <ul class="invalid-fields">%s.</ul>';
+$GLOBALS['TL_LANG']['frontendedit']['validationFailed'] = 'Sie haben die folgenden Felder noch nicht korrekt ausgefüllt: %s.';

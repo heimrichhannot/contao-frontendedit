@@ -49,10 +49,12 @@ class ValidatorForm extends DetailsForm
 
 	public function runOnValidationError($arrInvalidFields)
 	{
+		$arrDca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 		StatusMessage::addError(
-			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'], implode(', ', array_map(function($val) {
-				return $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$val]['label'][0] ?: $val;
-			}, $arrInvalidFields))),
+			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'],
+				implode(', ', array_map(function($val) use ($arrDca) {
+					return '<li>' . ($arrDca['fields'][$val]['label'][0] ?: $val) . '</li>';
+				}, $arrInvalidFields))),
 			$this->objModule->id
 		);
 		\Controller::reload();

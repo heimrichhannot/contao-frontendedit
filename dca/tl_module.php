@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
-$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,publishedField,invertPublishedField,formHybridAddDefaultValues,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{config_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,publishedField,invertPublishedField,formHybridAddDefaultValues,formHybridSendSubmissionViaEmail,formHybridSendConfirmationViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS] = $arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS];

@@ -55,7 +55,8 @@ class ValidatorForm extends DetailsForm
 				implode(', ', array_map(function($val) use ($arrDca) {
 					return $arrDca['fields'][$val]['label'][0] ?: $val;
 				}, $arrInvalidFields))),
-			$this->objModule->id
+			$this->objModule->id,
+			'validation-failed'
 		);
 		\Controller::reload();
 	}

@@ -113,14 +113,14 @@ class ModuleDetails extends \Module
 
 			if (!$this->intId)
 			{
-				StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id);
+				StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id, 'noidfound');
 				return;
 			}
 			else
 			{
 				if (!$this->checkEntityExists($this->intId))
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['notExisting'], $this->id);
+					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['notExisting'], $this->id, 'noentity');
 					return;
 				}
 
@@ -157,7 +157,7 @@ class ModuleDetails extends \Module
 				}
 				else
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noPermission'], $this->id);
+					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noPermission'], $this->id, 'nopermission');
 					return;
 				}
 			}

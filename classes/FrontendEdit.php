@@ -3,7 +3,7 @@
  * Contao Open Source CMS
  * 
  * Copyright (c) 2015 Heimrich & Hannot GmbH
- * @package futureSAX
+ * @package frontendedit
  * @author Dennis Patzer <d.patzer@heimrich-hannot.de>
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */

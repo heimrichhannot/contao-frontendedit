@@ -13,7 +13,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},defaultAction,createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS] = '{title_legend},name,headline,type;{config_legend},defaultAction,createBehavior,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddDisplayedSubPaletteFields,formHybridAddDefaultValues,defaultArchive,setPageTitle,formHybridSendSubmissionViaEmail,formHybridAddFieldDependentRedirect;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridAddDefaultValues'),
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),

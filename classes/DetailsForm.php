@@ -38,6 +38,7 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
 
+
 		if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks))
 		{
 			foreach ($this->arrSubmitCallbacks as $arrCallback)

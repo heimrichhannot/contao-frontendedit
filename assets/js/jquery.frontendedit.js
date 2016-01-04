@@ -15,7 +15,7 @@
 		initAlerts: function () {
 			FRONTENDEDIT.initAlertify('Ja', 'Nein');
 
-			$('.frontendedit-list .remove').on('click', function(event) {
+			$('.formhybrid-list .delete').on('click', function(event) {
 				var $this = $(this);
 
 				event.preventDefault();

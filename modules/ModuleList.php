@@ -13,6 +13,7 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 {
@@ -38,7 +39,18 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
 	protected function compile()
 	{
-		if (\Input::get('act') == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id'))
+		$strAction = \Input::get('act');
+
+		// at first check for the correct request token to be set
+		if ($strAction && !\RequestToken::validate(\Input::get('token')))
+		{
+			StatusMessage::addError(
+					sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'], Environment::getUrl(true, true, false)),
+					$this->id, 'requestTokenExpired');
+			return;
+		}
+
+		if ($strAction == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id'))
 		{
 			if ($this->checkPermission($intId))
 			{
@@ -55,7 +67,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 		}
 
-		if (\Input::get('act') == FRONTENDEDIT_ACT_PUBLISH && $intId = \Input::get('id'))
+		if ($strAction == FRONTENDEDIT_ACT_PUBLISH && $intId = \Input::get('id'))
 		{
 			if ($this->checkPermission($intId))
 			{
@@ -136,7 +148,8 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 				$this->generateFrontendUrl($objPageJumpTo->row()),
 				array(
 					'act' => FRONTENDEDIT_ACT_EDIT,
-					'id' => $objItem->id
+					'id' => $objItem->id,
+					'token' => \RequestToken::get()
 				)
 			);
 		}
@@ -147,7 +160,8 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			$arrItem['addDeleteCol'] = true;
 			$arrItem['deleteUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
 				'act' => FRONTENDEDIT_ACT_DELETE,
-				'id'  => $objItem->id
+				'id'  => $objItem->id,
+				'token' => \RequestToken::get()
 			));
 		}
 
@@ -157,7 +171,8 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			$arrItem['addPublishCol'] = true;
 			$arrItem['publishUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
 				'act' => FRONTENDEDIT_ACT_PUBLISH,
-				'id'  => $objItem->id
+				'id'  => $objItem->id,
+				'token' => \RequestToken::get()
 			));
 		}
 	}

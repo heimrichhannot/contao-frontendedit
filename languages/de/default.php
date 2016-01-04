@@ -29,3 +29,4 @@ $GLOBALS['TL_LANG']['frontendedit']['noPermission'] = 'Für einen Zugriff auf di
 $GLOBALS['TL_LANG']['frontendedit']['notExisting'] = 'Der von Ihnen angeforderte Datensatz wurde nicht gefunden.';
 $GLOBALS['TL_LANG']['frontendedit']['noIdFound'] = 'Kein ID-Parameter gefunden.';
 $GLOBALS['TL_LANG']['frontendedit']['validationFailed'] = 'Sie haben die folgenden Felder noch nicht korrekt ausgefüllt: %s.';
+$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'] = 'Ihre Sitzung ist abgelaufen. Um weiterzuarbeiten, klicken Sie bitte <a href="%s">hier</a>.';

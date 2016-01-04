@@ -54,6 +54,17 @@ class ModuleDetails extends \Module
 
 		$this->addDefaultArchive();
 
+		// at first check for the correct request token to be set
+		if ($strAction && !\RequestToken::validate(\Input::get('token')))
+		{
+			StatusMessage::addError(sprintf(
+						$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
+						Environment::replaceParameterInUri(Environment::getUrl(), 'token', \RequestToken::get())
+					),
+					$this->id, 'requestTokenExpired');
+			return;
+		}
+
 		if ($strAction == FRONTENDEDIT_ACT_CREATE)
 		{
 			if (isset($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']) && is_array($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']))
@@ -88,7 +99,8 @@ class ModuleDetails extends \Module
 							\Controller::redirect(Environment::addParametersToUri(Environment::getUrl(),
 								array(
 									'act' => FRONTENDEDIT_ACT_EDIT,
-									'id' => $objItem->id
+									'id' => $objItem->id,
+									'token' => \RequestToken::get()
 								)
 							));
 						}
@@ -98,7 +110,8 @@ class ModuleDetails extends \Module
 					\Controller::redirect(Environment::addParametersToUri(Environment::getUrl(),
 						array(
 							'act' => FRONTENDEDIT_ACT_EDIT,
-							'id' => $this->replaceInsertTags($this->redirectId)
+							'id' => $this->replaceInsertTags($this->redirectId),
+							'token' => \RequestToken::get()
 						)
 					));
 					break;
@@ -136,7 +149,7 @@ class ModuleDetails extends \Module
 							$this->deleteItem($this->intId);
 							// return to the list
 							\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
-								array('act', 'id')
+								array('act', 'id', 'token')
 							));
 							break;
 						default:

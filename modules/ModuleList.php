@@ -127,9 +127,12 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		// create
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage)
 		{
-			$this->Template->createUrl = Environment::addParameterToUri(
+			$this->Template->createUrl = Environment::addParametersToUri(
 				$this->generateFrontendUrl($objPageJumpTo->row()),
-				'act', FRONTENDEDIT_ACT_CREATE
+				array(
+					'act' => FRONTENDEDIT_ACT_CREATE,
+					'token' => \RequestToken::get()
+				)
 			);
 		}
 	}

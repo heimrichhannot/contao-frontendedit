@@ -49,7 +49,7 @@ array_insert(
 if (TL_MODE == 'FE')
 {
 	// css
-	$GLOBALS['TL_CSS']['frontendedit'] = 'system/modules/frontendedit/assets/css/style.css|static';
+	$GLOBALS['TL_CSS']['frontendedit'] = 'system/modules/frontendedit/assets/css/style.css' . (version_compare(VERSION, '3.5', '>=') ? '|static' : '');
 
 	// js
 	$GLOBALS['TL_JAVASCRIPT']['frontendedit'] = 'system/modules/frontendedit/assets/js/jquery.frontendedit.js|static';

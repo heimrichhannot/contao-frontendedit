@@ -200,7 +200,7 @@ class tl_module_frontendedit {
 		{
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
-			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleDetails'))
 			{
 				$arrDca['palettes'][$objModule->type] = str_replace('formHybridAddDefaultValues',
@@ -213,14 +213,14 @@ class tl_module_frontendedit {
 					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
 			}
 
-			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleList'))
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_list_item_');
 			}
 
-			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 					$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleDetails'))
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
@@ -238,13 +238,13 @@ class tl_module_frontendedit {
 		{
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
-			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleMemberList'))
 			{
 				$arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]);
 			}
 
-			if (\HeimrichHannot\HastePlus\Utilities::isSubModuleOf(
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleMemberList'))
 			{
 				// override labels for suiting a list module

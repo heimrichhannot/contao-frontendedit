@@ -8,28 +8,28 @@
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
-$dca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
+$arrDca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
 
-$dca['palettes']['default'] = str_replace('author', 'useMemberAuthor,author,memberAuthor', $dca['palettes']['default']);
+$arrDca['palettes']['default'] = str_replace('author', 'useMemberAuthor,author,memberAuthor', $arrDca['palettes']['default']);
 
 /**
  * Callbacks
  */
-$dca['config']['onload_callback'][] = array('tl_calendar_events_frontendedit', 'modifyPalette');
+$arrDca['config']['onload_callback'][] = array('tl_calendar_events_frontendedit', 'modifyPalette');
 
 /**
  * Fields
  */
-$dca['fields']['useMemberAuthor'] = array
+$arrDca['fields']['useMemberAuthor'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['frontendedit']['useMemberAuthor'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'w50'),
+	'eval'                    => array('submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'w50 clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
-$dca['fields']['memberAuthor'] = array
+$arrDca['fields']['memberAuthor'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['frontendedit']['memberAuthor'],
 	'exclude'                 => true,
@@ -45,14 +45,14 @@ $dca['fields']['memberAuthor'] = array
 class tl_calendar_events_frontendedit extends \Backend {
 
 	public static function modifyPalette(){
-		$dca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
+		$arrDca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
 
 		if (($objEvent = \CalendarEventsModel::findByPk(\Input::get('id'))) !== null && $objEvent->useMemberAuthor)
 		{
-			$dca['palettes']['default'] = str_replace('author', '', $dca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace('author', '', $arrDca['palettes']['default']);
 		}
 		else
-			$dca['palettes']['default'] = str_replace('memberAuthor', '', $dca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace('memberAuthor', '', $arrDca['palettes']['default']);
 	}
 
 }

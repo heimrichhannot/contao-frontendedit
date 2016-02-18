@@ -15,7 +15,7 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ValidatorForm extends DetailsForm
 {
-	protected function modifyDC()
+	public function modifyDC(&$arrDca = null)
 	{
 		foreach ($this->arrEditable as $strField)
 		{

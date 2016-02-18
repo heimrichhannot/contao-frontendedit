@@ -39,7 +39,7 @@ $arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addUpdateConditions'] = 'updateConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['setPageTitle'] = 'pageTitleField';
-$arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel';
+$arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel,createMemberGroups';
 $arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
 
 /**
@@ -158,6 +158,21 @@ $arrDca['fields']['createButtonLabel'] = array
 	'inputType'               => 'text',
 	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$arrDca['fields']['createMemberGroups'] = array
+(
+		'label'     => &$GLOBALS['TL_LANG']['tl_module']['createMemberGroups'],
+		'inputType' => 'select',
+		'exclude'   => true,
+		'foreignKey' => 'tl_member_group.name',
+		'eval'      => array(
+				'tl_class'           => 'w50',
+				'includeBlankOption' => true,
+				'chosen'             => true,
+				'multiple'           => true
+		),
+		'sql'       => "blob NULL"
 );
 
 $arrDca['fields']['jumpToCreate'] = array

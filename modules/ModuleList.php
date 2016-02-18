@@ -134,6 +134,11 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 					'token' => \RequestToken::get()
 				)
 			);
+
+			$arrGroups = deserialize($this->createMemberGroups, true);
+
+			if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty(array_intersect($arrGroups, deserialize(\FrontendUser::getInstance()->groups, true)))))
+				$this->Template->addCreateButton = false;
 		}
 	}
 

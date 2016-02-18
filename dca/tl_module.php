@@ -24,6 +24,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,h
 // members
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS] = $arrDca['palettes'][MODULE_FRONTENDEDIT_DETAILS];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
+$arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
 /**
  * Subpalettes

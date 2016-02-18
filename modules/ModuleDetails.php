@@ -21,6 +21,7 @@ class ModuleDetails extends \Module
 	protected $strTemplate = 'mod_frontendedit_details';
 	protected $arrSubmitCallbacks = array();
 	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\DetailsForm';
+	protected $objForm;
 
 	public function generate()
 	{
@@ -49,7 +50,6 @@ class ModuleDetails extends \Module
 		$this->Template->hl = $this->hl;
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 		$strAction = $this->defaultAction ?: \Input::get('act');
-		$objForm = null;
 		$this->arrEditable = deserialize($this->formHybridEditable, true);
 
 		$this->addDefaultArchive();
@@ -117,8 +117,8 @@ class ModuleDetails extends \Module
 					break;
 			}
 
-			$objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks);
-			$this->Template->form = $objForm->generate();
+			$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, 0, $this);
+			$this->Template->form = $this->objForm->generate();
 		}
 		else
 		{
@@ -142,8 +142,8 @@ class ModuleDetails extends \Module
 					switch ($strAction)
 					{
 						case FRONTENDEDIT_ACT_EDIT:
-							$objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId);
-							$this->Template->form = $objForm->generate();
+							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+							$this->Template->form = $this->objForm->generate();
 							break;
 						case FRONTENDEDIT_ACT_DELETE:
 							$this->deleteItem($this->intId);
@@ -300,4 +300,6 @@ class ModuleDetails extends \Module
 
 		return $arrItem;
 	}
+
+	public function modifyDC(&$arrDca = null) {}
 }

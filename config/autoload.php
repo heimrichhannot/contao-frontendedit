@@ -3,11 +3,9 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2015 Leo Feyer
+ * Copyright (c) 2005-2016 Leo Feyer
  *
- * @package Frontendedit
- * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license LGPL-3.0+
  */
 
 
@@ -29,8 +27,10 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FrontendEdit\ModuleMemberList'          => 'system/modules/frontendedit/modules/ModuleMemberList.php',
 	'HeimrichHannot\FrontendEdit\ModuleDetails'             => 'system/modules/frontendedit/modules/ModuleDetails.php',
 	'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails' => 'system/modules/frontendedit/modules/ModuleFrontendUserDetails.php',
+	'HeimrichHannot\FrontendEdit\ModuleNews'                => 'system/modules/frontendedit/modules/ModuleNews.php',
 	'HeimrichHannot\FrontendEdit\ModuleFormValidator'       => 'system/modules/frontendedit/modules/ModuleFormValidator.php',
 	'HeimrichHannot\FrontendEdit\ModuleList'                => 'system/modules/frontendedit/modules/ModuleList.php',
+	'HeimrichHannot\FrontendEdit\ModuleNewsList'            => 'system/modules/frontendedit/modules/ModuleNewsList.php',
 
 	// Classes
 	'HeimrichHannot\FrontendEdit\FrontendEdit'              => 'system/modules/frontendedit/classes/FrontendEdit.php',
@@ -50,6 +50,7 @@ TemplateLoader::addFiles(array
 (
 	'mod_frontendedit_details'             => 'system/modules/frontendedit/templates',
 	'frontendedit_item_default'            => 'system/modules/frontendedit/templates',
+	'mod_frontendedit_list'                => 'system/modules/frontendedit/templates',
 	'frontendedit_list_item_table_default' => 'system/modules/frontendedit/templates',
 	'mod_frontendedit_list_table'          => 'system/modules/frontendedit/templates',
 ));

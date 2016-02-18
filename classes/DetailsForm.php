@@ -13,10 +13,13 @@ namespace HeimrichHannot\FrontendEdit;
 
 class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 {
-	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0)
+	protected $objDetailsModule;
+
+	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objDetailsForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
+		$this->objDetailsModule = $objDetailsForm;
 		$objModule->initiallySaveModel = true;
 		$objModule->strFormClass = 'jquery-validation';
 		$this->arrSubmitCallbacks = $submitCallbacks;
@@ -65,5 +68,15 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 //			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE_RETURN],
 //			'eval'		=> array('class' => 'btn btn-gray')
 //		));
+	}
+
+	public function setDetailsModule($objModule)
+	{
+		$this->objDetailsModule = $objModule;
+	}
+
+	public function modifyDC(&$arrDca = null)
+	{
+		$this->objDetailsModule->modifyDC($arrDca);
 	}
 }

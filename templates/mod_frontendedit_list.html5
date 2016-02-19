@@ -5,13 +5,15 @@
 
 	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
-	<?php echo $this->filterForm; ?>
+	<div class="meta">
+		<?php echo $this->filterForm; ?>
 
-	<?php if ($this->addCreateButton): ?>
-		<div class="nav">
-			<a class="create" href="<?= $this->createUrl ?>"><?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?></a>
-		</div>
-	<?php endif ?>
+		<?php if ($this->addCreateButton): ?>
+			<div class="nav">
+				<a class="create" href="<?= $this->createUrl ?>"><?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?></a>
+			</div>
+		<?php endif ?>
+	</div>
 
 	<div class="block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 		<?php if ($this->showItemCount): ?>

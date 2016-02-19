@@ -255,13 +255,13 @@ class tl_module_frontendedit {
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleMemberList'))
+				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleList'))
 			{
 				$arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]);
 			}
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleMemberList'))
+				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleList'))
 			{
 				// override labels for suiting a list module
 				$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];

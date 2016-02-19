@@ -10,7 +10,7 @@
 
 $arrDca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
 
-$arrDca['palettes']['default'] = str_replace('author', 'useMemberAuthor,author,memberAuthor', $arrDca['palettes']['default']);
+$arrDca['palettes']['default'] = str_replace('author,', 'useMemberAuthor,author,memberAuthor,', $arrDca['palettes']['default']);
 
 /**
  * Callbacks
@@ -49,10 +49,10 @@ class tl_calendar_events_frontendedit extends \Backend {
 
 		if (($objEvent = \CalendarEventsModel::findByPk(\Input::get('id'))) !== null && $objEvent->useMemberAuthor)
 		{
-			$arrDca['palettes']['default'] = str_replace('author', '', $arrDca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace('author,', ',', $arrDca['palettes']['default']);
 		}
 		else
-			$arrDca['palettes']['default'] = str_replace('memberAuthor', '', $arrDca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace('memberAuthor,', ',', $arrDca['palettes']['default']);
 	}
 
 }

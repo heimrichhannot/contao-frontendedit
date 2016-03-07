@@ -199,7 +199,7 @@ $arrDca['fields']['defaultAction'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['defaultAction'],
 	'inputType'               => 'select',
-	'options'                 => array(FRONTENDEDIT_ACT_SHOW, FRONTENDEDIT_ACT_CREATE, FRONTENDEDIT_ACT_EDIT,
+	'options'                 => array(FRONTENDEDIT_ACT_CREATE, FRONTENDEDIT_ACT_EDIT,
 									   FRONTENDEDIT_ACT_DELETE, FRONTENDEDIT_ACT_PUBLISH),
 	'eval'                    => array('tl_class' => 'w50', 'includeBlankOption' => true),
 	'sql'                     => "varchar(255) NOT NULL default ''"

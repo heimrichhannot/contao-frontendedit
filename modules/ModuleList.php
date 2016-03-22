@@ -85,6 +85,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		}
 
 		parent::compile();
+		$this->strTemplate = $this->customTpl ?: $this->strTemplate;
 	}
 
 	protected function deleteItem($intId)

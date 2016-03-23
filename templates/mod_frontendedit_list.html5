@@ -21,7 +21,7 @@
 		<?php endif; ?>
 
 		<?php if (!$this->empty): ?>
-			<?php if (is_array($this->header) && is_array($this->items)): ?>
+			<?php if (is_array($this->items)): ?>
 				<div class="items">
 					<?php foreach ($this->items as $item) echo $item ?>
 				</div>

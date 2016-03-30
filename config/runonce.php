@@ -1,18 +1,18 @@
 <?php
 
-class FormHybridListRunOnce extends \Controller
+class FrontendEditRunOnce extends \Controller
 {
 
 	public function run()
 	{
-		$this->updateTo200();
+		$this->updateTo210();
 	}
 
 
 	/**
-	 * Update to version 2.0.0
+	 * Update to version 2.1.0
 	 */
-	private function updateTo200()
+	private function updateTo210()
 	{
 		$objDatabase = \Database::getInstance();
 
@@ -27,5 +27,5 @@ class FormHybridListRunOnce extends \Controller
 /**
  * Instantiate controller
  */
-$objFormHybridListRunOnce = new FormHybridListRunOnce();
-$objFormHybridListRunOnce->run();
+$objFrontendEditRunOnce = new FrontendEditRunOnce();
+$objFrontendEditRunOnce->run();

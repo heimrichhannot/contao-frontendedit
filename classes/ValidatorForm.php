@@ -13,7 +13,7 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\StatusMessages\StatusMessage;
 
-class ValidatorForm extends DetailsForm
+class ValidatorForm extends ReaderForm
 {
 	public function modifyDC(&$arrDca = null)
 	{

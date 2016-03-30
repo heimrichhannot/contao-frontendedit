@@ -11,7 +11,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-class ModuleFrontendUserDetails extends ModuleDetails
+class ModuleFrontendUserReader extends ModuleReader
 {
 	public function generate()
 	{

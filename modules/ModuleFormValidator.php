@@ -11,7 +11,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-class ModuleFormValidator extends ModuleDetails
+class ModuleFormValidator extends ModuleReader
 {
 
 	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\ValidatorForm';

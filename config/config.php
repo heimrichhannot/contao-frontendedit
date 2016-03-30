@@ -21,9 +21,9 @@ define('FRONTENDEDIT_ACT_PUBLISH', 'publish');
 define('FRONTENDEDIT_BUTTON_SUBMIT', 'submit');
 
 // module names
-define('MODULE_FRONTENDEDIT_DETAILS', 'frontendedit_details');
+define('MODULE_FRONTENDEDIT_READER', 'frontendedit_reader');
 define('MODULE_FRONTENDEDIT_LIST', 'frontendedit_list');
-define('MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS', 'frontendedit_frontenduser_details');
+define('MODULE_FRONTENDEDIT_FRONTENDUSER_READER', 'frontendedit_frontenduser_reader');
 define('MODULE_FRONTENDEDIT_MEMBER_LIST', 'frontendedit_member_list');
 define('MODULE_FRONTENDEDIT_NEWS_LIST', 'frontendedit_news_list');
 define('MODULE_FRONTENDEDIT_FORM_VALIDATOR', 'frontendedit_form_validator');
@@ -34,9 +34,9 @@ define('MODULE_FRONTENDEDIT_FORM_VALIDATOR', 'frontendedit_form_validator');
 array_insert(
 	$GLOBALS['FE_MOD'], count($GLOBALS['FE_MOD']) - 1, array(
 		'frontendedit' => array(
-			MODULE_FRONTENDEDIT_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleDetails',
+			MODULE_FRONTENDEDIT_READER => 'HeimrichHannot\FrontendEdit\ModuleReader',
 			MODULE_FRONTENDEDIT_LIST          => 'HeimrichHannot\FrontendEdit\ModuleList',
-			MODULE_FRONTENDEDIT_FRONTENDUSER_DETAILS => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserDetails',
+			MODULE_FRONTENDEDIT_FRONTENDUSER_READER => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserReader',
 			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList',
 			MODULE_FRONTENDEDIT_NEWS_LIST => 'HeimrichHannot\FrontendEdit\ModuleNewsList',
 			MODULE_FRONTENDEDIT_FORM_VALIDATOR => 'HeimrichHannot\FrontendEdit\ModuleFormValidator'

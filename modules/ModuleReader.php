@@ -12,15 +12,14 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybrid\FormHelper;
-use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
-class ModuleDetails extends \Module
+class ModuleReader extends \Module
 {
-	protected $strTemplate = 'mod_frontendedit_details';
+	protected $strTemplate = 'mod_frontendedit_reader';
 	protected $arrSubmitCallbacks = array();
-	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\DetailsForm';
+	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\ReaderForm';
 	protected $objForm;
 
 	public function generate()
@@ -29,7 +28,7 @@ class ModuleDetails extends \Module
 		{
 			$objTemplate = new \BackendTemplate('be_wildcard');
 
-			$objTemplate->wildcard = '### FRONTENDEDIT DETAILS ###';
+			$objTemplate->wildcard = '### FRONTENDEDIT READER ###';
 			$objTemplate->title = $this->headline;
 			$objTemplate->id = $this->id;
 			$objTemplate->link = $this->name;
@@ -43,7 +42,7 @@ class ModuleDetails extends \Module
 
 		return parent::generate();
 	}
-	
+
 	protected function compile()
 	{
 		$this->Template->headline = $this->headline;
@@ -58,9 +57,9 @@ class ModuleDetails extends \Module
 		if ($strAction && !\RequestToken::validate(\Input::get('token')))
 		{
 			StatusMessage::addError(sprintf(
-						$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
-						Environment::replaceParameterInUri(Environment::getUrl(), 'token', \RequestToken::get())
-					),
+					$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
+					Url::replaceParameterInUri(Url::getUrl(), 'token', \RequestToken::get())
+			),
 					$this->id, 'requestTokenExpired');
 			return;
 		}
@@ -96,24 +95,14 @@ class ModuleDetails extends \Module
 
 						if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
 						{
-							\Controller::redirect(Environment::addParametersToUri(Environment::getUrl(),
-								array(
-									'act' => FRONTENDEDIT_ACT_EDIT,
-									'id' => $objItem->id,
-									'token' => \RequestToken::get()
-								)
-							));
+							\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
+									'&id=' . $objItem->id . '&token=' . \RequestToken::get(), Url::getUrl()));
 						}
 					}
 					break;
 				case 'redirect':
-					\Controller::redirect(Environment::addParametersToUri(Environment::getUrl(),
-						array(
-							'act' => FRONTENDEDIT_ACT_EDIT,
-							'id' => $this->replaceInsertTags($this->redirectId),
-							'token' => \RequestToken::get()
-						)
-					));
+					\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
+							'&id=' . $this->redirectId . '&token=' . \RequestToken::get(), Url::getUrl()));
 					break;
 			}
 
@@ -133,7 +122,7 @@ class ModuleDetails extends \Module
 			{
 				if (!$this->checkEntityExists($this->intId))
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['notExisting'], $this->id, 'noentity');
+					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
 					return;
 				}
 
@@ -148,57 +137,19 @@ class ModuleDetails extends \Module
 						case FRONTENDEDIT_ACT_DELETE:
 							$this->deleteItem($this->intId);
 							// return to the list
-							\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
-								array('act', 'id', 'token')
-							));
+							\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Url::getUrl()));
 							break;
-						default:
-							// no param -> show details only
-							$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-
-							if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
-							{
-								// redirect on specific field value
-								DC_Hybrid::doFieldDependentRedirect($this, $objItem);
-
-								$arrItem = $this->generateFields($objItem);
-
-								$this->Template->item = $this->parseItem($arrItem);
-							}
-						break;
 					}
 				}
 				else
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noPermission'], $this->id, 'nopermission');
+					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
 					return;
 				}
 			}
 		}
 	}
-
-	protected function parseItem($arrItem, $strClass='', $intCount=0)
-	{
-		$objTemplate = new \FrontendTemplate($this->itemTemplate);
-
-		$objTemplate->setData($arrItem);
-		$objTemplate->class = $strClass;
-		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
-		$objTemplate->addDetailsCol = $this->addDetailsCol;
-
-		// HOOK: add custom logic
-		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($objTemplate, $arrItem, $this);
-			}
-		}
-
-		return $objTemplate->parse();
-	}
-
+	
 	public function checkEntityExists($intId)
 	{
 		if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer))
@@ -230,9 +181,9 @@ class ModuleDetails extends \Module
 	{
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-		if ($this->addUpdateConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
+		if ($this->addUpdateDeleteConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
-			$arrConditions = deserialize($this->updateConditions, true);
+			$arrConditions = deserialize($this->updateDeleteConditions, true);
 
 			if (!empty($arrConditions))
 				foreach ($arrConditions as $arrCondition)

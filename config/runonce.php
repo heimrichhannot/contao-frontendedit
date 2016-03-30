@@ -1,6 +1,6 @@
 <?php
 
-class FrontendEditListRunOnce extends \Controller
+class FormHybridListRunOnce extends \Controller
 {
 
 	public function run()
@@ -16,11 +16,10 @@ class FrontendEditListRunOnce extends \Controller
 	{
 		$objDatabase = \Database::getInstance();
 
-		if (!$objDatabase->fieldExists('tableFields', 'tl_module')) {
-			return;
-		}
+		$objDatabase->execute('UPDATE tl_module m SET m.type = "frontendedit_reader" WHERE m.type = "frontendedit_details"');
+		$objDatabase->execute('UPDATE tl_module m SET m.type = "frontendedit_frontenduser_reader" WHERE m.type = "frontendedit_frontenduser_details"');
 
-		$objDatabase->execute('UPDATE tl_module SET tableFields = formHybridEditable, isTableList = 1, hasHeader = 1 WHERE type = "frontendedit_list"');
+		$objDatabase->execute('UPDATE tl_module SET addUpdateDeleteConditions = addUpdateConditions, updateDeleteConditions = updateConditions WHERE addUpdateConditions = 1');
 	}
 }
 
@@ -28,5 +27,5 @@ class FrontendEditListRunOnce extends \Controller
 /**
  * Instantiate controller
  */
-$objFrontendEditRunOnce = new FrontendEditListRunOnce();
-$objFrontendEditRunOnce->run();
+$objFormHybridListRunOnce = new FormHybridListRunOnce();
+$objFormHybridListRunOnce->run();

@@ -62,7 +62,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['formhybrid_list']['noPermission'];
 				return;
 			}
 		}
@@ -79,7 +79,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['frontendedit']['noPermission'];
+				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['formhybrid_list']['noPermission'];
 				return;
 			}
 		}

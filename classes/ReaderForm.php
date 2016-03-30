@@ -11,15 +11,15 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-class DetailsForm extends \HeimrichHannot\FormHybrid\Form
+class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
-	protected $objDetailsModule;
+	protected $objReaderModule;
 
-	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objDetailsForm)
+	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
-		$this->objDetailsModule = $objDetailsForm;
+		$this->objReaderModule = $objReaderForm;
 		$objModule->initiallySaveModel = true;
 		$objModule->strFormClass = 'jquery-validation';
 		$this->arrSubmitCallbacks = $submitCallbacks;
@@ -40,7 +40,6 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 	
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
-
 
 		if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks))
 		{
@@ -70,13 +69,13 @@ class DetailsForm extends \HeimrichHannot\FormHybrid\Form
 //		));
 	}
 
-	public function setDetailsModule($objModule)
+	public function setReaderModule($objModule)
 	{
-		$this->objDetailsModule = $objModule;
+		$this->objReaderModule = $objModule;
 	}
 
 	public function modifyDC(&$arrDca = null)
 	{
-		$this->objDetailsModule->modifyDC($arrDca);
+		$this->objReaderModule->modifyDC($arrDca);
 	}
 }

@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2015 Heimrich & Hannot GmbH
+ * Copyright (c) Heimrich & Hannot GmbH
  * @package frontendedit
  * @author Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
@@ -12,6 +12,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybridList\Helper;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -128,6 +129,16 @@ class ModuleReader extends \Module
 
 				if ($this->checkPermission($this->intId))
 				{
+					// page title
+					if ($this->setPageTitle)
+					{
+						global $objPage;
+						if (($objItem = Helper::getItem($this->formHybridDataContainer, $this->intId)) !== null)
+						{
+							$objPage->pageTitle = $objItem->{$this->pageTitleField};
+						}
+					}
+
 					switch ($strAction)
 					{
 						case FRONTENDEDIT_ACT_EDIT:
@@ -152,14 +163,12 @@ class ModuleReader extends \Module
 	
 	public function checkEntityExists($intId)
 	{
-		if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer))
-			return $strItemClass::findByPk($intId) !== null;
+		return Helper::getItem($this->formHybridDataContainer, $this->intId) !== null;
 	}
 
 	protected function deleteItem($intId)
 	{
-		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-		if (($objItem = $strItemClass::findByPk($intId)) !== null)
+		if (($objItem = Helper::getItem($this->formHybridDataContainer, $intId)) !== null)
 		{
 			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
@@ -179,9 +188,7 @@ class ModuleReader extends \Module
 
 	public function checkPermission($intId)
 	{
-		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-
-		if ($this->addUpdateDeleteConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
+		if ($this->addUpdateDeleteConditions && ($objItem = Helper::getItem($this->formHybridDataContainer, $intId)) !== null)
 		{
 			$arrConditions = deserialize($this->updateDeleteConditions, true);
 

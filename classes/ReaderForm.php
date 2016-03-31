@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2015 Heimrich & Hannot GmbH
+ * Copyright (c) Heimrich & Hannot GmbH
  * @package frontendedit
  * @author Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
@@ -27,17 +27,6 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 		parent::__construct($objModule, $intId);
 	}
 
-	public function generate()
-	{
-		$strResult = parent::generate();
-		if ($this->intId && $this->setPageTitle)
-		{
-			global $objPage;
-			$objPage->pageTitle = $this->objModel->{$this->pageTitleField};
-		}
-		return $strResult;
-	}
-	
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
 
@@ -52,9 +41,9 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 			}
 		}
 	}
-	
+
 	protected function compile() {}
-	
+
 	protected function generateSubmitField()
 	{
 		$this->arrFields[FRONTENDEDIT_BUTTON_SAVE] = $this->generateField(FRONTENDEDIT_BUTTON_SAVE, array(

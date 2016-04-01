@@ -33,12 +33,10 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,h
  */
 $arrDca['palettes']['__selector__'][]                = 'addUpdateDeleteConditions';
 $arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
-$arrDca['palettes']['__selector__'][]                = 'setPageTitle';
 $arrDca['palettes']['__selector__'][]                = 'addCreateButton';
 $arrDca['palettes']['__selector__'][]                = 'addEditCol';
 $arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
-$arrDca['subpalettes']['setPageTitle'] = 'pageTitleField';
 $arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel,createMemberGroups';
 $arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
 
@@ -83,22 +81,6 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50'),
 		'sql'                     => "char(1) NOT NULL default ''"
-	),
-	'setPageTitle' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['setPageTitle'],
-		'exclude'                 => true,
-		'inputType'               => 'checkbox',
-		'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
-		'sql'                     => "char(1) NOT NULL default ''"
-	),
-	'pageTitleField' => array
-	(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['pageTitleField'],
-		'exclude'                 => true,
-		'inputType'               => 'select',
-		'options_callback'        => array('tl_module_frontendedit', 'getTitleFields'),
-		'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true),
-		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'createBehavior' => array
 	(
@@ -246,27 +228,6 @@ class tl_module_frontendedit {
 				$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
 				$arrDca['fields']['formHybridDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
 			}
-		}
-	}
-
-	public function getTitleFields(\DataContainer $objDc) {
-		if ($strDc = $objDc->activeRecord->formHybridDataContainer)
-		{
-			\Controller::loadDataContainer($strDc);
-			\System::loadLanguageFile($strDc);
-
-			$arrOptions = array();
-
-			foreach($GLOBALS['TL_DCA'][$strDc]['fields'] as $strField => $arrData) {
-				if ($arrData['inputType'] != 'text')
-					continue;
-
-				$arrOptions[$strField] = $GLOBALS['TL_LANG'][$strDc][$strField][0] ?: $strField;
-			}
-
-			asort($arrOptions);
-
-			return $arrOptions;
 		}
 	}
 }

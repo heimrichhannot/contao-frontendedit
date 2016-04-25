@@ -21,6 +21,9 @@ class ModuleReader extends \Module
 	protected $strTemplate = 'mod_frontendedit_reader';
 	protected $arrSubmitCallbacks = array();
 	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\ReaderForm';
+	/**
+	 * @var \Form
+	 */
 	protected $objForm;
 
 	public function generate()
@@ -47,15 +50,18 @@ class ModuleReader extends \Module
 	protected function compile()
 	{
 		$this->Template->headline = $this->headline;
+		$this->Template->class = $this->Template->class ?
+			$this->Template->class . ' frontendedit-reader' : 'frontendedit-reader';
 		$this->Template->hl = $this->hl;
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 		$strAction = $this->defaultAction ?: \Input::get('act');
 		$this->arrEditable = deserialize($this->formHybridEditable, true);
+		$this->strToken = $this->strToken ?: \Input::get('token');
 
 		$this->addDefaultArchive();
 
 		// at first check for the correct request token to be set
-		if ($strAction && !\RequestToken::validate(\Input::get('token')))
+		if ($strAction && !\RequestToken::validate($this->strToken))
 		{
 			StatusMessage::addError(sprintf(
 					$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
@@ -107,7 +113,7 @@ class ModuleReader extends \Module
 					break;
 			}
 
-			$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, 0, $this);
+			$this->objForm = new $this->strFormClass($this, $this->arrSubmitCallbacks, 0, $this);
 			$this->Template->form = $this->objForm->generate();
 		}
 		else
@@ -142,7 +148,7 @@ class ModuleReader extends \Module
 					switch ($strAction)
 					{
 						case FRONTENDEDIT_ACT_EDIT:
-							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+							$this->objForm = new $this->strFormClass($this, $this->arrSubmitCallbacks, $this->intId, $this);
 							$this->Template->form = $this->objForm->generate();
 							break;
 						case FRONTENDEDIT_ACT_DELETE:
@@ -210,17 +216,17 @@ class ModuleReader extends \Module
 
 	protected function addDefaultArchive()
 	{
-		if ($this->objModel->defaultArchive)
+		if ($this->defaultArchive)
 		{
-			$this->objModel->formHybridAddDefaultValues = true;
-			$this->objModel->formHybridDefaultValues = deserialize($this->objModel->formHybridDefaultValues, true);
+			$this->formHybridAddDefaultValues = true;
+			$this->formHybridDefaultValues = deserialize($this->formHybridDefaultValues, true);
 
-			$this->objModel->formHybridDefaultValues = array_merge(array(array(
+			$this->formHybridDefaultValues = array_merge(array(array(
 				'field' => 'pid',
-				'value' => $this->objModel->defaultArchive
-			)), $this->objModel->formHybridDefaultValues);
+				'value' => $this->defaultArchive
+			)), $this->formHybridDefaultValues);
 
-			$this->objModel->formHybridDefaultValues = serialize($this->objModel->formHybridDefaultValues);
+			$this->formHybridDefaultValues = serialize($this->formHybridDefaultValues);
 		}
 	}
 

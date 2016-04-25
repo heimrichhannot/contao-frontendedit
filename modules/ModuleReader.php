@@ -113,7 +113,7 @@ class ModuleReader extends \Module
 					break;
 			}
 
-			$this->objForm = new $this->strFormClass($this, $this->arrSubmitCallbacks, 0, $this);
+			$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, 0, $this);
 			$this->Template->form = $this->objForm->generate();
 		}
 		else
@@ -148,7 +148,7 @@ class ModuleReader extends \Module
 					switch ($strAction)
 					{
 						case FRONTENDEDIT_ACT_EDIT:
-							$this->objForm = new $this->strFormClass($this, $this->arrSubmitCallbacks, $this->intId, $this);
+							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
 							$this->Template->form = $this->objForm->generate();
 							break;
 						case FRONTENDEDIT_ACT_DELETE:
@@ -216,17 +216,17 @@ class ModuleReader extends \Module
 
 	protected function addDefaultArchive()
 	{
-		if ($this->defaultArchive)
+		if ($this->objModel->defaultArchive)
 		{
-			$this->formHybridAddDefaultValues = true;
-			$this->formHybridDefaultValues = deserialize($this->formHybridDefaultValues, true);
+			$this->objModel->formHybridAddDefaultValues = true;
+			$this->objModel->formHybridDefaultValues = deserialize($this->objModel->formHybridDefaultValues, true);
 
-			$this->formHybridDefaultValues = array_merge(array(array(
+			$this->objModel->formHybridDefaultValues = array_merge(array(array(
 				'field' => 'pid',
-				'value' => $this->defaultArchive
-			)), $this->formHybridDefaultValues);
+				'value' => $this->objModel->defaultArchive
+			)), $this->objModel->formHybridDefaultValues);
 
-			$this->formHybridDefaultValues = serialize($this->formHybridDefaultValues);
+			$this->objModel->formHybridDefaultValues = serialize($this->objModel->formHybridDefaultValues);
 		}
 	}
 

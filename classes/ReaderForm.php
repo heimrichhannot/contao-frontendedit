@@ -15,11 +15,11 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
 	protected $objReaderModule;
 
-	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0)
+	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
-		$this->objReaderModule = $objModule;
+		$this->objReaderModule = $objReaderForm;
 		$objModule->initiallySaveModel = true;
 		$objModule->strFormClass = 'jquery-validation';
 		$this->arrSubmitCallbacks = $submitCallbacks;

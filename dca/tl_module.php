@@ -185,7 +185,7 @@ class tl_module_frontendedit {
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleReader'))
+				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleReader'))
 			{
 				if ($objModule->createBehavior == 'create_until')
 					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,existingConditions', $arrDca['palettes'][$objModule->type]);
@@ -195,14 +195,14 @@ class tl_module_frontendedit {
 			}
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleList'))
+				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleList'))
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_list_item_');
 			}
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-					$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleReader'))
+					$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleReader'))
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_item');
@@ -220,7 +220,7 @@ class tl_module_frontendedit {
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'frontendedit', 'HeimrichHannot\FrontendEdit\ModuleList'))
+				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleList'))
 			{
 				$arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]);
 

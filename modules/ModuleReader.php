@@ -21,6 +21,9 @@ class ModuleReader extends \Module
 	protected $strTemplate = 'mod_frontendedit_reader';
 	protected $arrSubmitCallbacks = array();
 	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\ReaderForm';
+	// avoid any messages -> handled sub class
+	protected $blnSilentMode = false;
+
 	/**
 	 * @var \Form
 	 */
@@ -63,11 +66,13 @@ class ModuleReader extends \Module
 		// at first check for the correct request token to be set
 		if ($strAction && !\RequestToken::validate($this->strToken))
 		{
-			StatusMessage::addError(sprintf(
-					$GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
-					Url::replaceParameterInUri(Url::getUrl(), 'token', \RequestToken::get())
-			),
+			if (!$this->blnSilentMode)
+			{
+				StatusMessage::addError(sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'],
+					Url::replaceParameterInUri(Url::getUrl(), 'token', \RequestToken::get())),
 					$this->id, 'requestTokenExpired');
+			}
+
 			return;
 		}
 
@@ -122,14 +127,16 @@ class ModuleReader extends \Module
 
 			if (!$this->intId)
 			{
-				StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id, 'noidfound');
+				if (!$this->blnSilentMode)
+					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id, 'noidfound');
 				return;
 			}
 			else
 			{
 				if (!$this->checkEntityExists($this->intId))
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
+					if (!$this->blnSilentMode)
+						StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
 					return;
 				}
 
@@ -160,7 +167,8 @@ class ModuleReader extends \Module
 				}
 				else
 				{
-					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
+					if (!$this->blnSilentMode)
+						StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
 					return;
 				}
 			}

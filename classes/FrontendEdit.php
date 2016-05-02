@@ -12,22 +12,4 @@ namespace HeimrichHannot\FrontendEdit;
 
 class FrontendEdit extends \Controller {
 
-	public static function getMembersAsOptions()
-	{
-		$arrOptions = array();
-
-		if (($objMembers = \MemberModel::findAll()) !== null)
-		{
-			while ($objMembers->next())
-			{
-				$arrOptions[$objMembers->id] = $objMembers->firstname . ' ' . $objMembers->lastname . ' (' .
-					($objMembers->email ? $objMembers->email . ', ' : '') . 'ID: ' . $objMembers->id . ')';
-			}
-		}
-
-		asort($arrOptions);
-
-		return $arrOptions;
-	}
-
 }

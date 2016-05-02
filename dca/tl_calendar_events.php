@@ -37,7 +37,7 @@ $arrDca['fields']['memberAuthor'] = array
 	'sorting'                 => true,
 	'flag'                    => 1,
 	'inputType'               => 'select',
-	'options_callback'        => array('\HeimrichHannot\FrontendEdit\FrontendEdit', 'getMembersAsOptions'),
+	'options_callback'        => array('\HeimrichHannot\Haste\Dca\Member', 'getMembersAsOptions'),
 	'eval'                    => array('doNotCopy'=>true, 'chosen'=>true, 'mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );

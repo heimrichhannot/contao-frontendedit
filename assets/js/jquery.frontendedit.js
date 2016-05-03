@@ -13,6 +13,9 @@
 			});
 		},
 		initAlerts: function () {
+			if (typeof alertify === 'undefined')
+				return;
+
 			FRONTENDEDIT.initAlertify('Ja', 'Nein');
 
 			$('.formhybrid-list .delete, .frontendedit-list .delete').on('click', function(event) {

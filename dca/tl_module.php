@@ -14,7 +14,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;{action_legend},defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;{email_legend},formHybridSendSubmissionViaEmail;{redirect_legend},jumpTo,formHybridAddFieldDependentRedirect;{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;{action_legend},defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;{email_legend},formHybridSendSubmissionViaEmail;{redirect_legend},jumpToSuccess,jumpToSuccessPreserveParams,formHybridAddFieldDependentRedirect;{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
@@ -35,6 +35,7 @@ $arrDca['palettes']['__selector__'][]                = 'addUpdateDeleteCondition
 $arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
 $arrDca['palettes']['__selector__'][]                = 'addCreateButton';
 $arrDca['palettes']['__selector__'][]                = 'addEditCol';
+
 $arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel,createMemberGroups';
@@ -156,6 +157,14 @@ $arrFields = array(
 										   FRONTENDEDIT_ACT_DELETE),
 		'eval'                    => array('tl_class' => 'w50', 'includeBlankOption' => true),
 		'sql'                     => "varchar(255) NOT NULL default ''"
+	),
+	'jumpToSuccess'					=> $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
+	'jumpToSuccessPreserveParams' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccessPreserveParams'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
 	)
 );
 
@@ -171,6 +180,9 @@ unset($arrDca['fields']['updateDeleteConditions']['eval']['columnFields']['hidde
 
 $arrDca['fields']['existingConditions']					= $arrDca['fields']['formHybridDefaultValues'];
 $arrDca['fields']['existingConditions']['label']		= &$GLOBALS['TL_LANG']['tl_module']['existingConditions'];
+
+$arrDca['fields']['jumpToSuccess']['label']				= &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccess'];
+$arrDca['fields']['jumpToSuccess']['eval']['tl_class']	= 'w50';
 
 
 class tl_module_frontendedit {

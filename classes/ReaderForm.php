@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\Haste\Util\Url;
+
 class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
 	protected $objReaderModule;
@@ -39,6 +41,32 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 					$arrCallback[0]::$arrCallback[1]($dc);
 				}
 			}
+		}
+	}
+
+	protected function afterSubmitCallback(\DataContainer $dc)
+	{
+		$this->redirectAfterSuccess();
+	}
+
+	protected function redirectAfterSuccess()
+	{
+		if ($this->objModule->jumpToSuccess)
+		{
+			$strJumpToSuccess = Url::getJumpToPageUrl($this->objModule->jumpToSuccess);
+
+			if ($this->objModule->jumpToSuccessPreserveParams)
+			{
+				if ($strAct = \Input::get('act'))
+					$strJumpToSuccess = Url::addQueryString('act=' . $strAct);
+
+				if ($intId = \Input::get('id'))
+					$strJumpToSuccess = Url::addQueryString('id=' . $intId);
+
+				$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
+			}
+
+			\Controller::redirect($strJumpToSuccess);
 		}
 	}
 

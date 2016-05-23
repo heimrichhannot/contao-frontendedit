@@ -25,6 +25,9 @@ $arrLang['createButtonLabel']					= array('Beschriftung des "Neu"-Buttons', 'Üb
 $arrLang['createMemberGroups']					= array('"Neu"-Button schützen', 'Legen Sie hier Mitgliedergruppen fest, die Voraussetzung dafür sind, dass der Button angezeigt wird.');
 $arrLang['defaultArchive']						= array('Standardarchiv', 'Wählen Sie hier das Archiv aus, das neuen Instanzen zugeordnet werden soll.');
 $arrLang['defaultAction']						= array('Standardaktion', 'Wenn Sie eine Aktion vorgeben möchten, die standardmäßig gesetzt wird, wählen Sie diese hier.');
+$arrLang['addDeleteCol']						= array('Löschen-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Löschen hinzuzufügen.');
+$arrLang['jumpToSuccess']						= array('Weiterleitung nach dem Speichern', 'Wählen Sie hier eine Seite aus, zu der nach dem erfolgreichen Speichern weitergeleitet werden soll.');
+$arrLang['jumpToSuccessPreserveParams']			= array('Parameter beibehalten', 'Wählen Sie diese Option, wenn die Weiterleitungsseite (nach dem Speichern) wieder ein Frontendedit-Leser-Modul enthält. Dadurch werden die aktuelle Action sowie die ID beibehalten.');
 
 /**
  * Legends

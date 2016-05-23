@@ -58,10 +58,10 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 			if ($this->objModule->jumpToSuccessPreserveParams)
 			{
 				if ($strAct = \Input::get('act'))
-					$strJumpToSuccess = Url::addQueryString('act=' . $strAct);
+					$strJumpToSuccess = Url::addQueryString('act=' . $strAct, $strJumpToSuccess);
 
 				if ($intId = \Input::get('id'))
-					$strJumpToSuccess = Url::addQueryString('id=' . $intId);
+					$strJumpToSuccess = Url::addQueryString('id=' . $intId, $strJumpToSuccess);
 
 				$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
 			}

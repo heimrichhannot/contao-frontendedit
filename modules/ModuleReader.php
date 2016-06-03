@@ -12,7 +12,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybridList\Helper;
+use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -146,7 +146,7 @@ class ModuleReader extends \Module
 					if ($this->setPageTitle)
 					{
 						global $objPage;
-						if (($objItem = Helper::getItem($this->formHybridDataContainer, $this->intId)) !== null)
+						if (($objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId)) !== null)
 						{
 							$objPage->pageTitle = $objItem->{$this->pageTitleField};
 						}
@@ -177,12 +177,12 @@ class ModuleReader extends \Module
 	
 	public function checkEntityExists($intId)
 	{
-		return Helper::getItem($this->formHybridDataContainer, $this->intId) !== null;
+		return General::getModelInstance($this->formHybridDataContainer, $this->intId) !== null;
 	}
 
 	protected function deleteItem($intId)
 	{
-		if (($objItem = Helper::getItem($this->formHybridDataContainer, $intId)) !== null)
+		if (($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
 		{
 			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
@@ -202,7 +202,7 @@ class ModuleReader extends \Module
 
 	public function checkPermission($intId)
 	{
-		if ($this->addUpdateDeleteConditions && ($objItem = Helper::getItem($this->formHybridDataContainer, $intId)) !== null)
+		if ($this->addUpdateDeleteConditions && ($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
 		{
 			$arrConditions = deserialize($this->updateDeleteConditions, true);
 

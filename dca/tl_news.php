@@ -10,7 +10,7 @@
 
 $arrDca = &$GLOBALS['TL_DCA']['tl_news'];
 
-$arrDca['palettes']['default'] = str_replace('author,', 'useMemberAuthor,author,memberAuthor,', $arrDca['palettes']['default']);
+$arrDca['palettes']['default'] = str_replace(',author', ',useMemberAuthor,author,memberAuthor', $arrDca['palettes']['default']);
 
 /**
  * Callbacks
@@ -32,10 +32,10 @@ class tl_news_frontendedit extends \Backend {
 
 		if (($objNews = \NewsModel::findByPk(\Input::get('id'))) !== null && $objNews->useMemberAuthor)
 		{
-			$arrDca['palettes']['default'] = str_replace('author,', ',', $arrDca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace(',author', ',', $arrDca['palettes']['default']);
 		}
 		else
-			$arrDca['palettes']['default'] = str_replace('memberAuthor,', ',', $arrDca['palettes']['default']);
+			$arrDca['palettes']['default'] = str_replace(',memberAuthor', ',', $arrDca['palettes']['default']);
 	}
 
 }

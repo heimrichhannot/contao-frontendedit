@@ -32,12 +32,10 @@ class tl_news_frontendedit extends \Backend {
 
 		if (($objNews = \NewsModel::findByPk(\Input::get('id'))) !== null && $objNews->useMemberAuthor)
 		{
-			unset($arrDca['fields']['author']);
+			$arrDca['palettes']['default'] = str_replace(',author', ',', $arrDca['palettes']['default']);
 		}
 		else
-		{
-			unset($arrDca['fields']['memberAuthor']);
-		}
+			$arrDca['palettes']['default'] = str_replace(',memberAuthor', ',', $arrDca['palettes']['default']);
 	}
 
 }

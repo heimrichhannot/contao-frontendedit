@@ -12,6 +12,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -169,22 +170,16 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		if ($this->addDeleteCol)
 		{
 			$arrItem['addDeleteCol'] = true;
-			$arrItem['deleteUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
-				'act' => FRONTENDEDIT_ACT_DELETE,
-				'id'  => $objItem->id,
-				'token' => \RequestToken::get()
-			));
+			$arrItem['deleteUrl'] = Url::addQueryString('act=' . FRONTENDEDIT_ACT_DELETE . '&id=' . $objItem->id .
+				'&token=' . \RequestToken::get(), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}
 
 		// publish url
 		if ($this->addPublishCol)
 		{
 			$arrItem['addPublishCol'] = true;
-			$arrItem['publishUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
-				'act' => FRONTENDEDIT_ACT_PUBLISH,
-				'id'  => $objItem->id,
-				'token' => \RequestToken::get()
-			));
+			$arrItem['publishUrl'] = Url::addQueryString('act=' . FRONTENDEDIT_ACT_PUBLISH . '&id=' . $objItem->id .
+				'&token=' . \RequestToken::get(), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}
 	}
 

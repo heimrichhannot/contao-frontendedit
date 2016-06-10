@@ -18,6 +18,8 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 {
 	protected $strTemplate = 'mod_frontendedit_list_table';
+	protected $strWrapperId = 'frontendedit-list_';
+	protected $strWrapperClass = 'frontendedit-list';
 
 	public function generate()
 	{
@@ -62,7 +64,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['formhybrid_list']['noPermission'];
+				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
 				return;
 			}
 		}
@@ -79,7 +81,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			}
 			else
 			{
-				$_SESSION['MSG_ERROR'][] = $GLOBALS['TL_LANG']['formhybrid_list']['noPermission'];
+				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
 				return;
 			}
 		}

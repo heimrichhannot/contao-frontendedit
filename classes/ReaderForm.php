@@ -12,6 +12,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\Haste\Util\Url;
+use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
@@ -20,6 +21,13 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
+
+		// avoid recalling initialize of formhybrid in the async case
+		if (\Environment::get('isAjaxRequest'))
+		{
+			$this->setReset(false);
+		}
+
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
 		$this->objReaderModule = $objReaderForm;
 		$objModule->initiallySaveModel = true;
@@ -66,7 +74,19 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 				$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
 			}
 
-			\Controller::redirect($strJumpToSuccess);
+			StatusMessage::resetAll();
+
+			if (\Environment::get('isAjaxRequest'))
+			{
+				die(json_encode(array(
+					'type' => 'redirect',
+					'url' => $strJumpToSuccess
+				)));
+			}
+			else
+			{
+				\Controller::redirect($strJumpToSuccess);
+			}
 		}
 	}
 

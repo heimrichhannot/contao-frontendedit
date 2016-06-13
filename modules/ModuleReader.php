@@ -53,8 +53,6 @@ class ModuleReader extends \Module
 	protected function compile()
 	{
 		$this->Template->headline = $this->headline;
-		$this->Template->class = $this->Template->class ?
-			$this->Template->class . ' frontendedit-reader' : 'frontendedit-reader';
 		$this->Template->hl = $this->hl;
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 		$strAction = $this->defaultAction ?: \Input::get('act');
@@ -157,6 +155,7 @@ class ModuleReader extends \Module
 						case FRONTENDEDIT_ACT_EDIT:
 							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
 							$this->Template->form = $this->objForm->generate();
+
 							break;
 						case FRONTENDEDIT_ACT_DELETE:
 							$this->deleteItem($this->intId);
@@ -172,6 +171,14 @@ class ModuleReader extends \Module
 					return;
 				}
 			}
+		}
+
+		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted)
+		{
+			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
+			$objModalWrapper->setData($this->arrData);
+			$objModalWrapper->item = $this->replaceInsertTags($this->Template->parse());
+			die($objModalWrapper->parse());
 		}
 	}
 	

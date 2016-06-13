@@ -60,7 +60,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 				$this->deleteItem($intId);
 				// return to the list
 				\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
-					array('act', 'id')
+					array('act', 'id', 'token')
 				));
 			}
 			else

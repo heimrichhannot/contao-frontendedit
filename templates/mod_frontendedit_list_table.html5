@@ -11,7 +11,10 @@
 
 	<?php if ($this->addCreateButton): ?>
 		<div class="nav">
-			<a class="create" href="<?= $this->createUrl ?>"><?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?></a>
+			<a class="create" href="<?= $this->createUrl ?>"
+			   <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->id; ?>"<?php endif; ?>>
+				<?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?>
+			</a>
 		</div>
 	<?php endif ?>
 
@@ -52,6 +55,10 @@
 			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
 		<?php endif; ?>
 	</div>
+
+	<?php if ($this->useModal): ?>
+		<?= $this->modalWrapper ?>
+	<?php endif; ?>
 </div>
 
 <?php $this->endblock(); ?>

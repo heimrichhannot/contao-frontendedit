@@ -23,6 +23,8 @@ class ModuleReader extends \Module
 	protected $strFormClass = 'HeimrichHannot\\FrontendEdit\\ReaderForm';
 	// avoid any messages -> handled sub class
 	protected $blnSilentMode = false;
+	protected $strWrapperId = 'frontendedit-reader_';
+	protected $strWrapperClass = 'frontendedit-reader';
 
 	/**
 	 * @var \Form
@@ -47,6 +49,8 @@ class ModuleReader extends \Module
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
+		$this->strWrapperId .= $this->id;
+
 		return parent::generate();
 	}
 
@@ -54,6 +58,8 @@ class ModuleReader extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
+		$this->Template->wrapperClass = $this->strWrapperClass;
+		$this->Template->wrapperId = $this->strWrapperId;
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 		$strAction = $this->defaultAction ?: \Input::get('act');
 		$this->arrEditable = deserialize($this->formHybridEditable, true);

@@ -207,10 +207,17 @@ class ModuleReader extends \Module
 			}
 		}
 
-		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted)
+		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted && $this->checkPermission($this->intId))
 		{
+			$objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId);
 			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-			$objModalWrapper->setData($this->arrData);
+			
+			if($objItem !== null)
+			{
+				$objModalWrapper->setData($objItem->row());
+			}
+			
+			$objModalWrapper->module = Arrays::arrayToObject($this->arrData);
 			$objModalWrapper->item = $this->replaceInsertTags($this->Template->parse());
 			die($objModalWrapper->parse());
 		}

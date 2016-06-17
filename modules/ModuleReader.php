@@ -13,6 +13,7 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\Haste\Dca\General;
+use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 

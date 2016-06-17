@@ -164,7 +164,13 @@ class ModuleReader extends \Module
 
 							break;
 						case FRONTENDEDIT_ACT_DELETE:
-							$this->deleteItem($this->intId);
+							$blnResult = $this->deleteItem($this->intId);
+
+							if(\Environment::get('isAjaxRequest'))
+							{
+								die($blnResult);
+							}
+
 							// return to the list
 							\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Url::getUrl()));
 							break;
@@ -209,8 +215,10 @@ class ModuleReader extends \Module
 				}
 			}
 
-			$objItem->delete();
+			return $objItem->delete() > 0;
 		}
+
+		return false;
 	}
 
 	public function checkPermission($intId)

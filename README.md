@@ -2,6 +2,8 @@
 
 Extends [heimrichhannot/contao-formhybrid_list](https://github.com/heimrichhannot/contao-formhybrid_list) with crud functionality (create, update, delete).
 
+-> Click [here](docs/formhybrid.png) for a diagram visualizing the interaction between the modules [formhybrid](https://github.com/heimrichhannot/contao-formhybrid), [formhybrid_list](https://github.com/heimrichhannot/contao-formhybrid_list), [frontendedit](https://github.com/heimrichhannot/contao-frontendedit) and [submissions](https://github.com/heimrichhannot/contao-submissions).
+
 ## Features
 
 - adds a memberAuthor field to news and calendar events

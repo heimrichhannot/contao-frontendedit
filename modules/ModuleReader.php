@@ -15,7 +15,10 @@ use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Url;
+use HeimrichHannot\NotificationCenterPlus\MessageModel;
 use HeimrichHannot\StatusMessages\StatusMessage;
+use HeimrichHannot\Submissions\SubmissionModel;
+use NotificationCenter\Model\Message;
 
 class ModuleReader extends \Module
 {
@@ -233,7 +236,7 @@ class ModuleReader extends \Module
 	{
 		if (($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
 		{
-			$dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
+			$objDc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
 			// call ondelete callbacks
 			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))
@@ -241,14 +244,37 @@ class ModuleReader extends \Module
 				foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'] as $callback)
 				{
 					$this->import($callback[0]);
-					$this->$callback[0]->$callback[1]($dc);
+					$this->$callback[0]->$callback[1]($objDc);
 				}
 			}
 
-			return $objItem->delete() > 0;
+			$blnDeleted = $objItem->delete() > 0;
+
+			if ($blnDeleted && $this->deleteNotification)
+			{
+				if (($objMessage = MessageModel::findPublishedById($this->formHybridSubmissionNotification)) !== null)
+				{
+					$arrSubmissionData = SubmissionModel::prepareData($objItem, $this->formHybridDataContainer,
+						$GLOBALS['TL_DCA'][$this->formHybridDataContainer], $objDc, $this->formHybridEditable);
+
+					$arrTokens = SubmissionModel::tokenizeData($arrSubmissionData);
+
+					if ($this->sendDeleteNotification($objMessage, $objItem, $arrSubmissionData, $arrTokens))
+					{
+						$objMessage->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+					}
+				}
+			}
+
+			return $blnDeleted;
 		}
 
 		return false;
+	}
+
+	public function sendDeleteNotification(Message $objMessage, $objItem, array $arrSubmissionData, array $arrTokens)
+	{
+		return true;
 	}
 
 	public function checkPermission($intId)

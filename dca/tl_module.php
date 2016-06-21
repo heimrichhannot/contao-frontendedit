@@ -14,7 +14,14 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;{action_legend},defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;{email_legend},formHybridSendSubmissionViaEmail;{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;{template_legend},formHybridTemplate,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' .
+	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
+	'{action_legend},defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;' .
+	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
+	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;' .
+	'{template_legend},formHybridTemplate,itemTemplate,customTpl;' .
+	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
@@ -26,7 +33,13 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
-$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;{security_legend},addUpdateDeleteConditions;{email_legend},formHybridSendSubmissionViaEmail,formHybridSendConfirmationViaEmail;{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;{misc_legend},formHybridSuccessMessage;{template_legend},formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;' .
+	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
+	'{security_legend},addUpdateDeleteConditions;' .
+	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
+	'{misc_legend},formHybridSuccessMessage;{template_legend},formHybridTemplate,customTpl;' .
+	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**
  * Subpalettes
@@ -165,6 +178,15 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50'),
 		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'deleteNotification'           => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['deleteNotification'],
+		'exclude'          => true,
+		'inputType'        => 'select',
+		'options_callback' => array('HeimrichHannot\NotificationCenterPlus\NotificationCenterPlus', 'getNotificationMessagesAsOptions'),
+		'eval'             => array('chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true),
+		'sql'              => "varchar(255) NOT NULL default ''",
 	)
 );
 

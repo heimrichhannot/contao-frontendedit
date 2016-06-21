@@ -28,6 +28,7 @@ $arrLang['defaultAction']						= array('Standardaktion', 'Wenn Sie eine Aktion v
 $arrLang['addDeleteCol']						= array('Löschen-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Löschen hinzuzufügen.');
 $arrLang['jumpToSuccess']						= array('Weiterleitung nach dem Speichern', 'Wählen Sie hier eine Seite aus, zu der nach dem erfolgreichen Speichern weitergeleitet werden soll.');
 $arrLang['jumpToSuccessPreserveParams']			= array('Parameter beibehalten', 'Wählen Sie diese Option, wenn die Weiterleitungsseite (nach dem Speichern) wieder ein Frontendedit-Leser-Modul enthält. Dadurch werden die aktuelle Action sowie die ID beibehalten.');
+$arrLang['deleteNotification']					= array('Benachrichtigung nach dem Löschen verschicken', 'Wählen Sie hier eine Nachricht aus, die nach dem Löschen von Datensätzen verschickt werden soll.');
 
 /**
  * Legends

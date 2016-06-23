@@ -238,6 +238,8 @@ class ModuleReader extends \Module
 		{
 			$objDc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
+			$this->runBeforeDelete($objItem, $objDc);
+
 			// call ondelete callbacks
 			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))
 			{
@@ -266,11 +268,17 @@ class ModuleReader extends \Module
 				}
 			}
 
+			$this->runAfterDelete($blnDeleted, $objItem, $objDc);
+
 			return $blnDeleted;
 		}
 
 		return false;
 	}
+
+	public function runBeforeDelete($objItem, \DataContainer $objDc) {}
+
+	public function runAfterDelete($blnDeleted, $objItem, \DataContainer $objDc) {}
 
 	public function sendDeleteNotification(Message $objMessage, $objItem, array $arrSubmissionData, array $arrTokens)
 	{

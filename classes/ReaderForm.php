@@ -11,6 +11,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\EntityLock\EntityLockModel;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -54,6 +55,12 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 
 	protected function afterSubmitCallback(\DataContainer $dc)
 	{
+		// remove previously created locks
+		if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
+		{
+			EntityLockModel::deleteLocks($this->formHybridDataContainer, $this->intId);
+		}
+
 		$this->redirectAfterSuccess();
 	}
 

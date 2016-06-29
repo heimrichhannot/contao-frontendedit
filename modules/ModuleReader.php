@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\EntityLock\EntityLock;
+use HeimrichHannot\EntityLock\EntityLockModel;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
@@ -185,6 +187,24 @@ class ModuleReader extends \Module
 					switch ($strAction)
 					{
 						case FRONTENDEDIT_ACT_EDIT:
+							// create a new lock if necessary
+							if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
+							{
+								if (EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
+								{
+									if (!$this->blnSilentMode)
+									{
+										StatusMessage::addError($GLOBALS['TL_LANG']['MSC']['entity_lock']['entityLocked'], $this->id, 'locked');
+									}
+
+									return;
+								}
+								else
+								{
+									EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
+								}
+							}
+							
 							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
 							$this->Template->form = $this->objForm->generate();
 
@@ -226,7 +246,7 @@ class ModuleReader extends \Module
 			die($objModalWrapper->parse());
 		}
 	}
-	
+
 	public function checkEntityExists($intId)
 	{
 		return General::getModelInstance($this->formHybridDataContainer, $this->intId) !== null;
@@ -239,6 +259,12 @@ class ModuleReader extends \Module
 			$objDc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
 			$this->runBeforeDelete($objItem, $objDc);
+
+			// remove previously created locks
+			if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
+			{
+				EntityLockModel::deleteLocks($this->formHybridDataContainer, $intId);
+			}
 
 			// call ondelete callbacks
 			if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))

@@ -20,6 +20,9 @@
         "contao/core": ">=3.2,<4-dev",
         "heimrichhannot/contao-formhybrid_list": ">=2.2.0"
     },
+	"suggest": {
+		"heimrichhannot/contao-entity_lock": "This module adds functionality for locking entities for other users while they are edited."
+	},
     "autoload": {
         "classmap": [""]
     },

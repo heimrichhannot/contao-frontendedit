@@ -16,7 +16,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' .
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{action_legend},defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;' .
+	'{action_legend},deactivateTokens,addExistingConditions,defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;' .
@@ -35,7 +35,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST] = $arrDca['palettes'][MODULE_
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;' .
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{security_legend},addUpdateDeleteConditions;' .
+	'{security_legend},deactivateTokens,addUpdateDeleteConditions,addUpdateDeleteConditions;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage;{template_legend},formHybridTemplate,customTpl;' .
@@ -48,11 +48,13 @@ $arrDca['palettes']['__selector__'][]                = 'addUpdateDeleteCondition
 $arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
 $arrDca['palettes']['__selector__'][]                = 'addCreateButton';
 $arrDca['palettes']['__selector__'][]                = 'addEditCol';
+$arrDca['palettes']['__selector__'][]                = 'addExistingConditions';
 
 $arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel,createMemberGroups';
 $arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
+$arrDca['subpalettes']['addExistingConditions'] = 'existingConditions';
 
 /**
  * Callbacks
@@ -168,7 +170,7 @@ $arrFields = array(
 		'inputType'               => 'select',
 		'options'                 => array(FRONTENDEDIT_ACT_CREATE, FRONTENDEDIT_ACT_EDIT,
 										   FRONTENDEDIT_ACT_DELETE),
-		'eval'                    => array('tl_class' => 'w50', 'includeBlankOption' => true),
+		'eval'                    => array('tl_class' => 'w50 clr', 'includeBlankOption' => true),
 		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'jumpToSuccess'					=> $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
@@ -187,6 +189,20 @@ $arrFields = array(
 		'options_callback' => array('HeimrichHannot\NotificationCenterPlus\NotificationCenterPlus', 'getNotificationMessagesAsOptions'),
 		'eval'             => array('chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true),
 		'sql'              => "varchar(255) NOT NULL default ''",
+	),
+	'addExistingConditions' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addExistingConditions'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'deactivateTokens' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
 	)
 );
 
@@ -221,9 +237,6 @@ class tl_module_frontendedit {
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleReader'))
 			{
-				if ($objModule->createBehavior == 'create_until')
-					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,existingConditions', $arrDca['palettes'][$objModule->type]);
-
 				if ($objModule->createBehavior == 'redirect')
 					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
 			}

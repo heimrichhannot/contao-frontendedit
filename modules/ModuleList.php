@@ -45,7 +45,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		$strAction = \Input::get('act');
 
 		// at first check for the correct request token to be set
-		if ($strAction && !\RequestToken::validate(\Input::get('token')))
+		if ($strAction && !\RequestToken::validate(\Input::get('token')) && !$this->deactivateTokens)
 		{
 			StatusMessage::addError(
 					sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'], Environment::getUrl(true, true, false)),
@@ -59,9 +59,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->deleteItem($intId);
 				// return to the list
-				\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
-					array('act', 'id', 'token')
-				));
+				\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Environment::getUrl()));
 			}
 			else
 			{
@@ -76,9 +74,8 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->publishItem($intId);
 				// return to the list
-				\Controller::redirect(Environment::removeParametersFromUri(Environment::getUrl(),
-					array('act', 'id')
-				));
+				\Controller::redirect(Url::removeQueryString(array('act', 'id'), Environment::getUrl()));
+
 			}
 			else
 			{
@@ -131,12 +128,9 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		// create
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage)
 		{
-			$this->Template->createUrl = Environment::addParametersToUri(
-				$this->generateFrontendUrl($objPageJumpTo->row()),
-				array(
-					'act' => FRONTENDEDIT_ACT_CREATE,
-					'token' => \RequestToken::get()
-				)
+			$this->Template->createUrl = Url::addQueryString(
+				'act=' . FRONTENDEDIT_ACT_CREATE . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
+				$this->generateFrontendUrl($objPageJumpTo->row())
 			);
 
 			$arrGroups = deserialize($this->createMemberGroups, true);
@@ -156,13 +150,10 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage)
 		{
 			$arrItem['addEditCol'] = true;
-			$arrItem['editUrl'] = Environment::addParametersToUri(
-				$this->generateFrontendUrl($objPageJumpTo->row()),
-				array(
-					'act' => FRONTENDEDIT_ACT_EDIT,
-					'id' => $objItem->id,
-					'token' => \RequestToken::get()
-				)
+			$arrItem['editUrl'] = Url::addQueryString(
+				'act=' . FRONTENDEDIT_ACT_EDIT . '&id=' . $objItem->id .
+					(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
+				$this->generateFrontendUrl($objPageJumpTo->row())
 			);
 		}
 
@@ -171,7 +162,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		{
 			$arrItem['addDeleteCol'] = true;
 			$arrItem['deleteUrl'] = Url::addQueryString('act=' . FRONTENDEDIT_ACT_DELETE . '&id=' . $objItem->id .
-				'&token=' . \RequestToken::get(), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
+				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}
 
 		// publish url
@@ -179,7 +170,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		{
 			$arrItem['addPublishCol'] = true;
 			$arrItem['publishUrl'] = Url::addQueryString('act=' . FRONTENDEDIT_ACT_PUBLISH . '&id=' . $objItem->id .
-				'&token=' . \RequestToken::get(), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
+				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''), $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}
 	}
 

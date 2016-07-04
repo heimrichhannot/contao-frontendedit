@@ -11,8 +11,6 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-use HeimrichHannot\EntityLock\EntityLock;
-use HeimrichHannot\EntityLock\EntityLockModel;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
@@ -96,7 +94,7 @@ class ModuleReader extends \Module
 		$this->addDefaultArchive();
 
 		// at first check for the correct request token to be set
-		if ($strAction && !\RequestToken::validate($this->strToken))
+		if ($strAction && !\RequestToken::validate($this->strToken) && !$this->deactivateTokens)
 		{
 			if (!$this->blnSilentMode)
 			{
@@ -106,6 +104,28 @@ class ModuleReader extends \Module
 			}
 
 			return;
+		}
+
+		// retrieve id
+		$this->intId = $this->intId ?: \Input::get('id');
+		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+		$arrConditions = deserialize($this->existingConditions, true);
+
+		if ($this->existingConditions && !empty($arrConditions))
+		{
+			$arrColumns = array();
+			$arrValues = array();
+
+			foreach ($arrConditions as $arrCondition)
+			{
+				$arrColumns[] = $arrCondition['field'] . '=?';
+				$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
+			}
+
+			if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+			{
+				$this->intId = $objItem->id;
+			}
 		}
 
 		if ($strAction == FRONTENDEDIT_ACT_CREATE)
@@ -123,30 +143,12 @@ class ModuleReader extends \Module
 			switch ($this->createBehavior)
 			{
 				case 'create_until':
-					$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-					$arrConditions = deserialize($this->existingConditions, true);
-
-					if ($this->existingConditions && !empty($arrConditions))
-					{
-						$arrColumns = array();
-						$arrValues = array();
-
-						foreach ($arrConditions as $arrCondition)
-						{
-							$arrColumns[] = $arrCondition['field'] . '=?';
-							$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
-						}
-
-						if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
-						{
-							\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
-									'&id=' . $objItem->id . '&token=' . \RequestToken::get(), Url::getUrl()));
-						}
-					}
+					\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
+						'&id=' . $this->intId . (!$this->deactivateTokens ? '&token=' . \RequestToken::get(): ''), Url::getUrl()));
 					break;
 				case 'redirect':
 					\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
-							'&id=' . $this->redirectId . '&token=' . \RequestToken::get(), Url::getUrl()));
+							'&id=' . $this->redirectId . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''), Url::getUrl()));
 					break;
 			}
 
@@ -155,8 +157,6 @@ class ModuleReader extends \Module
 		}
 		else
 		{
-			$this->intId = $this->intId ?: \Input::get('id');
-
 			if (!$this->intId)
 			{
 				if (!$this->blnSilentMode)
@@ -190,7 +190,7 @@ class ModuleReader extends \Module
 							// create a new lock if necessary
 							if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
 							{
-								if (EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
+								if (\HeimrichHannot\EntityLock\EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
 								{
 									if (!$this->blnSilentMode)
 									{
@@ -201,7 +201,7 @@ class ModuleReader extends \Module
 								}
 								else
 								{
-									EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
+									\HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
 								}
 							}
 							
@@ -263,7 +263,7 @@ class ModuleReader extends \Module
 			// remove previously created locks
 			if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
 			{
-				EntityLockModel::deleteLocks($this->formHybridDataContainer, $intId);
+				\HeimrichHannot\EntityLock\EntityLockModel::deleteLocks($this->formHybridDataContainer, $intId);
 			}
 
 			// call ondelete callbacks

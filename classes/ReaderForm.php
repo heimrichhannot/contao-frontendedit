@@ -11,7 +11,6 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-use HeimrichHannot\EntityLock\EntityLockModel;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
@@ -58,7 +57,7 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 		// remove previously created locks
 		if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
 		{
-			EntityLockModel::deleteLocks($this->formHybridDataContainer, $this->intId);
+			\HeimrichHannot\EntityLock\EntityLockModel::deleteLocks($this->formHybridDataContainer, $this->intId);
 		}
 
 		$this->redirectAfterSuccess();
@@ -78,7 +77,10 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 				if ($intId = \Input::get('id'))
 					$strJumpToSuccess = Url::addQueryString('id=' . $intId, $strJumpToSuccess);
 
-				$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
+				if (!$this->objModule->deactivateTokens)
+				{
+					$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
+				}
 			}
 
 			StatusMessage::resetAll();

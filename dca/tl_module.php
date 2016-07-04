@@ -16,7 +16,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' .
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{action_legend},deactivateTokens,addExistingConditions,defaultAction,createBehavior;{security_legend},addUpdateDeleteConditions;' .
+	'{action_legend},noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;' .
@@ -26,7 +26,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridAddDefaultValues'),
-	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateDeleteConditions,formHybridAddDefaultValues'),
+	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes'][MODULE_FRONTENDEDIT_READER];
@@ -35,7 +35,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST] = $arrDca['palettes'][MODULE_
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,headline,type;' .
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{security_legend},deactivateTokens,addUpdateDeleteConditions,addUpdateDeleteConditions;' .
+	'{action_legend},existanceConditions,addUpdateConditions,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage;{template_legend},formHybridTemplate,customTpl;' .
@@ -44,17 +44,22 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,h
 /**
  * Subpalettes
  */
-$arrDca['palettes']['__selector__'][]                = 'addUpdateDeleteConditions';
-$arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
-$arrDca['palettes']['__selector__'][]                = 'addCreateButton';
-$arrDca['palettes']['__selector__'][]                = 'addEditCol';
-$arrDca['palettes']['__selector__'][]                = 'addExistingConditions';
+$arrDca['palettes']['__selector__'][] = 'addCustomFilterFields';
+$arrDca['palettes']['__selector__'][] = 'addCreateButton';
+$arrDca['palettes']['__selector__'][] = 'addEditCol';
+$arrDca['palettes']['__selector__'][] = 'noIdBehavior';
+$arrDca['palettes']['__selector__'][] = 'addUpdateConditions';
+$arrDca['palettes']['__selector__'][] = 'allowDelete';
+$arrDca['palettes']['__selector__'][] = 'addDeleteConditions';
 
-$arrDca['subpalettes']['addUpdateDeleteConditions'] = 'updateDeleteConditions';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton'] = 'jumpToCreate,createButtonLabel,createMemberGroups';
 $arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
-$arrDca['subpalettes']['addExistingConditions'] = 'existingConditions';
+$arrDca['subpalettes']['noIdBehavior_redirect'] = 'existanceConditions';
+$arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
+$arrDca['subpalettes']['addUpdateConditions'] = 'updateConditions';
+$arrDca['subpalettes']['allowDelete'] = 'addDeleteConditions';
+$arrDca['subpalettes']['addDeleteConditions'] = 'deleteConditions';
 
 /**
  * Callbacks
@@ -97,25 +102,6 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50'),
 		'sql'                     => "char(1) NOT NULL default ''"
-	),
-	'createBehavior' => array
-	(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['createBehavior'],
-		'exclude'                 => true,
-		'inputType'               => 'select',
-		'default'                 => 'create',
-		'options'                 => array('create', 'create_until', 'redirect'),
-		'reference'               => &$GLOBALS['TL_LANG']['tl_module']['createBehavior'],
-		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'submitOnChange' => true),
-		'sql'                     => "varchar(255) NOT NULL default ''"
-	),
-	'redirectId' => array
-	(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['redirectId'],
-		'exclude'                 => true,
-		'inputType'               => 'text',
-		'eval'                    => array('mandatory'=>true, 'tl_class' => 'w50'),
-		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'addCreateButton' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
@@ -164,15 +150,6 @@ $arrFields = array(
 		'eval'                    => array('chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true),
 		'sql'                     => "int(10) unsigned NOT NULL default '0'"
 	),
-	'defaultAction' => array
-	(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['defaultAction'],
-		'inputType'               => 'select',
-		'options'                 => array(FRONTENDEDIT_ACT_CREATE, FRONTENDEDIT_ACT_EDIT,
-										   FRONTENDEDIT_ACT_DELETE),
-		'eval'                    => array('tl_class' => 'w50 clr', 'includeBlankOption' => true),
-		'sql'                     => "varchar(255) NOT NULL default ''"
-	),
 	'jumpToSuccess'					=> $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
 	'jumpToSuccessPreserveParams' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccessPreserveParams'],
@@ -190,13 +167,41 @@ $arrFields = array(
 		'eval'             => array('chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true),
 		'sql'              => "varchar(255) NOT NULL default ''",
 	),
-	'addExistingConditions' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addExistingConditions'],
+	'noIdBehavior' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+		'exclude'                 => true,
+		'inputType'               => 'select',
+		'default'                 => 'create',
+		'options'                 => array('create', 'create_until', 'redirect', 'error'),
+		'reference'               => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'submitOnChange' => true),
+		'sql'                     => "varchar(255) NOT NULL default ''"
+	),
+	'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
+	'addUpdateConditions' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'],
 		'exclude'                 => true,
 		'inputType'               => 'checkbox',
-		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
 		'sql'                     => "char(1) NOT NULL default ''"
 	),
+	'updateConditions'            => $arrDca['fields']['formHybridDefaultValues'],
+	'allowDelete' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['allowDelete'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'addDeleteConditions' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDeleteConditions'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'deleteConditions'            => $arrDca['fields']['formHybridDefaultValues'],
 	'deactivateTokens' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
 		'exclude'                 => true,
@@ -208,16 +213,12 @@ $arrFields = array(
 
 $arrDca['fields'] += $arrFields;
 
-$arrDca['fields']['addUpdateDeleteConditions']			= $arrDca['fields']['formHybridAddDefaultValues'];
-$arrDca['fields']['addUpdateDeleteConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['addUpdateDeleteConditions'];
-$arrDca['fields']['updateDeleteConditions']				= $arrDca['fields']['formHybridDefaultValues'];
-$arrDca['fields']['updateDeleteConditions']['label']	= &$GLOBALS['TL_LANG']['tl_module']['updateDeleteConditions'];
-
-unset($arrDca['fields']['updateDeleteConditions']['eval']['columnFields']['label']);
-unset($arrDca['fields']['updateDeleteConditions']['eval']['columnFields']['hidden']);
-
-$arrDca['fields']['existingConditions']					= $arrDca['fields']['formHybridDefaultValues'];
-$arrDca['fields']['existingConditions']['label']		= &$GLOBALS['TL_LANG']['tl_module']['existingConditions'];
+foreach (array('existanceConditions', 'updateConditions', 'deleteConditions') as $strField)
+{
+	$arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
+	unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);
+	unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
+}
 
 $arrDca['fields']['jumpToSuccess']['label']				= &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccess'];
 $arrDca['fields']['jumpToSuccess']['eval']['tl_class']	= 'w50 clr';
@@ -233,13 +234,6 @@ class tl_module_frontendedit {
 		if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
 		{
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
-
-			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleReader'))
-			{
-				if ($objModule->createBehavior == 'redirect')
-					$arrDca['palettes'][$objModule->type] = str_replace('createBehavior', 'createBehavior,redirectId', $arrDca['palettes'][$objModule->type]);
-			}
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
 				$objModule->type, 'HeimrichHannot\FrontendEdit\ModuleList'))

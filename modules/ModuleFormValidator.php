@@ -34,6 +34,8 @@ class ModuleFormValidator extends ModuleReader
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
+		$this->noIdBehavior = 'redirect';
+
 		return parent::generate();
 	}
 

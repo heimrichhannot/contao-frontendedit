@@ -26,3 +26,7 @@ ModuleNewsList | Encapsulates news specific changes overriding ModuleList
 ModuleReader | A generic editor module able to edit a specific entity (_doesn't_ inherit from formhybrid_list's ModuleReader)
 ModuleFrontendUserReader | Encapsulates frontend user specific changes overriding ModuleReader
 ModuleFormValidator | Validates a certain amount of entity's fields (useful e.g. as the last step of a multi step form)
+
+### Hooks
+
+frontendEditAddNoIdBehavior

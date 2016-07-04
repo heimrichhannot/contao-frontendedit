@@ -14,8 +14,6 @@
  */
 define('FRONTENDEDIT_BUTTON_SAVE', 'save');
 define('FRONTENDEDIT_BUTTON_SAVE_RETURN', 'save_return');
-define('FRONTENDEDIT_ACT_CREATE', 'create');
-define('FRONTENDEDIT_ACT_EDIT', 'edit');
 define('FRONTENDEDIT_ACT_DELETE', 'delete');
 define('FRONTENDEDIT_ACT_PUBLISH', 'publish');
 define('FRONTENDEDIT_BUTTON_SUBMIT', 'submit');

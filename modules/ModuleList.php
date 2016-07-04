@@ -178,9 +178,9 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 	{
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-		if ($this->addUpdateDeleteConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
+		if ($this->addUpdateConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
 		{
-			$arrConditions = deserialize($this->updateDeleteConditions, true);
+			$arrConditions = deserialize($this->updateConditions, true);
 
 			if (!empty($arrConditions))
 				foreach ($arrConditions as $arrCondition)

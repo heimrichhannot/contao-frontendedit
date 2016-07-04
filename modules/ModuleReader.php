@@ -94,7 +94,7 @@ class ModuleReader extends \Module
 		$this->addDefaultArchive();
 
 		// at first check for the correct request token to be set
-		if ($strAction && !\RequestToken::validate($this->strToken) && !$this->deactivateTokens)
+		if (!$this->deactivateTokens && !\RequestToken::validate($this->strToken))
 		{
 			if (!$this->blnSilentMode)
 			{
@@ -106,33 +106,14 @@ class ModuleReader extends \Module
 			return;
 		}
 
-		// retrieve id
 		$this->intId = $this->intId ?: \Input::get('id');
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-		$arrConditions = deserialize($this->existingConditions, true);
 
-		if ($this->existingConditions && !empty($arrConditions))
+		if (!$this->intId)
 		{
-			$arrColumns = array();
-			$arrValues = array();
-
-			foreach ($arrConditions as $arrCondition)
+			if (isset($GLOBALS['TL_HOOKS']['frontendEditAddNoIdBehavior']) && is_array($GLOBALS['TL_HOOKS']['frontendEditAddNoIdBehavior']))
 			{
-				$arrColumns[] = $arrCondition['field'] . '=?';
-				$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
-			}
-
-			if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
-			{
-				$this->intId = $objItem->id;
-			}
-		}
-
-		if ($strAction == FRONTENDEDIT_ACT_CREATE)
-		{
-			if (isset($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']) && is_array($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior']))
-			{
-				foreach ($GLOBALS['TL_HOOKS']['frontendEditAddCreateBehavior'] as $arrCallback)
+				foreach ($GLOBALS['TL_HOOKS']['frontendEditAddNoIdBehavior'] as $arrCallback)
 				{
 					$this->import($arrCallback[0]);
 					if ($this->$arrCallback[0]->$arrCallback[1]($this) === false)
@@ -140,98 +121,152 @@ class ModuleReader extends \Module
 				}
 			}
 
-			switch ($this->createBehavior)
-			{
-				case 'create_until':
-					\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
-						'&id=' . $this->intId . (!$this->deactivateTokens ? '&token=' . \RequestToken::get(): ''), Url::getUrl()));
-					break;
-				case 'redirect':
-					\Controller::redirect(Url::addQueryString('act=' . FRONTENDEDIT_ACT_EDIT .
-							'&id=' . $this->redirectId . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''), Url::getUrl()));
-					break;
-			}
+			$blnDoNotCreate = false;
 
-			$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, 0, $this);
-			$this->Template->form = $this->objForm->generate();
-		}
-		else
-		{
-			if (!$this->intId)
+			if ($this->noIdBehavior == 'error')
 			{
 				if (!$this->blnSilentMode)
 					StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id, 'noidfound');
+
 				return;
 			}
-			else
+			elseif ($this->noIdBehavior == 'redirect' || $this->noIdBehavior == 'create_until')
 			{
-				if (!$this->checkEntityExists($this->intId))
+				$arrConditions = deserialize($this->existanceConditions, true);
+
+				if ($this->existanceConditions && !empty($arrConditions))
+				{
+					$arrColumns = array();
+					$arrValues = array();
+
+					foreach ($arrConditions as $arrCondition)
+					{
+						$arrColumns[] = $arrCondition['field'] . '=?';
+						$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
+					}
+
+					if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+					{
+						$this->intId = $objItem->id;
+					}
+				}
+			}
+
+			if (!$this->intId)
+			{
+				if ($this->noIdBehavior == 'redirect')
 				{
 					if (!$this->blnSilentMode)
-						StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
+						StatusMessage::addError($GLOBALS['TL_LANG']['frontendedit']['noIdFound'], $this->id, 'noidfound');
+
 					return;
-				}
-
-				if ($this->checkPermission($this->intId))
-				{
-					// page title
-					if ($this->setPageTitle)
-					{
-						global $objPage;
-						if (($objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId)) !== null)
-						{
-							$objPage->pageTitle = $objItem->{$this->pageTitleField};
-						}
-					}
-
-					switch ($strAction)
-					{
-						case FRONTENDEDIT_ACT_EDIT:
-							// create a new lock if necessary
-							if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
-							{
-								if (\HeimrichHannot\EntityLock\EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
-								{
-									if (!$this->blnSilentMode)
-									{
-										StatusMessage::addError($GLOBALS['TL_LANG']['MSC']['entity_lock']['entityLocked'], $this->id, 'locked');
-									}
-
-									return;
-								}
-								else
-								{
-									\HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
-								}
-							}
-							
-							$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
-							$this->Template->form = $this->objForm->generate();
-
-							break;
-						case FRONTENDEDIT_ACT_DELETE:
-							$blnResult = $this->deleteItem($this->intId);
-
-							if(\Environment::get('isAjaxRequest'))
-							{
-								die($blnResult);
-							}
-
-							// return to the list
-							\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Url::getUrl()));
-							break;
-					}
 				}
 				else
 				{
-					if (!$this->blnSilentMode)
-						StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
-					return;
+					// if no id is given a new instance is initiated -> but not saved, yet
+					$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
+					$this->Template->form = $this->objForm->generate();
+
+					if (!$this->intId)
+					{
+						$objActiveRecord = $this->objForm->getSubmission();
+						$objActiveRecord->tstamp = 0;
+						$objActiveRecord->save();
+
+						// run onsubmit_callback, required for example by HeimrichHannot\FormHybrid\TagsHelper::saveTagsFromDefaults()
+						if (is_array($this->dca['config']['onsubmit_callback'])) {
+							foreach ($this->dca['config']['onsubmit_callback'] as $callback) {
+								$this->import($callback[0]);
+								$this->$callback[0]->$callback[1]($this->objForm);
+
+								// reload model from database, maybe something has changed in callback
+								$objActiveRecord->refresh();
+							}
+						}
+
+						$this->intId = $objActiveRecord->id;
+						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+						$this->Template->form = $this->objForm->generate();
+					}
 				}
 			}
 		}
 
-		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted && $this->checkPermission($this->intId))
+		// intId is set at this point!
+
+		if (!$this->checkEntityExists($this->intId))
+		{
+			if (!$this->blnSilentMode)
+				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
+
+			return;
+		}
+
+		// page title
+		if ($this->setPageTitle)
+		{
+			global $objPage;
+			if (($objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId)) !== null)
+			{
+				$objPage->pageTitle = $objItem->{$this->pageTitleField};
+			}
+		}
+
+		if ($strAction == FRONTENDEDIT_ACT_DELETE)
+		{
+			if ($this->checkDeletePermission($this->intId))
+			{
+				$blnResult = $this->deleteItem($this->intId);
+
+				if(\Environment::get('isAjaxRequest'))
+				{
+					die($blnResult);
+				}
+
+				// return to the list
+				\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Url::getUrl()));
+			}
+			else
+			{
+				if (!$this->blnSilentMode)
+					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
+				return;
+			}
+		}
+		else
+		{
+			if ($this->checkDeletePermission($this->intId))
+			{
+				// create a new lock if necessary
+				if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
+				{
+					if (\HeimrichHannot\EntityLock\EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
+					{
+						if (!$this->blnSilentMode)
+						{
+							StatusMessage::addError($GLOBALS['TL_LANG']['MSC']['entity_lock']['entityLocked'], $this->id, 'locked');
+						}
+
+						return;
+					}
+					else
+					{
+						\HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
+					}
+				}
+
+				$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+				$this->Template->form = $this->objForm->generate();
+			}
+			else
+			{
+				if (!$this->blnSilentMode)
+					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
+				return;
+			}
+		}
+
+		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted && $this->checkUpdatePermission($this->intId))
 		{
 			$objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId);
 			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
@@ -249,7 +284,7 @@ class ModuleReader extends \Module
 
 	public function checkEntityExists($intId)
 	{
-		return General::getModelInstance($this->formHybridDataContainer, $this->intId) !== null;
+		return General::getModelInstance($this->formHybridDataContainer, $intId) !== null;
 	}
 
 	protected function deleteItem($intId)
@@ -311,11 +346,29 @@ class ModuleReader extends \Module
 		return true;
 	}
 
-	public function checkPermission($intId)
+	public function checkUpdatePermission($intId)
 	{
-		if ($this->addUpdateDeleteConditions && ($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
+		if ($this->addUpdateConditions && ($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
 		{
-			$arrConditions = deserialize($this->updateDeleteConditions, true);
+			$arrConditions = deserialize($this->updateConditions, true);
+
+			if (!empty($arrConditions))
+				foreach ($arrConditions as $arrCondition)
+				{
+					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+						return false;
+				}
+		}
+
+		return true;
+	}
+
+	public function checkDeletePermission($intId)
+	{
+		if ($this->allowDelete && $this->addDeleteConditions &&
+			($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
+		{
+			$arrConditions = deserialize($this->deleteConditions, true);
 
 			if (!empty($arrConditions))
 				foreach ($arrConditions as $arrCondition)

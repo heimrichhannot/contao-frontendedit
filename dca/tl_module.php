@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 	'{action_legend},noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
-	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle;' .
+	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle,addClientsideValidation;' .
 	'{template_legend},formHybridTemplate,itemTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -207,6 +207,13 @@ $arrFields = array(
 		'exclude'                 => true,
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'addClientsideValidation' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50 clr'),
 		'sql'                     => "char(1) NOT NULL default ''"
 	)
 );

@@ -31,7 +31,10 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
 		$this->objReaderModule = $objReaderForm;
 		$objModule->initiallySaveModel = true;
-		$objModule->strFormClass = 'jquery-validation';
+
+		if ($objModule->addClientsideValidation)
+			$objModule->strFormClass = 'jquery-validation';
+		
 		$this->arrSubmitCallbacks = $submitCallbacks;
 
 		parent::__construct($objModule, $intId);

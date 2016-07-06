@@ -178,7 +178,6 @@ $arrFields = array(
 		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'submitOnChange' => true),
 		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
-	'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
 	'addUpdateConditions' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'],
 		'exclude'                 => true,
@@ -220,7 +219,7 @@ $arrFields = array(
 
 $arrDca['fields'] += $arrFields;
 
-foreach (array('existanceConditions', 'updateConditions', 'deleteConditions') as $strField)
+foreach (array('updateConditions', 'deleteConditions') as $strField)
 {
 	$arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
 	unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);

@@ -23,7 +23,6 @@ $arrLang['noIdBehavior']['create_until']		= 'Neue Instanz erstellen, sofern es n
 $arrLang['noIdBehavior']['redirect']			= 'Zu bestehender Instanz umleiten';
 $arrLang['noIdBehavior']['error']				= 'Fehlermeldung ausgeben (kein Erzeugen erlauben)';
 $arrLang['redirectId']							= array('Bestehende Instanz-ID', 'Geben Sie hier die ID der Instanz aus, zu der weitergeleitet werden soll, wenn kein ID-Parameter verfügbar ist.');
-$arrLang['existanceConditions']					= array('Bedingungen für das Auffinden bestehender Instanzen', 'Geben Sie hier Bedingungen ein, die für das Auffinden bestehender Instanzen gelten müssen.');
 $arrLang['deactivateTokens']					= array('Token-Handling deaktivieren', 'Wählen Sie diese Option, wenn die Module nicht prüfen sollen, ob der GET-Parameter "token" ein korrektes Token enthält.');
 $arrLang['addCreateButton']						= array('"Neu"-Button hinzufügen', 'Wählen Sie diese Option, um einen Button zum Erstellen von neuen Instanzen einzufügen.');
 $arrLang['jumpToCreate']						= array('Weiterleitungsseite (Neu)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn eine neue Instanz erstellt wird.');

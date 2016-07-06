@@ -19,7 +19,14 @@ class ValidatorForm extends ReaderForm
 	{
 		foreach ($this->arrEditable as $strField)
 		{
-			$this->dca['fields'][$strField]['inputType'] = 'hidden';
+			if (in_array('bootstrapper', \ModuleLoader::getActive()))
+			{
+				$this->dca['fields'][$strField]['eval']['invisible'] = true;
+			}
+			else
+			{
+				$this->dca['fields'][$strField]['inputType'] = 'hidden';
+			}
 		}
 	}
 

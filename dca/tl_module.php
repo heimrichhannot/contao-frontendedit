@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 	'{action_legend},noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
-	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,defaultArchive,setPageTitle,addClientsideValidation;' .
+	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,formHybridAddSubmitValues,defaultArchive,setPageTitle,addClientsideValidation;' .
 	'{template_legend},formHybridTemplate,itemTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -38,7 +38,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,h
 	'{action_legend},existanceConditions,addUpdateConditions,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
-	'{misc_legend},formHybridSuccessMessage;{template_legend},formHybridTemplate,customTpl;' .
+	'{misc_legend},formHybridSuccessMessage,formHybridAddSubmitValues;{template_legend},formHybridTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**

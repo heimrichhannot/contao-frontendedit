@@ -201,13 +201,6 @@ $arrFields = array(
 		'sql'                     => "char(1) NOT NULL default ''"
 	),
 	'deleteConditions'            => $arrDca['fields']['formHybridDefaultValues'],
-	'deactivateTokens' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
-		'exclude'                 => true,
-		'inputType'               => 'checkbox',
-		'eval'                    => array('tl_class' => 'w50'),
-		'sql'                     => "char(1) NOT NULL default ''"
-	),
 	'addClientsideValidation' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
 		'exclude'                 => true,

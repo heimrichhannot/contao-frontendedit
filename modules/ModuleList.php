@@ -138,8 +138,9 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
 			$arrGroups = deserialize($this->createMemberGroups, true);
 			$objMember = \FrontendUser::getInstance();
+			$arrIntersection = array_intersect($arrGroups, deserialize($objMember->groups, true));
 
-			if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty(array_intersect($arrGroups, deserialize($objMember->groups, true)))))
+			if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty($arrIntersection)))
 				$this->Template->addCreateButton = false;
 		}
 	}
@@ -201,3 +202,4 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 	}
 
 }
+

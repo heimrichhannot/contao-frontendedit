@@ -107,6 +107,18 @@ class ModuleReader extends \Module
 		}
 
 		$this->intId = $this->intId ?: \Input::get('id');
+
+		// get id from FORM_SUBMIT
+		if ($_POST && isset($_POST['FORM_SUBMIT']))
+		{
+			$arrFormSubmit = explode('_', $_POST['FORM_SUBMIT']);
+
+			if (isset($arrFormSubmit[count($arrFormSubmit) - 1]))
+			{
+				$this->intId = $arrFormSubmit[count($arrFormSubmit) - 1];
+			}
+		}
+
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
 		if (!$this->intId)
@@ -120,8 +132,6 @@ class ModuleReader extends \Module
 						return;
 				}
 			}
-
-			$blnDoNotCreate = false;
 
 			if ($this->noIdBehavior == 'error')
 			{

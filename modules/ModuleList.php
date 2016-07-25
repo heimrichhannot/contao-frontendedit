@@ -37,7 +37,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		}
 
 		$this->strTemplate = $this->customTpl ?: ($this->strTemplate ?: ($this->isTableList ? 'mod_frontendedit_list_table' : 'mod_frontendedit_list'));
-		$this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'frontendedit_item_table_default' : 'frontendedit_item_default');
+		$this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'frontendedit_list_item_table_default' : 'frontendedit_list_item_default');
 
 		return parent::generate();
 	}
@@ -167,7 +167,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		{
 			$arrItem['addDeleteCol'] = true;
 
-			$arrItem['deleteUrl'] = Url::addQueryString('id=' . $objItem->id .
+			$arrItem['deleteUrl'] = Url::addQueryString('id=' . $objItem->id . '&act=delete' .
 				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
 				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}
@@ -176,7 +176,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		if ($this->addPublishCol)
 		{
 			$arrItem['addPublishCol'] = true;
-			$arrItem['publishUrl'] = Url::addQueryString('id=' . $objItem->id .
+			$arrItem['publishUrl'] = Url::addQueryString('id=' . $objItem->id . '&act=publish' .
 				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
 				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
 		}

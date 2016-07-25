@@ -184,8 +184,8 @@ class ModuleReader extends \Module
 						$objActiveRecord->save();
 
 						// run onsubmit_callback, required for example by HeimrichHannot\FormHybrid\TagsHelper::saveTagsFromDefaults()
-						if (is_array($this->dca['config']['onsubmit_callback'])) {
-							foreach ($this->dca['config']['onsubmit_callback'] as $callback) {
+						if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['onsubmit_callback'])) {
+							foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['onsubmit_callback'] as $callback) {
 								$this->import($callback[0]);
 								$this->$callback[0]->$callback[1]($this->objForm);
 
@@ -193,6 +193,8 @@ class ModuleReader extends \Module
 								$objActiveRecord->refresh();
 							}
 						}
+
+						$objActiveRecord->save();
 
 						$this->intId = $objActiveRecord->id;
 						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);

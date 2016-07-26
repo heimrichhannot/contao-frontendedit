@@ -12,6 +12,8 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybrid\FormHelper;
+use HeimrichHannot\FormHybrid\FormSession;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Url;
@@ -106,16 +108,19 @@ class ModuleReader extends \Module
 			return;
 		}
 
-		$this->intId = $this->intId ?: \Input::get('id');
-
-		// get id from FORM_SUBMIT
-		if ($_POST && isset($_POST['FORM_SUBMIT']))
+		if($this->allowIdAsGetParameter)
 		{
-			$arrFormSubmit = explode('_', $_POST['FORM_SUBMIT']);
-
-			if (isset($arrFormSubmit[count($arrFormSubmit) - 1]))
+			$this->intId = $this->intId ?: \Input::get('id');
+		}
+		
+		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
+		
+		// get id from FormSession
+		if (!$this->intId && $_POST)
+		{
+			if ($intId = FormSession::getSubmissionId($strFormId))
 			{
-				$this->intId = $arrFormSubmit[count($arrFormSubmit) - 1];
+				$this->intId = $intId;
 			}
 		}
 
@@ -184,8 +189,8 @@ class ModuleReader extends \Module
 						$objActiveRecord->save();
 
 						// run onsubmit_callback, required for example by HeimrichHannot\FormHybrid\TagsHelper::saveTagsFromDefaults()
-						if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['onsubmit_callback'])) {
-							foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['onsubmit_callback'] as $callback) {
+						if (is_array($this->dca['config']['onsubmit_callback'])) {
+							foreach ($this->dca['config']['onsubmit_callback'] as $callback) {
 								$this->import($callback[0]);
 								$this->$callback[0]->$callback[1]($this->objForm);
 
@@ -193,8 +198,6 @@ class ModuleReader extends \Module
 								$objActiveRecord->refresh();
 							}
 						}
-
-						$objActiveRecord->save();
 
 						$this->intId = $objActiveRecord->id;
 						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
@@ -277,10 +280,9 @@ class ModuleReader extends \Module
 				return;
 			}
 		}
-
-		if (\Environment::get('isAjaxRequest') && !$this->objForm->isSubmitted && $this->checkUpdatePermission($this->intId))
-		{
-			$objItem = General::getModelInstance($this->formHybridDataContainer, $this->intId);
+		
+		if (\Environment::get('isAjaxRequest') && $this->useModal && !$this->objForm->isSubmitted && $this->checkUpdatePermission($this->intId)) {
+			$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
 			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
 			
 			if($objItem !== null)

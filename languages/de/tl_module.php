@@ -17,6 +17,7 @@ $arrLang['deleteConditions']					= array(' ', 'Wählen Sie hier aus, unter welch
 $arrLang['setPageTitle']						= array('Instanzfeld als Seitentitel setzen', 'Wählen Sie diese Option, wenn nach dem Anlegen einer Instanz ein Feld als Seitentitel gesetzt werden soll (bspw. der Titel).');
 $arrLang['addClientsideValidation']				= array('Clientseitige Validierung hinzufügen (erfordert jquery-validation)', 'Wählen Sie diese Option, wenn das Formular auch clientseitig validiert werden soll.');
 $arrLang['pageTitleField']						= array('Seitentitelfeld', 'Wählen Sie das Feld aus aus, dass dem Seitentitel zugewiesen werden soll.');
+$arrLang['allowIdAsGetParameter']				= array('ID-Eingabe als GET-Parameter erlauben (Vorsicht!)', 'Wählen Sie diese Option, wenn über den GET-Parameter "id" der anzuzeigende Datensatz bestimmt werden darf. ACHTUNG: Nur in Verbindung mit "Bedingungen für das Bearbeiten" verwenden!');
 $arrLang['noIdBehavior']						= array('Verhalten beim Fehlen eines ID-Parameters', 'Wählen Sie hier das Verhalten des Moduls aus, wenn keine Instanz übergeben wurde (kein GET-Parameter "id", keine Heringabe durch das Modul, ...).');
 $arrLang['noIdBehavior']['create']				= 'Neue Instanz erstellen';
 $arrLang['noIdBehavior']['create_until']		= 'Neue Instanz erstellen, sofern es noch keine gibt';

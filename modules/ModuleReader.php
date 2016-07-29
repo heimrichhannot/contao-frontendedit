@@ -196,6 +196,12 @@ class ModuleReader extends \Module
 						$objActiveRecord = $this->objForm->getSubmission();
 						$objActiveRecord->tstamp = 0;
 						$objActiveRecord->save();
+						
+						if($objActiveRecord !== null)
+						{
+							// store id once per module only
+							FormSession::addSubmissionId(FormHelper::getFormId($this->objForm->getTable(), $this->id), $objActiveRecord->id);
+						}
 
 						// run onsubmit_callback, required for example by HeimrichHannot\FormHybrid\TagsHelper::saveTagsFromDefaults()
 						if (is_array($this->dca['config']['onsubmit_callback'])) {

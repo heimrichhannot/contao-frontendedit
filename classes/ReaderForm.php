@@ -22,12 +22,6 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 
-		// avoid recalling initialize of formhybrid in the async case
-		if (\Environment::get('isAjaxRequest'))
-		{
-			$this->setReset(false);
-		}
-
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
 		$this->objReaderModule = $objReaderForm;
 		$objModule->initiallySaveModel = true;

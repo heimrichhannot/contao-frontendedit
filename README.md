@@ -7,6 +7,7 @@ Extends [heimrichhannot/contao-formhybrid_list](https://github.com/heimrichhanno
 ## Features
 
 - adds a memberAuthor field to news and calendar events
+- share entities in a list (add the necessary fields to your dca beforehands by using ```FormHybridList::addShareFields()```)
 
 ### List module
 

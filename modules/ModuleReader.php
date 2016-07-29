@@ -14,6 +14,7 @@ namespace HeimrichHannot\FrontendEdit;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
+use HeimrichHannot\FormHybridList\FormHybridList;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Url;
@@ -129,7 +130,7 @@ class ModuleReader extends \Module
 		// get id from share
 		if ($strShare = \Input::get('share'))
 		{
-			if (($objItem = $strItemClass::findByShareToken($strShare)) !== null)
+			if (($objItem = $strItemClass::findByShareToken($strShare)) !== null && !FormHybridList::shareTokenExpiredOrEmpty($objItem, time()))
 			{
 				$this->intId = $objItem->id;
 			}

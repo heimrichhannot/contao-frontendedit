@@ -2,7 +2,7 @@
 	<?php foreach ($this->fields as $strName => $varValue): ?>
 		<td class="<?php echo $strName; ?>"><?php echo $varValue; ?></td>
 	<?php endforeach; ?>
-	<?php if ($this->addDetailsCol || $this->addEditCol || $this->addDeleteCol || $this->addPublishCol): ?>
+	<?php if ($this->addDetailsCol || $this->addEditCol || $this->addDeleteCol || $this->addShareCol || $this->addPublishCol): ?>
 		<td class="actions">
 			<?php if ($this->addEditCol): ?>
 				<a class="edit" href="<?php echo $this->editUrl; ?>"
@@ -13,6 +13,11 @@
 			<?php if ($this->addDeleteCol): ?>
 				<a class="delete" href="<?php echo $this->deleteUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>">
 					<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>
+				</a>
+			<?php endif; ?>
+			<?php if ($this->addShareCol && $this->shareUrl): ?>
+				<a class="share" href="<?php echo $this->shareUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareMessage']; ?>">
+					<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareTitle']; ?>
 				</a>
 			<?php endif; ?>
 			<?php if ($this->addPublishCol): ?>

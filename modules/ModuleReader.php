@@ -126,6 +126,15 @@ class ModuleReader extends \Module
 
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
+		// get id from share
+		if ($strShare = \Input::get('share'))
+		{
+			if (($objItem = $strItemClass::findByShareToken($strShare)) !== null)
+			{
+				$this->intId = $objItem->id;
+			}
+		}
+
 		if (!$this->intId)
 		{
 			if (isset($GLOBALS['TL_HOOKS']['frontendEditAddNoIdBehavior']) && is_array($GLOBALS['TL_HOOKS']['frontendEditAddNoIdBehavior']))

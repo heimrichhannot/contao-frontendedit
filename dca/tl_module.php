@@ -23,14 +23,18 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 	'{template_legend},formHybridTemplate,itemTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-
-
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol', 'formHybridAddDefaultValues'),
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
+
+if (in_array('entity_share', \ModuleLoader::getActive()))
+{
+
+}
+
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes'][MODULE_FRONTENDEDIT_READER];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
@@ -230,7 +234,6 @@ foreach (array('updateConditions', 'deleteConditions') as $strField)
 
 $arrDca['fields']['jumpToSuccess']['label']				= &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccess'];
 $arrDca['fields']['jumpToSuccess']['eval']['tl_class']	= 'w50 clr';
-
 
 class tl_module_frontendedit {
 

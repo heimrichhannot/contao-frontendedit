@@ -20,7 +20,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,formHybridAddSubmitValues,defaultArchive,setPageTitle,addClientsideValidation;' .
-	'{template_legend},formHybridTemplate,itemTemplate,customTpl;' .
+	'{template_legend},formHybridTemplate,itemTemplate,modalTpl,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
@@ -29,11 +29,6 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
 	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'),
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
-
-if (in_array('entity_share', \ModuleLoader::getActive()))
-{
-
-}
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes'][MODULE_FRONTENDEDIT_READER];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
@@ -64,7 +59,7 @@ $arrDca['subpalettes']['addEditCol'] = 'jumpToEdit';
 $arrDca['subpalettes']['noIdBehavior_redirect'] = 'existanceConditions';
 $arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
 $arrDca['subpalettes']['addUpdateConditions'] = 'updateConditions';
-$arrDca['subpalettes']['allowDelete'] = 'addDeleteConditions';
+$arrDca['subpalettes']['allowDelete'] = 'addDeleteConditions,jumpToAfterDelete';
 $arrDca['subpalettes']['addDeleteConditions'] = 'deleteConditions';
 
 /**
@@ -199,6 +194,7 @@ $arrFields = array(
 		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
 		'sql'                     => "char(1) NOT NULL default ''"
 	),
+	'jumpToAfterDelete'           => $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
 	'addDeleteConditions' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDeleteConditions'],
 		'exclude'                 => true,
@@ -234,6 +230,9 @@ foreach (array('updateConditions', 'deleteConditions') as $strField)
 
 $arrDca['fields']['jumpToSuccess']['label']				= &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccess'];
 $arrDca['fields']['jumpToSuccess']['eval']['tl_class']	= 'w50 clr';
+
+$arrDca['fields']['jumpToAfterDelete']['label']			= &$GLOBALS['TL_LANG']['tl_module']['jumpToAfterDelete'];
+$arrDca['fields']['jumpToAfterDelete']['eval']['tl_class']	= 'w50';
 
 class tl_module_frontendedit {
 

@@ -12,6 +12,7 @@ $arrLang['addPublishCol']						= array('Veröffentlichen-Spalte hinzufügen', 'K
 $arrLang['addUpdateConditions']  				= array('Bedingungen für das Bearbeiten hinzufügen', 'Wählen Sie hier aus, ob es Bedingungen für das Bearbeiten von Datensätzen geben soll.');
 $arrLang['updateConditions']					= array(' ', 'Wählen Sie hier aus, unter welchen Bedingungen das Bearbeiten von Datensätzen möglich sein soll.');
 $arrLang['allowDelete']							= array('Löschen erlauben', 'Wählen Sie hier aus, ob es durch Angabe des Paramaters act="delete" möglich sein soll, Datensätze zu löschen.');
+$arrLang['jumpToAfterDelete']					= array('Weiterleitung nach dem Löschen', 'Wählen Sie hier eine Seite aus, zu der nach dem erfolgreichen Löschen weitergeleitet werden soll.');
 $arrLang['addDeleteConditions']					= array('Bedingungen für das Löschen hinzufügen', 'Wählen Sie hier aus, ob es Bedingungen für das Löschen von Datensätzen geben soll.');
 $arrLang['deleteConditions']					= array(' ', 'Wählen Sie hier aus, unter welchen Bedingungen das Löschen von Datensätzen möglich sein soll.');
 $arrLang['setPageTitle']						= array('Instanzfeld als Seitentitel setzen', 'Wählen Sie diese Option, wenn nach dem Anlegen einer Instanz ein Feld als Seitentitel gesetzt werden soll (bspw. der Titel).');

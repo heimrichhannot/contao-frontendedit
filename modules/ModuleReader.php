@@ -114,7 +114,7 @@ class ModuleReader extends \Module
 			$this->intId = $this->intId ?: \Input::get('id');
 		}
 		
-		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
+		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id, $this->intId);
 		
 		// get id from FormSession
 		if (!$this->intId && $_POST)
@@ -266,7 +266,7 @@ class ModuleReader extends \Module
 		}
 		else
 		{
-			if ($this->checkDeletePermission($this->intId))
+			if ($this->checkUpdatePermission($this->intId))
 			{
 				// create a new lock if necessary
 				if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
@@ -297,7 +297,7 @@ class ModuleReader extends \Module
 			}
 		}
 		
-		if (\Environment::get('isAjaxRequest') && $this->useModal && !$this->objForm->isSubmitted && $this->checkUpdatePermission($this->intId)) {
+		if (\Environment::get('isAjaxRequest') && $this->checkUpdatePermission($this->intId)) {
 			$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
 			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
 			
@@ -361,6 +361,11 @@ class ModuleReader extends \Module
 
 			$this->runAfterDelete($blnDeleted, $objItem, $objDc);
 
+			if ($this->jumpToAfterDelete && $strUrl = Url::getJumpToPageUrl($this->jumpToAfterDelete))
+			{
+				\Controller::redirect($strUrl);
+			}
+
 			return $blnDeleted;
 		}
 
@@ -408,7 +413,7 @@ class ModuleReader extends \Module
 				}
 		}
 
-		return true;
+		return $this->allowDelete;
 	}
 
 	public function setSubmitCallbacks(array $callbacks)

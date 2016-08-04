@@ -252,7 +252,8 @@ class ModuleReader extends \Module
 					{
 						if (!$this->blnSilentMode)
 						{
-							StatusMessage::addError($GLOBALS['TL_LANG']['MSC']['entity_lock']['entityLocked'], $this->id, 'locked');
+							StatusMessage::addError(EntityLock::generateErrorMessage($this->formHybridDataContainer, $this->intId, $this),
+								$this->id, 'locked');
 						}
 
 						return;

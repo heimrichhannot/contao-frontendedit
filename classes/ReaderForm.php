@@ -30,7 +30,7 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 			$objModule->strFormClass = 'jquery-validation';
 		
 		$this->arrSubmitCallbacks = $submitCallbacks;
-
+		
 		parent::__construct($objModule, $intId);
 	}
 
@@ -55,44 +55,6 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 		if (in_array('entity_lock', \ModuleLoader::getActive()) && $this->addEntityLock)
 		{
 			\HeimrichHannot\EntityLock\EntityLockModel::deleteLocks($this->formHybridDataContainer, $this->intId);
-		}
-
-		$this->redirectAfterSuccess();
-	}
-
-	protected function redirectAfterSuccess()
-	{
-		if ($this->objModule->jumpToSuccess)
-		{
-			$strJumpToSuccess = Url::getJumpToPageUrl($this->objModule->jumpToSuccess);
-
-			if ($this->objModule->jumpToSuccessPreserveParams)
-			{
-				if ($strAct = \Input::get('act'))
-					$strJumpToSuccess = Url::addQueryString('act=' . $strAct, $strJumpToSuccess);
-
-				if ($intId = \Input::get('id'))
-					$strJumpToSuccess = Url::addQueryString('id=' . $intId, $strJumpToSuccess);
-
-				if (!$this->objModule->deactivateTokens)
-				{
-					$strJumpToSuccess = Url::addQueryString('token=' . \RequestToken::get(), $strJumpToSuccess);
-				}
-			}
-
-			StatusMessage::resetAll();
-
-			if (\Environment::get('isAjaxRequest'))
-			{
-				die(json_encode(array(
-					'type' => 'redirect',
-					'url' => $strJumpToSuccess
-				)));
-			}
-			else
-			{
-				\Controller::redirect($strJumpToSuccess);
-			}
 		}
 	}
 

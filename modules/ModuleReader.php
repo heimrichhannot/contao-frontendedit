@@ -188,47 +188,24 @@ class ModuleReader extends \Module
 				}
 				else
 				{
-					// if no id is given a new instance is initiated -> but not saved, yet
+					// if no id is given a new instance is initiated
 					$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
-					$this->Template->form = $this->objForm->generate();
-
-					if (!$this->intId)
+					
+					if($intId = $this->objForm->getId())
 					{
-						$objActiveRecord = $this->objForm->getSubmission();
-						$objActiveRecord->tstamp = 0;
-						$objActiveRecord->save();
-						
-						if($objActiveRecord !== null)
-						{
-							// store id once per module only
-							FormSession::addSubmissionId(FormHelper::getFormId($this->objForm->getTable(), $this->id), $objActiveRecord->id);
-						}
-
-						// run onsubmit_callback, required for example by HeimrichHannot\FormHybrid\TagsHelper::saveTagsFromDefaults()
-						if (is_array($this->dca['config']['onsubmit_callback'])) {
-							foreach ($this->dca['config']['onsubmit_callback'] as $callback) {
-								$this->import($callback[0]);
-								$this->$callback[0]->$callback[1]($this->objForm);
-
-								// reload model from database, maybe something has changed in callback
-								$objActiveRecord->refresh();
-							}
-						}
-
-						$this->intId = $objActiveRecord->id;
-						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
-						$this->Template->form = $this->objForm->generate();
+						$this->intId = $intId;
 					}
 				}
 			}
 		}
 
 		// intId is set at this point!
-
 		if (!$this->checkEntityExists($this->intId))
 		{
 			if (!$this->blnSilentMode)
+			{
 				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
+			}
 
 			return;
 		}
@@ -285,9 +262,24 @@ class ModuleReader extends \Module
 						\HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
 					}
 				}
-
+				
 				$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
 				$this->Template->form = $this->objForm->generate();
+				
+				if (\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal')
+				{
+					$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
+					$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
+					
+					if($objItem !== null)
+					{
+						$objModalWrapper->setData($objItem->row());
+					}
+					
+					$objModalWrapper->module = Arrays::arrayToObject($this->arrData);
+					$objModalWrapper->item = $this->replaceInsertTags($this->Template->parse());
+					die($objModalWrapper->parse());
+				}
 			}
 			else
 			{
@@ -295,20 +287,6 @@ class ModuleReader extends \Module
 					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
 				return;
 			}
-		}
-		
-		if (\Environment::get('isAjaxRequest') && $this->checkUpdatePermission($this->intId)) {
-			$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
-			$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-			
-			if($objItem !== null)
-			{
-				$objModalWrapper->setData($objItem->row());
-			}
-			
-			$objModalWrapper->module = Arrays::arrayToObject($this->arrData);
-			$objModalWrapper->item = $this->replaceInsertTags($this->Template->parse());
-			die($objModalWrapper->parse());
 		}
 	}
 

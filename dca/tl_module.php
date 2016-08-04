@@ -18,7 +18,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridViewMode;' .
 	'{action_legend},allowIdAsGetParameter,noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
-	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,formHybridAddSubmitValues,defaultArchive,setPageTitle,addClientsideValidation;' .
 	'{template_legend},formHybridTemplate,itemTemplate,modalTpl,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -38,7 +38,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] = '{title_legend},name,h
 	'{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
 	'{action_legend},existanceConditions,addUpdateConditions,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
-	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpToSuccess,jumpToSuccessPreserveParams;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams;' .
 	'{misc_legend},formHybridSuccessMessage,formHybridAddSubmitValues;{template_legend},formHybridTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -151,14 +151,6 @@ $arrFields = array(
 		'eval'                    => array('chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true),
 		'sql'                     => "int(10) unsigned NOT NULL default '0'"
 	),
-	'jumpToSuccess'					=> $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
-	'jumpToSuccessPreserveParams' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccessPreserveParams'],
-		'exclude'                 => true,
-		'inputType'               => 'checkbox',
-		'eval'                    => array('tl_class' => 'w50'),
-		'sql'                     => "char(1) NOT NULL default ''"
-	),
 	'deleteNotification'           => array
 	(
 		'label'            => &$GLOBALS['TL_LANG']['tl_module']['deleteNotification'],
@@ -228,9 +220,6 @@ foreach (array('updateConditions', 'deleteConditions') as $strField)
 	unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
 }
 
-$arrDca['fields']['jumpToSuccess']['label']				= &$GLOBALS['TL_LANG']['tl_module']['jumpToSuccess'];
-$arrDca['fields']['jumpToSuccess']['eval']['tl_class']	= 'w50 clr';
-
 $arrDca['fields']['jumpToAfterDelete']['label']			= &$GLOBALS['TL_LANG']['tl_module']['jumpToAfterDelete'];
 $arrDca['fields']['jumpToAfterDelete']['eval']['tl_class']	= 'w50';
 
@@ -250,6 +239,7 @@ class tl_module_frontendedit {
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_list_item_');
+				$arrDca['fields']['jumpTo']['eval']['tl_class']	= 'clr w50';
 			}
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
@@ -257,6 +247,7 @@ class tl_module_frontendedit {
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('frontendedit_item');
+				$arrDca['fields']['jumpTo']['eval']['tl_class']	= 'clr w50';
 			}
 		}
 	}

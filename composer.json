@@ -18,6 +18,7 @@
     },
     "require": {
         "contao/core": ">=3.2,<4-dev",
+        "heimrichhannot/contao-formhybrid": "~2.5",
         "heimrichhannot/contao-formhybrid_list": "~2.2",
 		"heimrichhannot/contao-notification_center_plus": "~1.0"
     },

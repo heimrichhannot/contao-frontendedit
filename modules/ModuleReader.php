@@ -11,7 +11,9 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\Ajax\Ajax;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybrid\Form;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
 use HeimrichHannot\FormHybridList\FormHybridList;
@@ -106,6 +108,13 @@ class ModuleReader extends \Module
 					$this->id, 'requestTokenExpired');
 			}
 
+			return;
+		}
+		
+		// do nothing, if request is ajax request but not related to formhybrid
+		// otherwise a new form entity might be generated and will be validated against wrong submission
+		if(Ajax::isRelated(Form::FORMHYBRID_NAME) === false)
+		{
 			return;
 		}
 

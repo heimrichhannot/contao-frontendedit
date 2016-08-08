@@ -111,13 +111,6 @@ class ModuleReader extends \Module
 			return;
 		}
 		
-		// do nothing, if request is ajax request but not related to formhybrid
-		// otherwise a new form entity might be generated and will be validated against wrong submission
-		if(Ajax::isRelated(Form::FORMHYBRID_NAME) === false)
-		{
-			return;
-		}
-
 		if($this->allowIdAsGetParameter)
 		{
 			$this->intId = $this->intId ?: \Input::get('id');

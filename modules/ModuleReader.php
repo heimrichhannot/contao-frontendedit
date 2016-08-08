@@ -254,7 +254,7 @@ class ModuleReader extends \Module
 					{
 						if (!$this->blnSilentMode)
 						{
-							StatusMessage::addError(EntityLock::generateErrorMessage($this->formHybridDataContainer, $this->intId, $this),
+							StatusMessage::addError(\HeimrichHannot\EntityLock\EntityLock::generateErrorMessage($this->formHybridDataContainer, $this->intId, $this),
 								$this->id, 'locked');
 						}
 

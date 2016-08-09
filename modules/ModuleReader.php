@@ -11,9 +11,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-use HeimrichHannot\Ajax\Ajax;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybrid\Form;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
 use HeimrichHannot\FormHybridList\FormHybridList;
@@ -116,17 +114,6 @@ class ModuleReader extends \Module
 			$this->intId = $this->intId ?: \Input::get('id');
 		}
 		
-		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id, $this->intId);
-		
-		// get id from FormSession
-		if (!$this->intId && $_POST)
-		{
-			if ($intId = FormSession::getSubmissionId($strFormId))
-			{
-				$this->intId = $intId;
-			}
-		}
-
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
 		// get id from share
@@ -201,6 +188,17 @@ class ModuleReader extends \Module
 			}
 		}
 
+		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
+
+		// get id from FormSession
+		if (!$this->intId && $_POST)
+		{
+			if ($intId = FormSession::getSubmissionId($strFormId))
+			{
+				$this->intId = $intId;
+			}
+		}
+
 		// intId is set at this point!
 		if (!$this->checkEntityExists($this->intId))
 		{
@@ -252,10 +250,21 @@ class ModuleReader extends \Module
 				{
 					if (\HeimrichHannot\EntityLock\EntityLockModel::isLocked($this->formHybridDataContainer, $this->intId, $this))
 					{
+						$objLock = \HeimrichHannot\EntityLock\EntityLockModel::findActiveLock($this->formHybridDataContainer, $this->intId, $this);
+						$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
+
 						if (!$this->blnSilentMode)
 						{
-							StatusMessage::addError(\HeimrichHannot\EntityLock\EntityLock::generateErrorMessage($this->formHybridDataContainer, $this->intId, $this),
-								$this->id, 'locked');
+							$strMessage = \HeimrichHannot\EntityLock\EntityLock::generateErrorMessage(
+								$this->formHybridDataContainer, $this->intId, $this);
+
+							if ($this->allowLockDeletion)
+							{
+								$strUnlockForm = $this->generateUnlockForm($objItem, $objLock);
+								$strMessage .= $strUnlockForm;
+							}
+
+							StatusMessage::addError($strMessage, $this->id, 'locked');
 						}
 
 						return;
@@ -291,6 +300,12 @@ class ModuleReader extends \Module
 				return;
 			}
 		}
+	}
+
+	public function generateUnlockForm($objItem, $objLock)
+	{
+		return \HeimrichHannot\EntityLock\EntityLock::generateUnlockForm(
+			$this->formHybridDataContainer, $objItem, $objLock, $this);
 	}
 
 	public function checkEntityExists($intId)

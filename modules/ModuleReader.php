@@ -267,7 +267,15 @@ class ModuleReader extends \Module
 							StatusMessage::addError($strMessage, $this->id, 'locked');
 						}
 
-						return;
+						if ($this->readOnlyOnLocked)
+						{
+							$this->objModel->formHybridViewMode = FORMHYBRID_VIEW_MODE_READONLY;
+							$this->objModel->formHybridReadonlyTemplate = 'formhybridreadonly_default';
+						}
+						else
+						{
+							return;
+						}
 					}
 					else
 					{

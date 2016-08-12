@@ -177,25 +177,28 @@ class ModuleReader extends \Module
 				}
 				else
 				{
-					// if no id is given a new instance is initiated
-					$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
-					
-					if($intId = $this->objForm->getId())
+					$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
+
+					// get id from FormSession
+					if ($_POST)
 					{
-						$this->intId = $intId;
+						if ($intId = FormSession::getSubmissionId($strFormId))
+						{
+							$this->intId = $intId;
+						}
+					}
+
+					if (!$this->intId)
+					{
+						// if no id is given a new instance is initiated
+						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
+
+						if($intId = $this->objForm->getId())
+						{
+							$this->intId = $intId;
+						}
 					}
 				}
-			}
-		}
-
-		$strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
-
-		// get id from FormSession
-		if (!$this->intId && $_POST)
-		{
-			if ($intId = FormSession::getSubmissionId($strFormId))
-			{
-				$this->intId = $intId;
 			}
 		}
 
@@ -282,8 +285,12 @@ class ModuleReader extends \Module
 						\HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
 					}
 				}
-				
-				$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+
+				if($this->objForm === null)
+				{
+					$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+				}
+
 				$this->Template->form = $this->objForm->generate();
 				
 				if (\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal')

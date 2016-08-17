@@ -205,11 +205,6 @@ class ModuleReader extends \Module
 		// intId is set at this point!
 		if (!$this->checkEntityExists($this->intId))
 		{
-			if (!$this->blnSilentMode)
-			{
-				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
-			}
-
 			return;
 		}
 

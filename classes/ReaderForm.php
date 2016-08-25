@@ -60,25 +60,6 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 
 	protected function compile() {}
 
-	protected function generateSubmitField()
-	{
-		if($this->customSubmit)
-		{
-			return parent::generateSubmitField();
-		}
-
-		$this->arrFields[FORMHYBRID_NAME_SUBMIT] = $this->generateField(FORMHYBRID_NAME_SUBMIT, array(
-			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE]
-		));
-
-//		$this->arrFields[FRONTENDEDIT_BUTTON_SAVE_RETURN] = $this->generateField(FRONTENDEDIT_BUTTON_SAVE_RETURN, array(
-//			'inputType' => 'submit',
-//			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE_RETURN],
-//			'eval'		=> array('class' => 'btn btn-gray')
-//		));
-	}
-
 	public function setReaderModule($objModule)
 	{
 		$this->objReaderModule = $objModule;

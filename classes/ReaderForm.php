@@ -62,6 +62,11 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 
 	protected function generateSubmitField()
 	{
+		if($this->customSubmit)
+		{
+			return parent::generateSubmitField();
+		}
+
 		$this->arrFields[FORMHYBRID_NAME_SUBMIT] = $this->generateField(FORMHYBRID_NAME_SUBMIT, array(
 			'inputType' => 'submit',
 			'label'		=> &$GLOBALS['TL_LANG']['frontendedit'][FRONTENDEDIT_BUTTON_SAVE]

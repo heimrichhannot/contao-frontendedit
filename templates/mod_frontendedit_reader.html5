@@ -7,7 +7,6 @@
 	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
 	<?php echo $this->form ?: ''; ?>
-	<?php echo $this->item ?: ''; ?>
 </div>
 
 <?php $this->endblock(); ?>

@@ -111,7 +111,7 @@ class ModuleReader extends \Module
 		
 		if($this->allowIdAsGetParameter)
 		{
-			$this->intId = $this->intId ?: \Input::get('id');
+			$this->intId = $this->intId ?: \Input::get($this->idGetParameter);
 		}
 		
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
@@ -287,7 +287,8 @@ class ModuleReader extends \Module
 				}
 
 				$this->Template->form = $this->objForm->generate();
-				
+				$this->Template->item = $objItem;
+
 				if (\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal')
 				{
 					$objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);

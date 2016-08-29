@@ -56,15 +56,18 @@ class ValidatorForm extends ReaderForm
 
 	public function runOnValidationError($arrInvalidFields)
 	{
-		$arrDca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
+		$arrDca = $GLOBALS['TL_DCA'][$this->strTable];
+		\System::loadLanguageFile($this->strTable);
+
 		StatusMessage::addError(
 			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'],
-				implode(', ', array_map(function($val) use ($arrDca) {
-					return $arrDca['fields'][$val]['label'][0] ?: $val;
-				}, $arrInvalidFields))),
+				'<ul>' . implode('', array_map(function($val) use ($arrDca) {
+					return '<li>' . ($arrDca['fields'][$val]['label'][0] ?: $val) . '</li>';
+				}, $arrInvalidFields))) . '</ul>',
 			$this->objModule->id,
 			'validation-failed'
 		);
+
 		\Controller::reload();
 	}
 }

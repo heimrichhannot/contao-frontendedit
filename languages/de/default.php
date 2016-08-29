@@ -28,5 +28,5 @@ $arrLang['publishTitle'] = 'Veröffentlichen';
 $arrLang['create'] = 'Neu';
 $arrLang['unpublishTitle'] = 'Verstecken';
 $arrLang['noIdFound'] = 'Kein ID-Parameter gefunden.';
-$arrLang['validationFailed'] = 'Sie haben die folgenden Felder noch nicht korrekt ausgefüllt: %s.';
+$arrLang['validationFailed'] = 'Sie haben die folgenden Felder noch nicht korrekt ausgefüllt: %s';
 $arrLang['requestTokenExpired'] = 'Ihre Sitzung ist abgelaufen. Um weiterzuarbeiten, klicken Sie bitte <a href="%s">hier</a>.';

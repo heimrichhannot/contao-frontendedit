@@ -22,5 +22,5 @@ $arrLang['publishTitle'] = 'Publish';
 $arrLang['create'] = 'New';
 $arrLang['unpublishTitle'] = 'Hide';
 $arrLang['noIdFound'] = 'No ID parameter found.';
-$arrLang['validationFailed'] = 'The following mandatory fields aren\'t filled in, yet: %s.';
+$arrLang['validationFailed'] = 'The following mandatory fields aren\'t filled in, yet: %s';
 $arrLang['requestTokenExpired'] = 'Your session expired. Click <a href="%s">here</a> to go on.';

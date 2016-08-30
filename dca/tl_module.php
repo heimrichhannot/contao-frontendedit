@@ -16,7 +16,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  */
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddPermanentFields,formHybridViewMode;'
-												  . '{action_legend},allowIdAsGetParameter,noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;'
+												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,addUpdateConditions,allowDelete,deactivateTokens;'
 												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams;'
 												  . '{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,formHybridCustomSubmit,defaultArchive,setPageTitle,addClientsideValidation;'
 												  . '{template_legend},formHybridTemplate,itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -33,7 +33,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]         = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
-	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},existanceConditions,addUpdateConditions,deactivateTokens;'
+	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},allowIdAsGetParameter,existanceConditions,addUpdateConditions,deactivateTokens;'
 	. '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams;'
 	. '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit;{template_legend},formHybridTemplate,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -47,7 +47,6 @@ $arrDca['palettes']['__selector__'][] = 'noIdBehavior';
 $arrDca['palettes']['__selector__'][] = 'addUpdateConditions';
 $arrDca['palettes']['__selector__'][] = 'allowDelete';
 $arrDca['palettes']['__selector__'][] = 'addDeleteConditions';
-$arrDca['palettes']['__selector__'][] = 'allowIdAsGetParameter';
 
 $arrDca['subpalettes']['addCustomFilterFields']     = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton']           = 'jumpToCreate,createButtonLabel,createMemberGroups';
@@ -57,8 +56,6 @@ $arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
 $arrDca['subpalettes']['addUpdateConditions']       = 'updateConditions';
 $arrDca['subpalettes']['allowDelete']               = 'addDeleteConditions,jumpToAfterDelete';
 $arrDca['subpalettes']['addDeleteConditions']       = 'deleteConditions';
-$arrDca['subpalettes']['allowIdAsGetParameter']     = 'idGetParameter';
-
 /**
  * Callbacks
  */
@@ -158,7 +155,7 @@ $arrFields = array(
 		'default'   => 'create',
 		'options'   => array('create', 'create_until', 'redirect', 'error'),
 		'reference' => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
-		'eval'      => array('maxlength' => 255, 'tl_class' => 'w50', 'submitOnChange' => true),
+		'eval'      => array('maxlength' => 255, 'tl_class' => 'w50 clr', 'submitOnChange' => true),
 		'sql'       => "varchar(255) NOT NULL default ''",
 	),
 	'addUpdateConditions'     => array(
@@ -191,20 +188,6 @@ $arrFields = array(
 		'inputType' => 'checkbox',
 		'eval'      => array('tl_class' => 'w50 clr'),
 		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'allowIdAsGetParameter'   => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['allowIdAsGetParameter'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'idGetParameter'          => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['idGetParameter'],
-		'exclude'   => true,
-		'inputType' => 'text',
-		'eval'      => array('tl_class' => 'w50', 'maxlength' => 64, 'mandatory' => true),
-		'sql'       => "varchar(64) NOT NULL default 'id'",
 	),
 );
 

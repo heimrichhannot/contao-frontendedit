@@ -4,8 +4,9 @@
  * Contao Open Source CMS
  *
  * Copyright (c) Heimrich & Hannot GmbH
+ *
  * @package frontendedit
- * @author Dennis Patzer
+ * @author  Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
@@ -18,7 +19,7 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 {
-	protected $strWrapperId = 'frontendedit-list_';
+	protected $strWrapperId    = 'frontendedit-list_';
 	protected $strWrapperClass = 'frontendedit-list';
 
 	public function generate()
@@ -28,15 +29,15 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			$objTemplate = new \BackendTemplate('be_wildcard');
 
 			$objTemplate->wildcard = '### FRONTENDEDIT LIST ###';
-			$objTemplate->title = $this->headline;
-			$objTemplate->id = $this->id;
-			$objTemplate->link = $this->name;
-			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+			$objTemplate->title    = $this->headline;
+			$objTemplate->id       = $this->id;
+			$objTemplate->link     = $this->name;
+			$objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
 			return $objTemplate->parse();
 		}
 
-		$this->strTemplate = $this->customTpl ?: ($this->strTemplate ?: ($this->isTableList ? 'mod_frontendedit_list_table' : 'mod_frontendedit_list'));
+		$this->strTemplate  = $this->customTpl ?: ($this->strTemplate ?: ($this->isTableList ? 'mod_frontendedit_list_table' : 'mod_frontendedit_list'));
 		$this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'frontendedit_list_item_table_default' : 'frontendedit_list_item_default');
 
 		return parent::generate();
@@ -50,8 +51,11 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		if ($strAction && !\RequestToken::validate(\Input::get('token')) && !$this->deactivateTokens)
 		{
 			StatusMessage::addError(
-					sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'], Environment::getUrl(true, true, false)),
-					$this->id, 'requestTokenExpired');
+				sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'], Environment::getUrl(true, true, false)),
+				$this->id,
+				'requestTokenExpired'
+			);
+
 			return;
 		}
 
@@ -62,10 +66,10 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 				$this->deleteItem($intId);
 				// return to the list
 				\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Environment::getUrl()));
-			}
-			else
+			} else
 			{
 				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
+
 				return;
 			}
 		}
@@ -78,10 +82,10 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 				// return to the list
 				\Controller::redirect(Url::removeQueryString(array('act', 'id'), Environment::getUrl()));
 
-			}
-			else
+			} else
 			{
 				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
+
 				return;
 			}
 		}
@@ -136,12 +140,14 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 				$this->Template->createUrl = Url::addQueryString('&token=' . \RequestToken::get(), $this->Template->createUrl);
 			}
 
-			$arrGroups = deserialize($this->createMemberGroups, true);
-			$objMember = \FrontendUser::getInstance();
+			$arrGroups       = deserialize($this->createMemberGroups, true);
+			$objMember       = \FrontendUser::getInstance();
 			$arrIntersection = array_intersect($arrGroups, deserialize($objMember->groups, true));
 
 			if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty($arrIntersection)))
+			{
 				$this->Template->addCreateButton = false;
+			}
 		}
 	}
 
@@ -157,7 +163,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			$arrItem['addEditCol'] = true;
 
 			$arrItem['editUrl'] = Url::addQueryString(
-				'id=' . $objItem->id . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
+				$this->formHybridIdGetParameter . '=' . $objItem->id . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
 				$this->generateFrontendUrl($objPageJumpTo->row())
 			);
 		}
@@ -167,23 +173,30 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		{
 			$arrItem['addDeleteCol'] = true;
 
-			$arrItem['deleteUrl'] = Url::addQueryString('id=' . $objItem->id . '&act=delete' .
-				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
-				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
+			$arrItem['deleteUrl'] = Url::addQueryString(
+				$this->formHybridIdGetParameter . '=' . $objItem->id . '&act=delete' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
+				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl()
+			);
 		}
 
 		// publish url
 		if ($this->addPublishCol)
 		{
 			$arrItem['addPublishCol'] = true;
-			$arrItem['publishUrl'] = Url::addQueryString('id=' . $objItem->id . '&act=publish' .
-				(!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
-				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl());
+			$arrItem['publishUrl']    = Url::addQueryString(
+				$this->formHybridIdGetParameter . '=' . $objItem->id . '&act=publish' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
+				$this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl()
+			);
 		}
 	}
 
 	public function checkPermission($intId)
 	{
+		if(!is_numeric($intId))
+		{
+			return false;
+		}
+
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
 		if ($this->addUpdateConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
@@ -191,11 +204,15 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			$arrConditions = deserialize($this->updateConditions, true);
 
 			if (!empty($arrConditions))
+			{
 				foreach ($arrConditions as $arrCondition)
 				{
 					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+					{
 						return false;
+					}
 				}
+			}
 		}
 
 		return true;

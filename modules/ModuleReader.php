@@ -11,6 +11,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\Ajax\Response\ResponseRedirect;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
@@ -109,9 +110,14 @@ class ModuleReader extends \Module
 			return;
 		}
 		
-		if($this->allowIdAsGetParameter)
+		if($this->formHybridAllowIdAsGetParameter)
 		{
-			$this->intId = $this->intId ?: \Input::get($this->idGetParameter);
+			$intId = \Input::get($this->formHybridIdGetParameter);
+
+			if(is_numeric($intId))
+			{
+				$this->intId = $intId;
+			}
 		}
 		
 		$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
@@ -155,11 +161,12 @@ class ModuleReader extends \Module
 
 					foreach ($arrConditions as $arrCondition)
 					{
+						if(!$arrCondition['field']) continue;
 						$arrColumns[] = $arrCondition['field'] . '=?';
 						$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
 					}
 
-					if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+					if (!empty($arrColumns) && ($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
 					{
 						$this->intId = $objItem->id;
 					}
@@ -205,6 +212,8 @@ class ModuleReader extends \Module
 		// intId is set at this point!
 		if (!$this->checkEntityExists($this->intId))
 		{
+			if (!$this->blnSilentMode)
+				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
 			return;
 		}
 

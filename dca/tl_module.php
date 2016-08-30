@@ -203,7 +203,7 @@ $arrFields = array(
 		'label'     => &$GLOBALS['TL_LANG']['tl_module']['idGetParameter'],
 		'exclude'   => true,
 		'inputType' => 'text',
-		'eval'      => array('tl_class' => 'w50', 'maxlength' => 64),
+		'eval'      => array('tl_class' => 'w50', 'maxlength' => 64, 'mandatory' => true),
 		'sql'       => "varchar(64) NOT NULL default 'id'",
 	),
 );

@@ -158,13 +158,20 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 		global $objPage;
 
 		// edit
-		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage)
+		if ($this->addEditCol)
 		{
 			$arrItem['addEditCol'] = true;
 
+			$strUrl = $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl();
+
+			if(($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null && $this->jumpToEdit != $objPage->id)
+			{
+				$strUrl = \Controller::generateFrontendUrl($objPageJumpTo->row(), null, null, true);
+			}
+
 			$arrItem['editUrl'] = Url::addQueryString(
 				$this->formHybridIdGetParameter . '=' . $objItem->id . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
-				$this->generateFrontendUrl($objPageJumpTo->row())
+				$strUrl
 			);
 		}
 

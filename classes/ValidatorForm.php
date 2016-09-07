@@ -46,14 +46,6 @@ class ValidatorForm extends ReaderForm
 		}
 	}
 
-	protected function generateSubmitField()
-	{
-		$this->arrFields[FRONTENDEDIT_BUTTON_SUBMIT] = $this->generateField(FRONTENDEDIT_BUTTON_SUBMIT, array(
-			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['frontendedit']['submit']
-		));
-	}
-
 	public function runOnValidationError($arrInvalidFields)
 	{
 		$arrDca = $GLOBALS['TL_DCA'][$this->strTable];
@@ -62,7 +54,15 @@ class ValidatorForm extends ReaderForm
 		StatusMessage::addError(
 			sprintf($GLOBALS['TL_LANG']['frontendedit']['validationFailed'],
 				'<ul>' . implode('', array_map(function($val) use ($arrDca) {
-					return '<li>' . ($arrDca['fields'][$val]['label'][0] ?: $val) . '</li>';
+					$arrData = $arrDca['fields'][$val];
+					$strLabel = $arrData['label'][0] ?: $val;
+
+					if($arrData['eval']['validatorLabel'])
+					{
+						$strLabel = $arrData['eval']['validatorLabel'];
+					}
+
+					return '<li>' . $strLabel . '</li>';
 				}, $arrInvalidFields))) . '</ul>',
 			$this->objModule->id,
 			'validation-failed'

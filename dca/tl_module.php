@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,addUpdateConditions,allowDelete,formHybridResetAfterSubmission,deactivateTokens;'
 												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams;'
 												  . '{misc_legend},formHybridSuccessMessage,formHybridAddDefaultValues,formHybridCustomSubmit,defaultArchive,setPageTitle,addClientsideValidation;'
-												  . '{template_legend},formHybridTemplate,itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+												  . '{template_legend},itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
@@ -35,7 +35,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
 	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,addUpdateConditions,deactivateTokens;'
 	. '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams;'
-	. '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit;{template_legend},formHybridTemplate,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+	. '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit;{template_legend},customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**
  * Subpalettes

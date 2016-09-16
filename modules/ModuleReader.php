@@ -399,16 +399,49 @@ class ModuleReader extends \Module
 
 	public function checkUpdatePermission($intId)
 	{
-		if ($this->addUpdateConditions && ($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
+		if (($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) === null)
 		{
-			$arrConditions = deserialize($this->updateConditions, true);
+			return false;
+		}
 
-			if (!empty($arrConditions))
-				foreach ($arrConditions as $arrCondition)
+		$arrConditions = array();
+
+		// check session if not logged in...
+		if (!FE_USER_LOGGED_IN)
+		{
+			$arrConditions[] = array(
+					'field' => General::PROPERTY_SESSION_ID,
+					'value' => session_id()
+			);
+		}
+		// ...and check member id if logged in
+		else
+		{
+			$arrConditions[] = array(
+					'field' => General::PROPERTY_AUTHOR_TYPE,
+					'value' => General::AUTHOR_TYPE_MEMBER
+			);
+
+			$arrConditions[] = array(
+					'field' => General::PROPERTY_AUTHOR,
+					'value' => \FrontendUser::getInstance()->id
+			);
+		}
+
+		if ($this->addUpdateConditions)
+		{
+			$arrConditions = array_merge(deserialize($this->updateConditions, true), $arrConditions);
+		}
+
+		if (!empty($arrConditions))
+		{
+			foreach ($arrConditions as $arrCondition)
+			{
+				if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
 				{
-					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
-						return false;
+					return false;
 				}
+			}
 		}
 
 		return true;

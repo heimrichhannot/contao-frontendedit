@@ -10,6 +10,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-class FrontendEdit extends \Controller {
+class FrontendEdit extends \Controller
+{
 
 }

@@ -16,7 +16,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  */
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
-												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,addUpdateConditions,allowDelete,formHybridResetAfterSubmission,deactivateTokens;'
+												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridResetAfterSubmission,deactivateTokens;'
 												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddCustomHashToAction;'
 												  . '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,setPageTitle,addClientsideValidation;'
 												  . '{template_legend},itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -33,7 +33,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]         = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
-	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,addUpdateConditions,deactivateTokens;'
+	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;'
 	. '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams,formHybridAddCustomHashToAction;'
 	. '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit;{template_legend},customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -184,6 +184,20 @@ $arrFields = array(
 	'deleteConditions'        => $arrDca['fields']['formHybridDefaultValues'],
 	'addClientsideValidation' => array(
 		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
+		'exclude'   => true,
+		'inputType' => 'checkbox',
+		'eval'      => array('tl_class' => 'w50 clr'),
+		'sql'       => "char(1) NOT NULL default ''",
+	),
+	'disableSessionCheck' => array(
+		'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
+		'exclude'   => true,
+		'inputType' => 'checkbox',
+		'eval'      => array('tl_class' => 'w50 clr'),
+		'sql'       => "char(1) NOT NULL default ''",
+	),
+	'disableAuthorCheck' => array(
+		'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
 		'exclude'   => true,
 		'inputType' => 'checkbox',
 		'eval'      => array('tl_class' => 'w50 clr'),

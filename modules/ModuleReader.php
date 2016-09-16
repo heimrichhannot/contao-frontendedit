@@ -409,23 +409,29 @@ class ModuleReader extends \Module
 		// check session if not logged in...
 		if (!FE_USER_LOGGED_IN)
 		{
-			$arrConditions[] = array(
+			if(!$this->disableSessionCheck)
+			{
+				$arrConditions[] = array(
 					'field' => General::PROPERTY_SESSION_ID,
 					'value' => session_id()
-			);
+				);
+			}
 		}
 		// ...and check member id if logged in
 		else
 		{
-			$arrConditions[] = array(
+			if(!$this->disableAuthorCheck)
+			{
+				$arrConditions[] = array(
 					'field' => General::PROPERTY_AUTHOR_TYPE,
 					'value' => General::AUTHOR_TYPE_MEMBER
-			);
+				);
 
-			$arrConditions[] = array(
+				$arrConditions[] = array(
 					'field' => General::PROPERTY_AUTHOR,
 					'value' => \FrontendUser::getInstance()->id
-			);
+				);
+			}
 		}
 
 		if ($this->addUpdateConditions)
@@ -449,20 +455,63 @@ class ModuleReader extends \Module
 
 	public function checkDeletePermission($intId)
 	{
-		if ($this->allowDelete && $this->addDeleteConditions &&
-			($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) !== null)
+		if(!$this->allowDelete)
 		{
-			$arrConditions = deserialize($this->deleteConditions, true);
-
-			if (!empty($arrConditions))
-				foreach ($arrConditions as $arrCondition)
-				{
-					if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
-						return false;
-				}
+			return false;
 		}
 
-		return $this->allowDelete;
+		if(($objItem = General::getModelInstance($this->formHybridDataContainer, $intId)) === null)
+		{
+			return false;
+		}
+
+		$arrConditions = array();
+
+		// check session if not logged in...
+		if (!FE_USER_LOGGED_IN)
+		{
+			if(!$this->disableSessionCheck)
+			{
+				$arrConditions[] = array(
+					'field' => General::PROPERTY_SESSION_ID,
+					'value' => session_id()
+				);
+			}
+		}
+		// ...and check member id if logged in
+		else
+		{
+			if(!$this->disableAuthorCheck)
+			{
+				$arrConditions[] = array(
+					'field' => General::PROPERTY_AUTHOR_TYPE,
+					'value' => General::AUTHOR_TYPE_MEMBER
+				);
+
+				$arrConditions[] = array(
+					'field' => General::PROPERTY_AUTHOR,
+					'value' => \FrontendUser::getInstance()->id
+				);
+			}
+		}
+
+		if ($this->addDeleteConditions)
+		{
+			$arrConditions = array_merge(deserialize($this->deleteConditions, true), $arrConditions);
+		}
+
+		if (!empty($arrConditions))
+		{
+			foreach ($arrConditions as $arrCondition)
+			{
+				if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	public function setSubmitCallbacks(array $callbacks)

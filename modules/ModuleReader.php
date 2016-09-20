@@ -13,6 +13,7 @@ namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\Ajax\Response\ResponseRedirect;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybrid\FormConfiguration;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
 use HeimrichHannot\FormHybridList\FormHybridList;
@@ -90,9 +91,9 @@ class ModuleReader extends \Module
 			$this->Template->hl = $this->hl;
 		}
 
-		if (!empty($this->objModel->classes) && is_array($this->objModel->classes))
+		if (!empty($this->classes) && is_array($this->classes))
 		{
-			$this->Template->class .= ' ' . implode(' ', $this->objModel->classes);
+			$this->Template->class .= ' ' . implode(' ', $this->classes);
 		}
 
 		$this->addDefaultArchive();
@@ -198,7 +199,7 @@ class ModuleReader extends \Module
 					if (!$this->intId)
 					{
 						// if no id is given a new instance is initiated
-						$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
+						$this->objForm = new $this->strFormClass(new FormConfiguration($this->arrData), $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
 
 						if($intId = $this->objForm->getId())
 						{
@@ -276,8 +277,8 @@ class ModuleReader extends \Module
 
 						if ($this->readOnlyOnLocked)
 						{
-							$this->objModel->formHybridViewMode = FORMHYBRID_VIEW_MODE_READONLY;
-							$this->objModel->formHybridReadonlyTemplate = 'formhybridreadonly_default';
+							$this->formHybridViewMode = FORMHYBRID_VIEW_MODE_READONLY;
+							$this->formHybridReadonlyTemplate = 'formhybridreadonly_default';
 						}
 						else
 						{
@@ -292,7 +293,7 @@ class ModuleReader extends \Module
 
 				if($this->objForm === null)
 				{
-					$this->objForm = new $this->strFormClass($this->objModel, $this->arrSubmitCallbacks, $this->intId, $this);
+					$this->objForm = new $this->strFormClass(new FormConfiguration($this->arrData), $this->arrSubmitCallbacks, $this->intId, $this);
 				}
 
 				$this->Template->form = $this->objForm->generate();
@@ -521,17 +522,17 @@ class ModuleReader extends \Module
 
 	protected function addDefaultArchive()
 	{
-		if ($this->objModel->defaultArchive)
+		if ($this->defaultArchive)
 		{
-			$this->objModel->formHybridAddDefaultValues = true;
-			$this->objModel->formHybridDefaultValues = deserialize($this->objModel->formHybridDefaultValues, true);
+			$this->formHybridAddDefaultValues = true;
+			$this->formHybridDefaultValues = deserialize($this->formHybridDefaultValues, true);
 
-			$this->objModel->formHybridDefaultValues = array_merge(array(array(
+			$this->formHybridDefaultValues = array_merge(array(array(
 				'field' => 'pid',
-				'value' => $this->objModel->defaultArchive
-			)), $this->objModel->formHybridDefaultValues);
+				'value' => $this->defaultArchive
+			)), $this->formHybridDefaultValues);
 
-			$this->objModel->formHybridDefaultValues = serialize($this->objModel->formHybridDefaultValues);
+			$this->formHybridDefaultValues = serialize($this->formHybridDefaultValues);
 		}
 	}
 

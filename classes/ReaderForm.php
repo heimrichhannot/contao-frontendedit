@@ -11,27 +11,25 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
-use HeimrichHannot\Haste\Util\Url;
-use HeimrichHannot\StatusMessages\StatusMessage;
-
 class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
 	protected $objReaderModule;
 
-	public function __construct($objModule, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
+	public function __construct($objConfig, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 
-		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_default';
+		$objConfig->formHybridTemplate = $objConfig->formHybridTemplate ?: 'formhybrid_default';
 		$this->objReaderModule = $objReaderForm;
-		$objModule->initiallySaveModel = true;
 
-		if ($objModule->addClientsideValidation)
-			$objModule->strFormClass = 'jquery-validation';
-		
+		if ($objConfig->addClientsideValidation)
+		{
+			$objConfig->strFormClass = 'jquery-validation';
+		}
+
 		$this->arrSubmitCallbacks = $submitCallbacks;
 		
-		parent::__construct($objModule, $intId);
+		parent::__construct($objConfig, $intId);
 	}
 
 	protected function onSubmitCallback(\DataContainer $dc) {

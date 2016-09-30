@@ -36,7 +36,7 @@ class ModuleReader extends \Module
 	protected $strWrapperClass = 'frontendedit-reader';
 
 	/**
-	 * @var \Form
+	 * @var \HeimrichHannot\FormHybrid\Form
 	 */
 	protected $objForm;
 
@@ -297,7 +297,7 @@ class ModuleReader extends \Module
 				}
 
 				$this->Template->form = $this->objForm->generate();
-				$this->Template->item = $objItem;
+				$this->Template->item = $this->objForm->activeRecord;
 
 				if (\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal')
 				{

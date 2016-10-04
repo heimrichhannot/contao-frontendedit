@@ -32,17 +32,21 @@ class ValidatorForm extends ReaderForm
 
 	protected function onSubmitCallback(\DataContainer $objDc) {
 		parent::onSubmitCallback($objDc);
-		$strPublishedField = $this->objModule->publishedField;
 
-		if ($this->objModule->publishedField)
+		if ($this->publishOnValid)
 		{
-			$strModelClass = \Model::getClassFromTable($this->objModule->formHybridDataContainer);
+			$strPublishedField = $this->publishedField;
 
-			$objInstance = $strModelClass::findByPk($objDc->activeRecord->id);
+			if ($this->publishedField)
+			{
+				$strModelClass = \Model::getClassFromTable($this->strTable);
 
-			$objInstance->{$strPublishedField} = $this->objModule->invertPublishedField ? '' : 1;
+				$objInstance = $strModelClass::findByPk($objDc->objActiveRecord->id);
 
-			$objInstance->save();
+				$objInstance->{$strPublishedField} = $this->invertPublishedField ? '' : 1;
+
+				$objInstance->save();
+			}
 		}
 	}
 

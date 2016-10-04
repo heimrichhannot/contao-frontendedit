@@ -18,7 +18,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
 												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridResetAfterSubmission,deactivateTokens;'
 												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddCustomHashToAction;'
-												  . '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,setPageTitle,addClientsideValidation;'
+												  . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,setPageTitle,addClientsideValidation;'
 												  . '{template_legend},itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
@@ -33,9 +33,12 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]         = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
-	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' . '{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;'
-	. '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams,formHybridAddCustomHashToAction;'
-	. '{misc_legend},formHybridSuccessMessage,formHybridCustomSubmit;{template_legend},customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
+	'{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;' .
+	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams,formHybridAddCustomHashToAction;' .
+	'{misc_legend},publishOnValid,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,formHybridAddDefaultValues;{template_legend},customTpl;' .
+	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**
  * Subpalettes
@@ -47,6 +50,7 @@ $arrDca['palettes']['__selector__'][] = 'noIdBehavior';
 $arrDca['palettes']['__selector__'][] = 'addUpdateConditions';
 $arrDca['palettes']['__selector__'][] = 'allowDelete';
 $arrDca['palettes']['__selector__'][] = 'addDeleteConditions';
+$arrDca['palettes']['__selector__'][] = 'publishOnValid';
 
 $arrDca['subpalettes']['addCustomFilterFields']     = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton']           = 'jumpToCreate,createButtonLabel,createMemberGroups';
@@ -56,6 +60,8 @@ $arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
 $arrDca['subpalettes']['addUpdateConditions']       = 'updateConditions';
 $arrDca['subpalettes']['allowDelete']               = 'addDeleteConditions,jumpToAfterDelete';
 $arrDca['subpalettes']['addDeleteConditions']       = 'deleteConditions';
+$arrDca['subpalettes']['publishOnValid']            = 'publishedField,invertPublishedField';
+
 /**
  * Callbacks
  */
@@ -202,6 +208,13 @@ $arrFields = array(
 		'inputType' => 'checkbox',
 		'eval'      => array('tl_class' => 'w50 clr'),
 		'sql'       => "char(1) NOT NULL default ''",
+	),
+	'publishOnValid' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['publishOnValid'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
 	),
 );
 

@@ -31,8 +31,9 @@ $arrLang['createMemberGroups']           = array('"Neu"-Button schützen', 'Lege
 $arrLang['defaultArchive']               = array('Standardarchiv', 'Wählen Sie hier das Archiv aus, das neuen Instanzen zugeordnet werden soll.');
 $arrLang['addDeleteCol']                 = array('Löschen-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Löschen hinzuzufügen.');
 $arrLang['deleteNotification']           = array('Benachrichtigung nach dem Löschen verschicken', 'Wählen Sie hier eine Nachricht aus, die nach dem Löschen von Datensätzen verschickt werden soll.');
-$arrLang['disableSessionCheck']           = array('Session-Überprüfung deaktivieren', 'Nicht überprüfen ob die Session ID des aktuellen Nutzers mit der Session ID im Datensatz übereinstimmen. Die Aktivierung wird nicht empfohlen.');
+$arrLang['disableSessionCheck']          = array('Session-Überprüfung deaktivieren', 'Nicht überprüfen ob die Session ID des aktuellen Nutzers mit der Session ID im Datensatz übereinstimmen. Die Aktivierung wird nicht empfohlen.');
 $arrLang['disableAuthorCheck']           = array('Author-Überprüfung deaktivieren', 'Nicht überprüfen ob die User::ID des aktuellen Nutzers mit der Author ID im Datensatz übereinstimmen. Die Aktivierung wird nicht empfohlen.');
+$arrLang['publishOnValid']               = array('Instanz nach erfolgreicher Validierung veröffentlichen', 'Wählen Sie diese Option, wenn die Instanz nach erfolgreicher Validierung veröffentlicht werden soll.');
 
 /**
  * Legends

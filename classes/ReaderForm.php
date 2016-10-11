@@ -19,7 +19,7 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 
-		$objConfig->formHybridTemplate = $objConfig->formHybridTemplate ?: 'formhybrid_default';
+		$objConfig->strTemplate = $objConfig->strTemplate ?: 'formhybrid_default';
 		$this->objReaderModule = $objReaderForm;
 
 		if ($objConfig->addClientsideValidation)

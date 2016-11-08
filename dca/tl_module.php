@@ -34,7 +34,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
 	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;' .
+	'{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,formHybridAsync,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
 	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams,formHybridAddCustomHashToAction;' .
 	'{misc_legend},publishOnValid,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,formHybridAddDefaultValues;{template_legend},customTpl;' .

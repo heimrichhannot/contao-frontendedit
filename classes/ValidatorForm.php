@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use HeimrichHannot\Ajax\Ajax;
+use HeimrichHannot\FormHybrid\Form;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ValidatorForm extends ReaderForm
@@ -72,6 +74,13 @@ class ValidatorForm extends ReaderForm
 			'validation-failed'
 		);
 
-		\Controller::reload();
+		if (!Ajax::isRelated(Form::FORMHYBRID_NAME))
+		{
+			\Controller::reload();
+		}
+		else
+		{
+			$this->Template->message = StatusMessage::generate($this->objModule->id);
+		}
 	}
 }

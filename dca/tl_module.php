@@ -17,9 +17,9 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
 												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,deactivateTokens;'
-												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddCustomHashToAction;'
+												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
 												  . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,setPageTitle,addClientsideValidation;'
-												  . '{template_legend},itemTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+												  . '{template_legend},formHybridTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
@@ -36,7 +36,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
 	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
 	'{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,formHybridAsync,deactivateTokens;' .
 	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
-	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToSuccessPreserveParams,formHybridAddCustomHashToAction;' .
+	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;' .
 	'{misc_legend},publishOnValid,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,formHybridAddDefaultValues;{template_legend},customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 

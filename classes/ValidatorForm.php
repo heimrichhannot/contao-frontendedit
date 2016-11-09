@@ -74,13 +74,6 @@ class ValidatorForm extends ReaderForm
 			'validation-failed'
 		);
 
-		if (!Ajax::isRelated(Form::FORMHYBRID_NAME))
-		{
-			\Controller::reload();
-		}
-		else
-		{
-			$this->Template->message = StatusMessage::generate($this->objModule->id);
-		}
+		$this->Template->message = StatusMessage::generate($this->objModule->id);
 	}
 }

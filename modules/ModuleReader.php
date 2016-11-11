@@ -233,7 +233,7 @@ class ModuleReader extends \Module
                 StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
             }
 
-            if(Ajax::isRelated(Form::FORMHYBRID_NAME) !== null)
+			if(Ajax::isRelated(Form::FORMHYBRID_NAME))
             {
                 $objResponse = new ResponseError();
                 $objResponse->setResult(StatusMessage::generate($this->id));

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.2.31] - 2016-11-08
+
+### Fixed
+- noPermission ajax response only, if request is formhybrid ajax related
+
 ## [3.2.30] - 2016-11-08
 
 ### Fixed

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.2.32] - 2016-11-14
+
+### Fixed
+- always create a new entity if noIdBehavior = create (default), required by ajax requests
+
 ## [3.2.31] - 2016-11-11
 
 ### Fixed

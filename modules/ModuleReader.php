@@ -215,7 +215,13 @@ class ModuleReader extends \Module
                     {
                         // if no id is given a new instance is initiated
 						$objConfiguration = new FormConfiguration($this->arrData);
-                        $objConfiguration->forceCreate = true; // for noIdBehavior = create, forceCreate is required for ajax requests
+						
+						// for noIdBehavior = create, forceCreate is required for ajax requests
+                        if(Ajax::isRelated(Form::FORMHYBRID_NAME) !== false)
+                        {
+                            $objConfiguration->forceCreate = true;
+                        }
+                        
                         $this->objForm = new $this->strFormClass($objConfiguration, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
 
                         if ($intId = $this->objForm->getId())

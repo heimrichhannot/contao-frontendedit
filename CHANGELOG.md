@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.3.1] - 2016-11-30
+
+### Fixed
+- forceCreate (noIdBehavior = create) only set true if is formhybrid related ajax request
+
 ## [3.3.0] - 2016-11-21
 
 ### Added

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [3.3.2] - 2016-12-01
+
+### Fixed
+- forceCreate within ajax request. Set only to true if no intId is in FormSession
+
 ## [3.3.1] - 2016-11-30
 
 ### Fixed

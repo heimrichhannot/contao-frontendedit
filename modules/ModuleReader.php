@@ -216,10 +216,18 @@ class ModuleReader extends \Module
                         // if no id is given a new instance is initiated
 						$objConfiguration = new FormConfiguration($this->arrData);
 						
-						// for noIdBehavior = create, forceCreate is required for ajax requests
-                        if(Ajax::isRelated(Form::FORMHYBRID_NAME) !== false)
+						// ajax handling, required in this manor, as we have no real ajax controller in contao and ajax request not related to this module
+                        // might trigger this module beforhand and new submission will be created after the submission was transfered to the user and id wont match any more
+                        if(Ajax::isRelated(Form::FORMHYBRID_NAME) !== null)
                         {
-                            $objConfiguration->forceCreate = true;
+                            if ($intId = FormSession::getSubmissionId($strFormId))
+                            {
+                                $this->intId = $intId;
+                            }
+                            else
+                            {
+                                $objConfiguration->forceCreate = true;
+                            }
                         }
                         
                         $this->objForm = new $this->strFormClass($objConfiguration, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);

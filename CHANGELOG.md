@@ -1,5 +1,11 @@
-# Change Log
+# Changelog
 All notable changes to this project will be documented in this file.
+
+## [3.3.3] - 2017-02-22
+
+### Fixed
+- template
+- changed array() to []
 
 ## [3.3.2] - 2016-12-01
 

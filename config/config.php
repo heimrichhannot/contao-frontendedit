@@ -30,16 +30,16 @@ define('MODULE_FRONTENDEDIT_FORM_VALIDATOR', 'frontendedit_form_validator');
  * Frontend modules
  */
 array_insert(
-	$GLOBALS['FE_MOD'], count($GLOBALS['FE_MOD']) - 1, array(
-		'frontendedit' => array(
+	$GLOBALS['FE_MOD'], count($GLOBALS['FE_MOD']) - 1, [
+		'frontendedit' => [
 			MODULE_FRONTENDEDIT_READER => 'HeimrichHannot\FrontendEdit\ModuleReader',
 			MODULE_FRONTENDEDIT_LIST          => 'HeimrichHannot\FrontendEdit\ModuleList',
 			MODULE_FRONTENDEDIT_FRONTENDUSER_READER => 'HeimrichHannot\FrontendEdit\ModuleFrontendUserReader',
 			MODULE_FRONTENDEDIT_MEMBER_LIST => 'HeimrichHannot\FrontendEdit\ModuleMemberList',
 			MODULE_FRONTENDEDIT_NEWS_LIST => 'HeimrichHannot\FrontendEdit\ModuleNewsList',
 			MODULE_FRONTENDEDIT_FORM_VALIDATOR => 'HeimrichHannot\FrontendEdit\ModuleFormValidator'
-		)
-	)
+        ]
+                      ]
 );
 
 /**

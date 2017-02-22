@@ -54,10 +54,11 @@ class ValidatorForm extends ReaderForm
 
 	protected function generateSubmitField()
 	{
-		$this->arrFields[FRONTENDEDIT_BUTTON_SUBMIT] = $this->generateField(FRONTENDEDIT_BUTTON_SUBMIT, array(
+		$this->arrFields[FRONTENDEDIT_BUTTON_SUBMIT] = $this->generateField(FRONTENDEDIT_BUTTON_SUBMIT, [
 			'inputType' => 'submit',
 			'label'		=> &$GLOBALS['TL_LANG']['frontendedit']['submit']
-		));
+        ]
+        );
 	}
 
 	public function runOnValidationError($arrInvalidFields)

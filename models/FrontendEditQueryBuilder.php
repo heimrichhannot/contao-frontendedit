@@ -17,8 +17,8 @@ class FrontendEditQueryBuilder
 		}
 		else
 		{
-			$arrJoins = array();
-			$arrFields = array($arrOptions['table'] . ".*");
+			$arrJoins = [];
+			$arrFields = [$arrOptions['table'] . ".*"];
 			$intCount = 0;
 
 			foreach ($objBase->getRelations() as $strKey=>$arrConfig)

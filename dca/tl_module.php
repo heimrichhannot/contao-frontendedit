@@ -23,8 +23,8 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
-	array('addDetailsCol', 'formHybridAddDefaultValues'),
-	array('addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'),
+    ['addDetailsCol', 'formHybridAddDefaultValues'],
+    ['addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'],
 	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
 
@@ -65,162 +65,162 @@ $arrDca['subpalettes']['publishOnValid']            = 'publishedField,invertPubl
 /**
  * Callbacks
  */
-$arrDca['config']['onload_callback'][] = array('tl_module_frontendedit', 'modifyPalette');
+$arrDca['config']['onload_callback'][] = ['tl_module_frontendedit', 'modifyPalette'];
 // adjust labels for suiting a list module
-$arrDca['config']['onload_callback'][] = array('tl_module_frontendedit', 'adjustPalettesForLists');
+$arrDca['config']['onload_callback'][] = ['tl_module_frontendedit', 'adjustPalettesForLists'];
 
 /**
  * Fields
  */
-$arrFields = array(
-	'addEditCol'              => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addEditCol'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50', 'submitOnChange' => true),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'jumpToEdit'              => array(
-		'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToEdit'],
-		'exclude'    => true,
-		'inputType'  => 'pageTree',
-		'foreignKey' => 'tl_page.title',
-		'eval'       => array('fieldType' => 'radio', 'tl_class' => 'w50 clr'),
-		'sql'        => "int(10) unsigned NOT NULL default '0'",
-		'relation'   => array('type' => 'hasOne', 'load' => 'eager'),
-	),
-	'addDeleteCol'            => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteCol'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'addPublishCol'           => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addPublishCol'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'addCreateButton'         => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50', 'submitOnChange' => true),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'createButtonLabel'       => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['createButtonLabel'],
-		'exclude'   => true,
-		'inputType' => 'text',
-		'eval'      => array('tl_class' => 'w50'),
-		'sql'       => "varchar(255) NOT NULL default ''",
-	),
-	'createMemberGroups'      => array(
-		'label'      => &$GLOBALS['TL_LANG']['tl_module']['createMemberGroups'],
-		'inputType'  => 'select',
-		'exclude'    => true,
-		'foreignKey' => 'tl_member_group.name',
-		'eval'       => array(
+$arrFields = [
+    'addEditCol'              => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addEditCol'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'jumpToEdit'              => [
+        'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToEdit'],
+        'exclude'    => true,
+        'inputType'  => 'pageTree',
+        'foreignKey' => 'tl_page.title',
+        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr'],
+        'sql'        => "int(10) unsigned NOT NULL default '0'",
+        'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
+    ],
+    'addDeleteCol'            => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteCol'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'addPublishCol'           => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addPublishCol'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'addCreateButton'         => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'createButtonLabel'       => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['createButtonLabel'],
+        'exclude'   => true,
+        'inputType' => 'text',
+        'eval'      => ['tl_class' => 'w50'],
+        'sql'       => "varchar(255) NOT NULL default ''",
+    ],
+    'createMemberGroups'      => [
+        'label'      => &$GLOBALS['TL_LANG']['tl_module']['createMemberGroups'],
+        'inputType'  => 'select',
+        'exclude'    => true,
+        'foreignKey' => 'tl_member_group.name',
+        'eval'       => [
 			'tl_class'           => 'w50',
 			'includeBlankOption' => true,
 			'chosen'             => true,
 			'multiple'           => true,
-		),
-		'sql'        => "blob NULL",
-	),
-	'jumpToCreate'            => array(
-		'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToCreate'],
-		'exclude'    => true,
-		'inputType'  => 'pageTree',
-		'foreignKey' => 'tl_page.title',
-		'eval'       => array('fieldType' => 'radio', 'tl_class' => 'w50'),
-		'sql'        => "int(10) unsigned NOT NULL default '0'",
-		'relation'   => array('type' => 'hasOne', 'load' => 'eager'),
-	),
-	'defaultArchive'          => array(
-		'label'            => &$GLOBALS['TL_LANG']['tl_module']['defaultArchive'],
-		'inputType'        => 'select',
-		'options_callback' => array('tl_module_formhybrid_list', 'getArchives'),
-		'eval'             => array('chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true),
-		'sql'              => "int(10) unsigned NOT NULL default '0'",
-	),
-	'deleteNotification'      => array(
-		'label'            => &$GLOBALS['TL_LANG']['tl_module']['deleteNotification'],
-		'exclude'          => true,
-		'inputType'        => 'select',
-		'options_callback' => array('HeimrichHannot\NotificationCenterPlus\NotificationCenterPlus', 'getNotificationMessagesAsOptions'),
-		'eval'             => array('chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true),
-		'sql'              => "varchar(255) NOT NULL default ''",
-	),
-	'noIdBehavior'            => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
-		'exclude'   => true,
-		'inputType' => 'select',
-		'default'   => 'create',
-		'options'   => array('create', 'create_until', 'redirect', 'error'),
-		'reference' => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
-		'eval'      => array('maxlength' => 255, 'tl_class' => 'w50 clr', 'submitOnChange' => true),
-		'sql'       => "varchar(255) NOT NULL default ''",
-	),
-	'addUpdateConditions'     => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'updateConditions'        => $arrDca['fields']['formHybridDefaultValues'],
-	'allowDelete'             => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['allowDelete'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'jumpToAfterDelete'       => $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
-	'addDeleteConditions'     => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteConditions'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'deleteConditions'        => $arrDca['fields']['formHybridDefaultValues'],
-	'addClientsideValidation' => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'disableSessionCheck' => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'disableAuthorCheck' => array(
-		'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
-		'exclude'   => true,
-		'inputType' => 'checkbox',
-		'eval'      => array('tl_class' => 'w50 clr'),
-		'sql'       => "char(1) NOT NULL default ''",
-	),
-	'publishOnValid' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['publishOnValid'],
-		'exclude'                 => true,
-		'inputType'               => 'checkbox',
-		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
-		'sql'                     => "char(1) NOT NULL default ''"
-	),
-);
+        ],
+        'sql'        => "blob NULL",
+    ],
+    'jumpToCreate'            => [
+        'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToCreate'],
+        'exclude'    => true,
+        'inputType'  => 'pageTree',
+        'foreignKey' => 'tl_page.title',
+        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50'],
+        'sql'        => "int(10) unsigned NOT NULL default '0'",
+        'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
+    ],
+    'defaultArchive'          => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['defaultArchive'],
+        'inputType'        => 'select',
+        'options_callback' => ['tl_module_formhybrid_list', 'getArchives'],
+        'eval'             => ['chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true],
+        'sql'              => "int(10) unsigned NOT NULL default '0'",
+    ],
+    'deleteNotification'      => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['deleteNotification'],
+        'exclude'          => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\NotificationCenterPlus\NotificationCenterPlus', 'getNotificationMessagesAsOptions'],
+        'eval'             => ['chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true],
+        'sql'              => "varchar(255) NOT NULL default ''",
+    ],
+    'noIdBehavior'            => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+        'exclude'   => true,
+        'inputType' => 'select',
+        'default'   => 'create',
+        'options'   => ['create', 'create_until', 'redirect', 'error'],
+        'reference' => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
+        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50 clr', 'submitOnChange' => true],
+        'sql'       => "varchar(255) NOT NULL default ''",
+    ],
+    'addUpdateConditions'     => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'updateConditions'        => $arrDca['fields']['formHybridDefaultValues'],
+    'allowDelete'             => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['allowDelete'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'jumpToAfterDelete'       => $GLOBALS['TL_DCA']['tl_module']['fields']['jumpTo'],
+    'addDeleteConditions'     => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteConditions'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'deleteConditions'        => $arrDca['fields']['formHybridDefaultValues'],
+    'addClientsideValidation' => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'disableSessionCheck' => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'disableAuthorCheck' => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'publishOnValid' => [
+        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['publishOnValid'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => ['submitOnChange' => true, 'tl_class' => 'w50'],
+        'sql'                     => "char(1) NOT NULL default ''"
+    ],
+];
 
 $arrDca['fields'] += $arrFields;
 
-foreach (array('updateConditions', 'deleteConditions') as $strField)
+foreach (['updateConditions', 'deleteConditions'] as $strField)
 {
 	$arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
 	unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);

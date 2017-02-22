@@ -31,7 +31,7 @@ use NotificationCenter\Model\Message;
 class ModuleReader extends \Module
 {
     protected $strTemplate        = 'mod_frontendedit_reader';
-    protected $arrSubmitCallbacks = array();
+    protected $arrSubmitCallbacks = [];
     protected $strFormClass       = 'HeimrichHannot\\FrontendEdit\\ReaderForm';
     // avoid any messages -> handled sub class
     protected $blnSilentMode   = false;
@@ -168,8 +168,8 @@ class ModuleReader extends \Module
 
                 if ($this->existanceConditions && !empty($arrConditions))
                 {
-                    $arrColumns = array();
-                    $arrValues  = array();
+                    $arrColumns = [];
+                    $arrValues  = [];
 
                     foreach ($arrConditions as $arrCondition)
                     {
@@ -281,7 +281,7 @@ class ModuleReader extends \Module
                 }
 
                 // return to the list
-                \Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Url::getUrl()));
+                \Controller::redirect(Url::removeQueryString(['act', 'id', 'token'], Url::getUrl()));
             } else
             {
                 if (!$this->blnSilentMode)
@@ -459,7 +459,7 @@ class ModuleReader extends \Module
             return false;
         }
 
-        $arrConditions = array();
+        $arrConditions = [];
 
         // check session if not logged in...
         if (!FE_USER_LOGGED_IN)
@@ -477,10 +477,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_SESSION_ID,
                     'value' => session_id(),
-                );
+                ];
             }
         } // ...and check member id if logged in
         else
@@ -498,10 +498,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_AUTHOR_TYPE,
                     'value' => General::AUTHOR_TYPE_MEMBER,
-                );
+                ];
 
                 if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR, $this->formHybridDataContainer))
                 {
@@ -514,10 +514,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_AUTHOR,
                     'value' => \FrontendUser::getInstance()->id,
-                );
+                ];
             }
         }
 
@@ -552,7 +552,7 @@ class ModuleReader extends \Module
             return false;
         }
 
-        $arrConditions = array();
+        $arrConditions = [];
 
         // check session if not logged in...
         if (!FE_USER_LOGGED_IN)
@@ -570,10 +570,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_SESSION_ID,
                     'value' => session_id(),
-                );
+                ];
             }
         } // ...and check member id if logged in
         else
@@ -591,10 +591,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_AUTHOR_TYPE,
                     'value' => General::AUTHOR_TYPE_MEMBER,
-                );
+                ];
 
                 if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR, $this->formHybridDataContainer))
                 {
@@ -607,10 +607,10 @@ class ModuleReader extends \Module
                     );
                 }
 
-                $arrConditions[] = array(
+                $arrConditions[] = [
                     'field' => General::PROPERTY_AUTHOR,
                     'value' => \FrontendUser::getInstance()->id,
-                );
+                ];
             }
         }
 
@@ -646,12 +646,12 @@ class ModuleReader extends \Module
             $this->formHybridDefaultValues    = deserialize($this->formHybridDefaultValues, true);
 
             $this->formHybridDefaultValues = array_merge(
-                array(
-                    array(
+                [
+                    [
                         'field' => 'pid',
                         'value' => $this->defaultArchive,
-                    ),
-                ),
+                    ],
+                ],
                 $this->formHybridDefaultValues
             );
 
@@ -661,7 +661,7 @@ class ModuleReader extends \Module
 
     protected function generateFields($objItem)
     {
-        $arrItem = array();
+        $arrItem = [];
 
         // always add id
         $arrItem['fields']['id'] = $objItem->id;

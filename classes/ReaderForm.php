@@ -15,7 +15,7 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
 {
 	protected $objReaderModule;
 
-	public function __construct($objConfig, array $submitCallbacks = array(), $intId = 0, $objReaderForm)
+	public function __construct($objConfig, array $submitCallbacks = [], $intId = 0, $objReaderForm)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_POST;
 

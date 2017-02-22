@@ -65,7 +65,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->deleteItem($intId);
 				// return to the list
-				\Controller::redirect(Url::removeQueryString(array('act', 'id', 'token'), Environment::getUrl()));
+				\Controller::redirect(Url::removeQueryString(['act', 'id', 'token'], Environment::getUrl()));
 			} else
 			{
 				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
@@ -80,7 +80,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 			{
 				$this->publishItem($intId);
 				// return to the list
-				\Controller::redirect(Url::removeQueryString(array('act', 'id'), Environment::getUrl()));
+				\Controller::redirect(Url::removeQueryString(['act', 'id'], Environment::getUrl()));
 
 			} else
 			{

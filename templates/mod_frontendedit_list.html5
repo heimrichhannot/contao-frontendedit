@@ -2,44 +2,45 @@
 
 <?php $this->block('content'); ?>
 
-<div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"
-	<?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>>
-	
-	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+    <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"
+         <?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>
+         <?php if ($this->addMasonry): ?>data-fhl-masonry="1"<?php endif; ?>>
 
-	<div class="meta">
-		<?php echo $this->filterForm; ?>
+        <?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
-		<?php if ($this->addCreateButton): ?>
-			<div class="nav">
-				<a class="create" href="<?= $this->createUrl ?>"
-				   <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->id; ?>"<?php endif; ?>>
-					<?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?>
-				</a>
-			</div>
-		<?php endif ?>
-	</div>
+        <div class="meta">
+            <?php echo $this->filterForm; ?>
 
-	<div class="block">
-		<?php if ($this->showItemCount): ?>
-			<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
-		<?php endif; ?>
+            <?php if ($this->addCreateButton): ?>
+                <div class="nav">
+                    <a class="create" href="<?= $this->createUrl ?>"
+                       <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->id; ?>"<?php endif; ?>>
+                        <?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?>
+                    </a>
+                </div>
+            <?php endif ?>
+        </div>
 
-		<?php if (!$this->empty): ?>
-			<?php if (is_array($this->items)): ?>
-				<div class="items">
-					<?php foreach ($this->items as $item) echo $item ?>
-				</div>
-				<?php echo $this->pagination; ?>
-			<?php endif; ?>
-		<?php else: ?>
-			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
-		<?php endif; ?>
-	</div>
+        <div class="block">
+            <?php if ($this->showItemCount): ?>
+                <span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
+            <?php endif; ?>
 
-	<?php if ($this->useModal): ?>
-		<?= $this->modalWrapper ?>
-	<?php endif; ?>
-</div>
+            <?php if (!$this->empty): ?>
+                <?php if (is_array($this->items)): ?>
+                    <div class="items">
+                        <?php foreach ($this->items as $item) echo $item ?>
+                    </div>
+                    <?php echo $this->pagination; ?>
+                <?php endif; ?>
+            <?php else: ?>
+                <p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+            <?php endif; ?>
+        </div>
+
+        <?php if ($this->useModal): ?>
+            <?= $this->modalWrapper ?>
+        <?php endif; ?>
+    </div>
 
 <?php $this->endblock(); ?>

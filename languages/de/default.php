@@ -13,8 +13,8 @@ $arrLang[FRONTENDEDIT_BUTTON_SUBMIT][0] = 'Absenden';
 /**
  * Fields
  */
-$arrLang['useMemberAuthor'] = array('Ein Mitglied als Autoren verwenden', 'Wählen Sie diese Option, wenn der Autor des Events ein Mitglied ist.');
-$arrLang['memberAuthor'] = array('Autor (Mitglied)', 'Hier können Sie den Autor des Events ändern.');
+$arrLang['useMemberAuthor'] = ['Ein Mitglied als Autoren verwenden', 'Wählen Sie diese Option, wenn der Autor des Events ein Mitglied ist.'];
+$arrLang['memberAuthor'] = ['Autor (Mitglied)', 'Hier können Sie den Autor des Events ändern.'];
 
 /**
  * Messages

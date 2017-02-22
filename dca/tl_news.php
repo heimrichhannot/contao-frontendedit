@@ -15,7 +15,7 @@ $arrDca['palettes']['default'] = str_replace(',author', ',useMemberAuthor,author
 /**
  * Callbacks
  */
-$arrDca['config']['onload_callback'][] = array('tl_news_frontendedit', 'modifyPalette');
+$arrDca['config']['onload_callback'][] = ['tl_news_frontendedit', 'modifyPalette'];
 
 /**
  * Fields

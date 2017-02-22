@@ -12,17 +12,17 @@
 /**
  * Register the namespaces
  */
-ClassLoader::addNamespaces(array
-(
-	'HeimrichHannot',
-));
+ClassLoader::addNamespaces(
+    [
+	'HeimrichHannot',]
+);
 
 
 /**
  * Register the classes
  */
-ClassLoader::addClasses(array
-(
+ClassLoader::addClasses(
+    [
 	// Modules
 	'HeimrichHannot\FrontendEdit\ModuleMemberList'         => 'system/modules/frontendedit/modules/ModuleMemberList.php',
 	'HeimrichHannot\FrontendEdit\ModuleNews'               => 'system/modules/frontendedit/modules/ModuleNews.php',
@@ -39,18 +39,18 @@ ClassLoader::addClasses(array
 
 	// Models
 	'HeimrichHannot\FrontendEdit\FrontendEditQueryBuilder' => 'system/modules/frontendedit/models/FrontendEditQueryBuilder.php',
-	'HeimrichHannot\FrontendEdit\FrontendEditModel'        => 'system/modules/frontendedit/models/FrontendEditModel.php',
-));
+	'HeimrichHannot\FrontendEdit\FrontendEditModel'        => 'system/modules/frontendedit/models/FrontendEditModel.php',]
+);
 
 
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
-(
+TemplateLoader::addFiles(
+    [
 	'mod_frontendedit_reader'              => 'system/modules/frontendedit/templates',
 	'mod_frontendedit_list'                => 'system/modules/frontendedit/templates',
 	'frontendedit_list_item_table_default' => 'system/modules/frontendedit/templates',
 	'mod_frontendedit_list_table'          => 'system/modules/frontendedit/templates',
-	'frontendedit_list_item_default'       => 'system/modules/frontendedit/templates',
-));
+	'frontendedit_list_item_default'       => 'system/modules/frontendedit/templates',]
+);

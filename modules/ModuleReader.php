@@ -47,9 +47,8 @@ class ModuleReader extends \Module
     {
         if (TL_MODE == 'BE')
         {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### FRONTENDEDIT READER ###';
+            $objTemplate           = new \BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0] ?: $this->type) . ' ###';
             $objTemplate->title    = $this->headline;
             $objTemplate->id       = $this->id;
             $objTemplate->link     = $this->name;
@@ -162,7 +161,8 @@ class ModuleReader extends \Module
                 }
 
                 return;
-            } elseif ($this->noIdBehavior == 'redirect' || $this->noIdBehavior == 'create_until')
+            }
+            elseif ($this->noIdBehavior == 'redirect' || $this->noIdBehavior == 'create_until')
             {
                 $arrConditions = deserialize($this->existanceConditions, true);
 
@@ -198,7 +198,8 @@ class ModuleReader extends \Module
                     }
 
                     return;
-                } else
+                }
+                else
                 {
                     $strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
 
@@ -214,11 +215,11 @@ class ModuleReader extends \Module
                     if (!$this->intId)
                     {
                         // if no id is given a new instance is initiated
-						$objConfiguration = new FormConfiguration($this->arrData);
-						
-						// ajax handling, required in this manor, as we have no real ajax controller in contao and ajax request not related to this module
+                        $objConfiguration = new FormConfiguration($this->arrData);
+
+                        // ajax handling, required in this manor, as we have no real ajax controller in contao and ajax request not related to this module
                         // might trigger this module beforhand and new submission will be created after the submission was transfered to the user and id wont match any more
-                        if(Ajax::isRelated(Form::FORMHYBRID_NAME) !== null)
+                        if (Ajax::isRelated(Form::FORMHYBRID_NAME) !== null)
                         {
                             if ($intId = FormSession::getSubmissionId($strFormId))
                             {
@@ -229,7 +230,7 @@ class ModuleReader extends \Module
                                 $objConfiguration->forceCreate = true;
                             }
                         }
-                        
+
                         $this->objForm = new $this->strFormClass($objConfiguration, $this->arrSubmitCallbacks, $this->intId ?: 0, $this);
 
                         if ($intId = $this->objForm->getId())
@@ -249,7 +250,7 @@ class ModuleReader extends \Module
                 StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
             }
 
-			if(Ajax::isRelated(Form::FORMHYBRID_NAME))
+            if (Ajax::isRelated(Form::FORMHYBRID_NAME))
             {
                 $objResponse = new ResponseError();
                 $objResponse->setResult(StatusMessage::generate($this->id));
@@ -282,7 +283,8 @@ class ModuleReader extends \Module
 
                 // return to the list
                 \Controller::redirect(Url::removeQueryString(['act', 'id', 'token'], Url::getUrl()));
-            } else
+            }
+            else
             {
                 if (!$this->blnSilentMode)
                 {
@@ -291,7 +293,8 @@ class ModuleReader extends \Module
 
                 return;
             }
-        } else
+        }
+        else
         {
             if ($this->checkUpdatePermission($this->intId))
             {
@@ -324,11 +327,13 @@ class ModuleReader extends \Module
                         {
                             $this->formHybridViewMode         = FORMHYBRID_VIEW_MODE_READONLY;
                             $this->formHybridReadonlyTemplate = 'formhybridreadonly_default';
-                        } else
+                        }
+                        else
                         {
                             return;
                         }
-                    } else
+                    }
+                    else
                     {
                         \HeimrichHannot\EntityLock\EntityLockModel::create($this->formHybridDataContainer, $this->intId, $this);
                     }
@@ -356,7 +361,8 @@ class ModuleReader extends \Module
                     $objModalWrapper->item   = $this->replaceInsertTags($this->Template->parse());
                     die($objModalWrapper->parse());
                 }
-            } else
+            }
+            else
             {
                 if (!$this->blnSilentMode)
                 {
@@ -670,7 +676,11 @@ class ModuleReader extends \Module
         {
             $varValue = $objItem->{$strName};
             // Convert timestamps
-            if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
+            if ($varValue != ''
+                && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date'
+                    || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time'
+                    || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim')
+            )
             {
                 $objDate  = new \Date($varValue);
                 $varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};

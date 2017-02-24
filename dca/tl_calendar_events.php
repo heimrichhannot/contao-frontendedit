@@ -3,8 +3,9 @@
  * Contao Open Source CMS
  *
  * Copyright (c) Heimrich & Hannot GmbH
+ *
  * @package frontendedit
- * @author Dennis Patzer
+ * @author  Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
@@ -21,34 +22,42 @@ $arrDca['config']['onload_callback'][] = ['tl_calendar_events_frontendedit', 'mo
  * Fields
  */
 $arrDca['fields']['useMemberAuthor'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['frontendedit']['useMemberAuthor'],
-    'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'eval'                    => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'w50 clr'],
-    'sql'                     => "char(1) NOT NULL default ''"];
+    'label'     => &$GLOBALS['TL_LANG']['frontendedit']['useMemberAuthor'],
+    'exclude'   => true,
+    'inputType' => 'checkbox',
+    'eval'      => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'w50 clr'],
+    'sql'       => "char(1) NOT NULL default ''"
+];
 
 $arrDca['fields']['memberAuthor'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['frontendedit']['memberAuthor'],
-    'exclude'                 => true,
-    'filter'                  => true,
-    'sorting'                 => true,
-    'flag'                    => 1,
-    'inputType'               => 'select',
-    'options_callback'        => ['\HeimrichHannot\Haste\Dca\Member', 'getMembersAsOptions'],
-    'eval'                    => ['doNotCopy' =>true, 'chosen' =>true, 'mandatory' =>true, 'includeBlankOption' =>true, 'tl_class' =>'w50'],
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"];
+    'label'            => &$GLOBALS['TL_LANG']['frontendedit']['memberAuthor'],
+    'exclude'          => true,
+    'filter'           => true,
+    'sorting'          => true,
+    'flag'             => 1,
+    'inputType'        => 'select',
+    'foreignKey'       => 'tl_member.firstname',
+    'options_callback' => ['\HeimrichHannot\Haste\Dca\Member', 'getMembersAsOptions'],
+    'eval'             => ['doNotCopy' => true, 'chosen' => true, 'mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
+    'relation'         => ['type' => 'hasOne', 'load' => 'eager'],
+    'sql'              => "int(10) unsigned NOT NULL default '0'"
+];
 
-class tl_calendar_events_frontendedit extends \Backend {
+class tl_calendar_events_frontendedit extends \Backend
+{
 
-	public static function modifyPalette(){
-		$arrDca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
+    public static function modifyPalette()
+    {
+        $arrDca = &$GLOBALS['TL_DCA']['tl_calendar_events'];
 
-		if (($objEvent = \CalendarEventsModel::findByPk(\Input::get('id'))) !== null && $objEvent->useMemberAuthor)
-		{
-			$arrDca['palettes']['default'] = str_replace('author,', ',', $arrDca['palettes']['default']);
-		}
-		else
-			$arrDca['palettes']['default'] = str_replace('memberAuthor,', ',', $arrDca['palettes']['default']);
-	}
+        if (($objEvent = \CalendarEventsModel::findByPk(\Input::get('id'))) !== null && $objEvent->useMemberAuthor)
+        {
+            $arrDca['palettes']['default'] = str_replace('author,', ',', $arrDca['palettes']['default']);
+        }
+        else
+        {
+            $arrDca['palettes']['default'] = str_replace('memberAuthor,', ',', $arrDca['palettes']['default']);
+        }
+    }
 
 }

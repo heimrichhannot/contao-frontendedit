@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.4] - 2017-02-24
+
+### Fixed
+- memberAUthor relation
+
 ## [3.3.3] - 2017-02-22
 
 ### Fixed

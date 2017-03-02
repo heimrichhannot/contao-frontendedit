@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.5] - 2017-03-02
+
+### Fixed
+- removed formHybridAsync from validator
+
 ## [3.3.4] - 2017-02-24
 
 ### Fixed

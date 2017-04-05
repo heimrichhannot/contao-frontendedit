@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.0] - 2017-04-05
+
+### Added
+- proximity search
+
+### Changed
+- template -> wrapper data attributes are now calculated in the module
+
 ## [3.3.5] - 2017-03-02
 
 ### Fixed

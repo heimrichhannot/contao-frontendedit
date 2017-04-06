@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.1] - 2017-04-06
+
+### Fixed
+- callback issues
+
 ## [3.4.0] - 2017-04-05
 
 ### Added

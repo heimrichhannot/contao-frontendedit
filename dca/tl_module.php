@@ -142,7 +142,7 @@ $arrFields = [
     'defaultArchive'          => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['defaultArchive'],
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getArchives'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getArchives'],
         'eval'             => ['chosen' => true, 'tl_class' => 'w50', 'includeBlankOption' => true],
         'sql'              => "int(10) unsigned NOT NULL default '0'",
     ],

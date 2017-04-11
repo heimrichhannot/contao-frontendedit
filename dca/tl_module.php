@@ -15,17 +15,20 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
-												  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,deactivateTokens;'
-												  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
-												  . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,formHybridExportAfterSubmission,setPageTitle,addClientsideValidation;'
-												  . '{template_legend},formHybridTemplate,modalTpl,customTpl;' . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;'
+                                                  . '{entity_legend},formHybridDataContainer,formHybridEditable,formHybridForcePaletteRelation,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
+                                                  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,deactivateTokens;'
+                                                  . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;'
+                                                  . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
+                                                  . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,formHybridExportAfterSubmission,setPageTitle,addClientsideValidation;'
+                                                  . '{template_legend},formHybridTemplate,modalTpl,customTpl;'
+                                                  . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
     ['addDetailsCol', 'formHybridAddDefaultValues'],
     ['addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'],
-	$arrDca['palettes'][MODULE_FORMHYBRID_LIST]
+    $arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes'][MODULE_FRONTENDEDIT_READER];
@@ -33,12 +36,12 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]         = $arrDca['palettes
 $arrDca['palettes'][MODULE_FRONTENDEDIT_NEWS_LIST]           = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FORM_VALIDATOR] =
-	'{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;' .
-	'{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;' .
-	'{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;' .
-	'{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;' .
-	'{misc_legend},publishOnValid,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,formHybridAddDefaultValues,formHybridExportAfterSubmission;{template_legend},customTpl;' .
-	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+    '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridAddEditableRequired;'
+    . '{action_legend},formHybridAllowIdAsGetParameter,existanceConditions,disableSessionCheck,disableAuthorCheck,addUpdateConditions,deactivateTokens;'
+    . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;'
+    . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
+    . '{misc_legend},publishOnValid,formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,formHybridAddDefaultValues,formHybridExportAfterSubmission;{template_legend},customTpl;'
+    . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**
  * Subpalettes
@@ -123,10 +126,10 @@ $arrFields = [
         'exclude'    => true,
         'foreignKey' => 'tl_member_group.name',
         'eval'       => [
-			'tl_class'           => 'w50',
-			'includeBlankOption' => true,
-			'chosen'             => true,
-			'multiple'           => true,
+            'tl_class'           => 'w50',
+            'includeBlankOption' => true,
+            'chosen'             => true,
+            'multiple'           => true,
         ],
         'sql'        => "blob NULL",
     ],
@@ -195,26 +198,26 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
-    'disableSessionCheck' => [
+    'disableSessionCheck'     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
-    'disableAuthorCheck' => [
+    'disableAuthorCheck'      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
-    'publishOnValid' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['publishOnValid'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'eval'                    => ['submitOnChange' => true, 'tl_class' => 'w50'],
-        'sql'                     => "char(1) NOT NULL default ''"
+    'publishOnValid'          => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['publishOnValid'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50'],
+        'sql'       => "char(1) NOT NULL default ''",
     ],
 ];
 
@@ -222,9 +225,9 @@ $arrDca['fields'] += $arrFields;
 
 foreach (['updateConditions', 'deleteConditions'] as $strField)
 {
-	$arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
-	unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);
-	unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
+    $arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
+    unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);
+    unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
 }
 
 $arrDca['fields']['jumpToAfterDelete']['label']            = &$GLOBALS['TL_LANG']['tl_module']['jumpToAfterDelete'];
@@ -233,60 +236,60 @@ $arrDca['fields']['jumpToAfterDelete']['eval']['tl_class'] = 'w50';
 class tl_module_frontendedit
 {
 
-	public static function modifyPalette(\DataContainer $objDc)
-	{
-		\Controller::loadDataContainer('tl_module');
-		\System::loadLanguageFile('tl_module');
+    public static function modifyPalette(\DataContainer $objDc)
+    {
+        \Controller::loadDataContainer('tl_module');
+        \System::loadLanguageFile('tl_module');
 
-		if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
-		{
-			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
+        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
+        {
+            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
-			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type,
-				'HeimrichHannot\FrontendEdit\ModuleList'
-			)
-			)
-			{
-				unset($arrDca['fields']['itemTemplate']['options_callback']);
-				$arrDca['fields']['itemTemplate']['options']    = \Controller::getTemplateGroup('frontendedit_list_item_');
-				$arrDca['fields']['jumpTo']['eval']['tl_class'] = 'clr w50';
-			}
+            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+                $objModule->type,
+                'HeimrichHannot\FrontendEdit\ModuleList'
+            )
+            )
+            {
+                unset($arrDca['fields']['itemTemplate']['options_callback']);
+                $arrDca['fields']['itemTemplate']['options']    = \Controller::getTemplateGroup('frontendedit_list_item_');
+                $arrDca['fields']['jumpTo']['eval']['tl_class'] = 'clr w50';
+            }
 
-			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type,
-				'HeimrichHannot\FrontendEdit\ModuleReader'
-			)
-			)
-			{
-				unset($arrDca['fields']['itemTemplate']['options_callback']);
-				$arrDca['fields']['itemTemplate']['options']    = \Controller::getTemplateGroup('frontendedit_item');
-				$arrDca['fields']['jumpTo']['eval']['tl_class'] = 'clr w50';
-			}
-		}
-	}
+            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+                $objModule->type,
+                'HeimrichHannot\FrontendEdit\ModuleReader'
+            )
+            )
+            {
+                unset($arrDca['fields']['itemTemplate']['options_callback']);
+                $arrDca['fields']['itemTemplate']['options']    = \Controller::getTemplateGroup('frontendedit_item');
+                $arrDca['fields']['jumpTo']['eval']['tl_class'] = 'clr w50';
+            }
+        }
+    }
 
-	public static function adjustPalettesForLists(\DataContainer $objDc)
-	{
-		\Controller::loadDataContainer('tl_module');
-		\System::loadLanguageFile('tl_module');
+    public static function adjustPalettesForLists(\DataContainer $objDc)
+    {
+        \Controller::loadDataContainer('tl_module');
+        \System::loadLanguageFile('tl_module');
 
-		if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
-		{
-			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
+        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
+        {
+            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
-			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-				$objModule->type,
-				'HeimrichHannot\FrontendEdit\ModuleList'
-			)
-			)
-			{
-				$arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]);
+            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+                $objModule->type,
+                'HeimrichHannot\FrontendEdit\ModuleList'
+            )
+            )
+            {
+                $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]);
 
-				// override labels for suiting a list module
-				$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
-				$arrDca['fields']['formHybridDefaultValues']['label']    = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
-			}
-		}
-	}
+                // override labels for suiting a list module
+                $arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
+                $arrDca['fields']['formHybridDefaultValues']['label']    = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
+            }
+        }
+    }
 }

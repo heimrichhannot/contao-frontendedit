@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.2] - 2017-04-11
+
+### Added
+- `tl_module.formHybridForcePaletteRelation` added to `MODULE_FRONTENDEDIT_READER`
+- php7 support
+
 ## [3.4.1] - 2017-04-06
 
 ### Fixed

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.3] - 2017-04-26
+
+### Added
+- columns options to frontendedit_list_item_default.html5
+
 ## [3.4.2] - 2017-04-11
 
 ### Added

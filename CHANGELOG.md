@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.4] - 2017-05-09
+
+### Fixed
+- php 7 support
+- field lengths
+
 ## [3.4.3] - 2017-04-26
 
 ### Added
@@ -33,7 +39,7 @@ All notable changes to this project will be documented in this file.
 ## [3.3.4] - 2017-02-24
 
 ### Fixed
-- memberAUthor relation
+- memberAuthor relation
 
 ## [3.3.3] - 2017-02-22
 

@@ -118,7 +118,7 @@ $arrFields = [
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['tl_class' => 'w50'],
-        'sql'       => "varchar(255) NOT NULL default ''",
+        'sql'       => "varchar(64) NOT NULL default ''",
     ],
     'createMemberGroups'      => [
         'label'      => &$GLOBALS['TL_LANG']['tl_module']['createMemberGroups'],
@@ -154,8 +154,8 @@ $arrFields = [
         'exclude'          => true,
         'inputType'        => 'select',
         'options_callback' => ['HeimrichHannot\NotificationCenterPlus\NotificationCenterPlus', 'getNotificationMessagesAsOptions'],
-        'eval'             => ['chosen' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr', 'includeBlankOption' => true],
-        'sql'              => "varchar(255) NOT NULL default ''",
+        'eval'             => ['chosen' => true, 'maxlength' => 64, 'tl_class' => 'w50 clr', 'includeBlankOption' => true],
+        'sql'              => "varchar(64) NOT NULL default ''",
     ],
     'noIdBehavior'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
@@ -164,8 +164,8 @@ $arrFields = [
         'default'   => 'create',
         'options'   => ['create', 'create_until', 'redirect', 'error'],
         'reference' => &$GLOBALS['TL_LANG']['tl_module']['noIdBehavior'],
-        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50 clr', 'submitOnChange' => true],
-        'sql'       => "varchar(255) NOT NULL default ''",
+        'eval'      => ['maxlength' => 64, 'tl_class' => 'w50 clr', 'submitOnChange' => true],
+        'sql'       => "varchar(64) NOT NULL default ''",
     ],
     'addUpdateConditions'     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addUpdateConditions'],

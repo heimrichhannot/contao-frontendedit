@@ -13,6 +13,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\Ajax\Ajax;
+use HeimrichHannot\Ajax\Response\ResponseData;
 use HeimrichHannot\Ajax\Response\ResponseError;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybrid\Form;
@@ -253,7 +254,7 @@ class ModuleReader extends \Module
             if (Ajax::isRelated(Form::FORMHYBRID_NAME))
             {
                 $objResponse = new ResponseError();
-                $objResponse->setResult(StatusMessage::generate($this->id));
+                $objResponse->setResult(new ResponseData(StatusMessage::generate($this->id)));
                 $objResponse->output();
             }
 
@@ -346,21 +347,6 @@ class ModuleReader extends \Module
 
                 $this->Template->form = $this->objForm->generate();
                 $this->Template->item = $this->objForm->activeRecord;
-
-                if (\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal')
-                {
-                    $objItem         = General::getModelInstance($this->formHybridDataContainer, $this->intId);
-                    $objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-
-                    if ($objItem !== null)
-                    {
-                        $objModalWrapper->setData($objItem->row());
-                    }
-
-                    $objModalWrapper->module = Arrays::arrayToObject($this->arrData);
-                    $objModalWrapper->item   = $this->replaceInsertTags($this->Template->parse());
-                    die($objModalWrapper->parse());
-                }
             }
             else
             {

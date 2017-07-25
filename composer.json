@@ -1,50 +1,49 @@
 {
-  "name": "heimrichhannot/contao-frontendedit",
-  "description": "A generic module using formhybrid for listing, editing, and deleting entities.",
-  "keywords": [
-    "contao",
-    "frontendedit",
-    "frontend",
-    "edit",
-    "module",
-    "developer"
-  ],
-  "type": "contao-module",
-  "homepage": "https://github.com/heimrichhannot/contao-frontendedit",
-  "license": "LGPL-3.0+",
-  "authors": [
-    {
-      "name": "Heimrich & Hannot",
-      "email": "digitales@heimrich-hannot.de",
-      "homepage": "http://www.heimrich-hannot.de",
-      "role": "Developer"
+    "name": "heimrichhannot/contao-frontendedit",
+    "description": "A generic module using formhybrid for listing, editing, and deleting entities.",
+    "keywords": [
+        "contao",
+        "frontendedit",
+        "frontend",
+        "edit",
+        "module",
+        "developer"
+    ],
+    "type": "contao-module",
+    "homepage": "https://github.com/heimrichhannot/contao-frontendedit",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Heimrich & Hannot",
+            "email": "digitales@heimrich-hannot.de",
+            "homepage": "http://www.heimrich-hannot.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/heimrichhannot/contao-frontendedit/issues"
+    },
+    "require": {
+        "php": "~5.4 || ~7.0",
+        "contao/core-bundle": "^3.5.1 || ~4.1",
+        "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
+        "heimrichhannot/contao-formhybrid_list": "^3.0.3",
+        "heimrichhannot/contao-notification_center_plus": "~1.0"
+    },
+    "suggest": {
+        "heimrichhannot/contao-entity_lock": "This module adds functionality for locking entities for other users while they are edited.",
+        "heimrichhannot/contao-exporter": "Export your entities after submission."
+    },
+    "autoload": {
+        "classmap": [
+            ""
+        ]
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "": "system/modules/frontendedit"
+            }
+        }
     }
-  ],
-  "support": {
-    "issues": "https://github.com/heimrichhannot/contao-frontendedit/issues"
-  },
-  "require": {
-    "php": "~5.4 || ~7.0",
-    "contao/core-bundle": "^3.5.1 || ~4.1",
-    "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-    "heimrichhannot/contao-formhybrid": "^2.8.5",
-    "heimrichhannot/contao-formhybrid_list": "~2.2",
-    "heimrichhannot/contao-notification_center_plus": "~1.0"
-  },
-  "suggest": {
-    "heimrichhannot/contao-entity_lock": "This module adds functionality for locking entities for other users while they are edited.",
-    "heimrichhannot/contao-exporter": "Export your entities after submission."
-  },
-  "autoload": {
-    "classmap": [
-      ""
-    ]
-  },
-  "extra": {
-    "contao": {
-      "sources": {
-        "": "system/modules/frontendedit"
-      }
-    }
-  }
 }

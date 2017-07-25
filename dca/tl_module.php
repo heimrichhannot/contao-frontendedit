@@ -21,7 +21,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
                                                   . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;'
                                                   . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
                                                   . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,formHybridExportAfterSubmission,setPageTitle,addClientsideValidation;'
-                                                  . '{template_legend},formHybridTemplate,modalTpl,customTpl;'
+                                                  . '{template_legend},formHybridTemplate,customTpl;'
                                                   . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // list
@@ -57,7 +57,7 @@ $arrDca['palettes']['__selector__'][] = 'publishOnValid';
 
 $arrDca['subpalettes']['addCustomFilterFields']     = 'customFilterFields';
 $arrDca['subpalettes']['addCreateButton']           = 'jumpToCreate,createButtonLabel,createMemberGroups';
-$arrDca['subpalettes']['addEditCol']                = 'jumpToEdit';
+$arrDca['subpalettes']['addEditCol']                = 'useModalExplanation,useModalForEdit,jumpToEdit';
 $arrDca['subpalettes']['noIdBehavior_redirect']     = 'existanceConditions';
 $arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
 $arrDca['subpalettes']['addUpdateConditions']       = 'updateConditions';
@@ -80,7 +80,7 @@ $arrFields = [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addEditCol'],
         'exclude'   => true,
         'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''",
     ],
     'jumpToEdit'              => [
@@ -92,6 +92,7 @@ $arrFields = [
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
     ],
+    'useModalForEdit' => $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'],
     'addDeleteCol'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteCol'],
         'exclude'   => true,

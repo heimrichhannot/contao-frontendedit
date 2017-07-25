@@ -154,6 +154,13 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         }
     }
 
+    protected function runBeforeTemplateParsing($objTemplate, $arrItem)
+    {
+        $objTemplate->useModalForEdit = $this->useModalForEdit;
+        $objTemplate->jumpToEdit = $this->jumpToEdit;
+    }
+
+
     public function addItemColumns($objItem, &$arrItem)
     {
         parent::addItemColumns($objItem, $arrItem);

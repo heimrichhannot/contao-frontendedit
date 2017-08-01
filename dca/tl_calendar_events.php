@@ -37,7 +37,7 @@ $arrDca['fields']['memberAuthor'] = [
     'flag'             => 1,
     'inputType'        => 'select',
     'foreignKey'       => 'tl_member.firstname',
-    'options_callback' => ['\HeimrichHannot\Haste\Dca\Member', 'getMembersAsOptions'],
+    'options_callback' => ['\HeimrichHannot\Haste\Dca\Member', 'getMembersAsOptionsIncludingEmailAndId'],
     'eval'             => ['doNotCopy' => true, 'chosen' => true, 'mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
     'relation'         => ['type' => 'hasOne', 'load' => 'eager'],
     'sql'              => "int(10) unsigned NOT NULL default '0'"

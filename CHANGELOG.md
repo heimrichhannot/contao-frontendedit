@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 
 
-## [4.0.1] - 2017-08-01
+## [4.1.0] - 2017-08-11
 
 ### Added
 - OptInToken configuration to ModuleReader

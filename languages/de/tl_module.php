@@ -40,3 +40,4 @@ $arrLang['publishOnValid']               = ['Instanz nach erfolgreicher Validier
  */
 $arrLang['security_legend'] = 'Sicherheit';
 $arrLang['action_legend']   = 'Actionhandling';
+$arrLang['optin_legend']   = 'Opt-In Handling';

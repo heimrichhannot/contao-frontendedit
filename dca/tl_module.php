@@ -19,6 +19,7 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
                                                   . '{entity_legend},formHybridDataContainer,formHybridEditable,formHybridForcePaletteRelation,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
                                                   . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,deactivateTokens;'
                                                   . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;'
+                                                  . '{optin_legend:hide},formHybridAddOptIn;'
                                                   . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'
                                                   . '{misc_legend},formHybridSuccessMessage,formHybridSkipScrollingToSuccessMessage,formHybridCustomSubmit,defaultArchive,formHybridAddDefaultValues,formHybridExportAfterSubmission,setPageTitle,addClientsideValidation;'
                                                   . '{template_legend},formHybridTemplate,customTpl;'

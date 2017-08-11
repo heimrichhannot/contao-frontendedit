@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+
+## [4.0.1] - 2017-08-01
+
+### Added
+- OptInToken configuration to ModuleReader
+- english translation for tl_module palette labels
+
 ## [4.0.1] - 2017-08-01
 
 ### Changed

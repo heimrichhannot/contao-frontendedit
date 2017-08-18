@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.2.0] - 2017-08-18
+
+### Removed
+- addImage -> refactor a better in future
 
 ## [4.1.0] - 2017-08-11
 

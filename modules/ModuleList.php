@@ -13,8 +13,10 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\Modal\ModalModel;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
@@ -24,8 +26,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### FRONTENDEDIT LIST ###';
@@ -49,8 +50,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         $strAction = \Input::get('act');
 
         // at first check for the correct request token to be set
-        if ($strAction && !\RequestToken::validate(\Input::get('token')) && !$this->deactivateTokens)
-        {
+        if ($strAction && !\RequestToken::validate(\Input::get('token')) && !$this->deactivateTokens) {
             StatusMessage::addError(
                 sprintf($GLOBALS['TL_LANG']['frontendedit']['requestTokenExpired'], Environment::getUrl(true, true, false)),
                 $this->id,
@@ -60,36 +60,40 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
             return;
         }
 
-        if ($strAction == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id'))
-        {
-            if ($this->checkPermission($intId))
-            {
+        if ($strAction == FRONTENDEDIT_ACT_DELETE && $intId = \Input::get('id')) {
+            if ($this->checkPermission($intId)) {
                 $this->deleteItem($intId);
                 // return to the list
                 \Controller::redirect(Url::removeQueryString(['act', 'id', 'token'], Environment::getUrl()));
-            }
-            else
-            {
+            } else {
                 StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
 
                 return;
             }
         }
 
-        if ($strAction == FRONTENDEDIT_ACT_PUBLISH && $intId = \Input::get('id'))
-        {
-            if ($this->checkPermission($intId))
-            {
+        if ($strAction == FRONTENDEDIT_ACT_PUBLISH && $intId = \Input::get('id')) {
+            if ($this->checkPermission($intId)) {
                 $this->publishItem($intId);
                 // return to the list
                 \Controller::redirect(Url::removeQueryString(['act', 'id'], Environment::getUrl()));
 
-            }
-            else
-            {
+            } else {
                 StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id);
 
                 return;
+            }
+        }
+
+        global $objPage;
+
+        $this->Template->useModalForCreate = $this->useModalForCreate;
+
+        if ($this->useModalForCreate) {
+            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage) {
+                if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
+                    $this->Template->modal = $objModal;
+                }
             }
         }
 
@@ -99,15 +103,12 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
     protected function deleteItem($intId)
     {
         $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-        if (($objItem = $strItemClass::findByPk($intId)) !== null)
-        {
+        if (($objItem = $strItemClass::findByPk($intId)) !== null) {
             $dc = new DC_Hybrid($this->formHybridDataContainer, $objItem, $objItem->id);
 
             // call ondelete callbacks
-            if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback']))
-            {
-                foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'] as $callback)
-                {
+            if (is_array($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'])) {
+                foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'] as $callback) {
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($dc);
                 }
@@ -120,8 +121,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
     protected function publishItem($intId)
     {
         $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-        if (($objItem = $strItemClass::findByPk($intId)) !== null)
-        {
+        if (($objItem = $strItemClass::findByPk($intId)) !== null) {
             $objItem->published = !$objItem->published;
             $objItem->save();
         }
@@ -134,12 +134,10 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         global $objPage;
 
         // create
-        if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage)
-        {
+        if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage) {
             $this->Template->createUrl = $this->generateFrontendUrl($objPageJumpTo->row());
 
-            if (!$this->deactivateTokens)
-            {
+            if (!$this->deactivateTokens) {
                 $this->Template->createUrl = Url::addQueryString('&token=' . \RequestToken::get(), $this->Template->createUrl);
             }
 
@@ -147,8 +145,7 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
             $objMember       = \FrontendUser::getInstance();
             $arrIntersection = array_intersect($arrGroups, deserialize($objMember->groups, true));
 
-            if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty($arrIntersection)))
-            {
+            if (!empty($arrGroups) && (!FE_USER_LOGGED_IN || empty($arrIntersection))) {
                 $this->Template->addCreateButton = false;
             }
         }
@@ -156,8 +153,18 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
+        $objTemplate->jumpToEdit      = $this->jumpToEdit;
         $objTemplate->useModalForEdit = $this->useModalForEdit;
-        $objTemplate->jumpToEdit = $this->jumpToEdit;
+
+        if ($this->useModalForEdit) {
+            global $objPage;
+
+            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage) {
+                if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
+                    $objTemplate->modal = $objModal;
+                }
+            }
+        }
     }
 
 
@@ -168,14 +175,12 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         global $objPage;
 
         // edit
-        if ($this->addEditCol)
-        {
+        if ($this->addEditCol) {
             $arrItem['addEditCol'] = true;
 
             $strUrl = $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl();
 
-            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null && $this->jumpToEdit != $objPage->id)
-            {
+            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null && $this->jumpToEdit != $objPage->id) {
                 $strUrl = \Controller::generateFrontendUrl($objPageJumpTo->row(), null, null, true);
             }
 
@@ -186,24 +191,20 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         }
 
         // delete url
-        if ($this->addDeleteCol)
-        {
+        if ($this->addDeleteCol) {
             $arrItem['addDeleteCol'] = true;
 
             $arrItem['deleteUrl'] = Url::addQueryString(
-                $this->formHybridIdGetParameter . '=' . $objItem->id . '&act=delete' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get(
-                    ) : ''),
+                $this->formHybridIdGetParameter . '=' . $objItem->id . '&act=delete' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
                 $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl()
             );
         }
 
         // publish url
-        if ($this->addPublishCol)
-        {
+        if ($this->addPublishCol) {
             $arrItem['addPublishCol'] = true;
             $arrItem['publishUrl']    = Url::addQueryString(
-                $this->formHybridIdGetParameter . '=' . $objItem->id . '&act=publish' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get(
-                    ) : ''),
+                $this->formHybridIdGetParameter . '=' . $objItem->id . '&act=publish' . (!$this->deactivateTokens ? '&token=' . \RequestToken::get() : ''),
                 $this->addAjaxPagination ? Url::getCurrentUrlWithoutParameters() : Url::getUrl()
             );
         }
@@ -211,23 +212,83 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
 
     public function checkPermission($intId)
     {
-        if (!is_numeric($intId))
-        {
+        if (!is_numeric($intId)) {
             return false;
         }
 
         $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-        if ($this->addUpdateConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
-        {
-            $arrConditions = deserialize($this->updateConditions, true);
+        $arrConditions = [];
 
-            if (!empty($arrConditions))
+        // check session if not logged in...
+        if (!FE_USER_LOGGED_IN)
+        {
+            if (!$this->disableSessionCheck)
             {
-                foreach ($arrConditions as $arrCondition)
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer))
                 {
-                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
-                    {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_SESSION_ID
+                        )
+                    );
+                }
+
+                $arrConditions[] = [
+                    'field' => General::PROPERTY_SESSION_ID,
+                    'value' => session_id(),
+                ];
+            }
+        } // ...and check member id if logged in
+        else
+        {
+            if (!$this->disableAuthorCheck)
+            {
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR_TYPE, $this->formHybridDataContainer))
+                {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableAuthorCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_AUTHOR_TYPE
+                        )
+                    );
+                }
+
+                $arrConditions[] = [
+                    'field' => General::PROPERTY_AUTHOR_TYPE,
+                    'value' => General::AUTHOR_TYPE_MEMBER,
+                ];
+
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR, $this->formHybridDataContainer))
+                {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableAuthorCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_AUTHOR
+                        )
+                    );
+                }
+
+                $arrConditions[] = [
+                    'field' => General::PROPERTY_AUTHOR,
+                    'value' => \FrontendUser::getInstance()->id,
+                ];
+            }
+        }
+
+        if ($this->addUpdateConditions) {
+            $arrConditions = array_merge(deserialize($this->updateConditions, true), $arrConditions);
+        }
+
+        if (($objItem = $strItemClass::findByPk($intId)) !== null)
+        {
+            if (!empty($arrConditions)) {
+                foreach ($arrConditions as $arrCondition) {
+                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value'])) {
                         return false;
                     }
                 }

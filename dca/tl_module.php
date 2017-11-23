@@ -27,10 +27,11 @@ $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,
 
 // list
 $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST] = str_replace(
-    ['addDetailsCol', 'formHybridAddDefaultValues'],
-    ['addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues'],
+    'addDetailsCol', 'addDetailsCol,addEditCol,addDeleteCol,addPublishCol,addCreateButton,',
     $arrDca['palettes'][MODULE_FORMHYBRID_LIST]
 );
+
+$arrDca['nestedPalettes']['filterMode_standard'] = str_replace('formHybridAddDefaultValues', 'addUpdateConditions,addDeleteConditions,formHybridAddDefaultValues', $arrDca['nestedPalettes']['filterMode_standard']);
 
 $arrDca['palettes'][MODULE_FRONTENDEDIT_FRONTENDUSER_READER] = $arrDca['palettes'][MODULE_FRONTENDEDIT_READER];
 $arrDca['palettes'][MODULE_FRONTENDEDIT_MEMBER_LIST]         = $arrDca['palettes'][MODULE_FRONTENDEDIT_LIST];
@@ -57,7 +58,7 @@ $arrDca['palettes']['__selector__'][] = 'addDeleteConditions';
 $arrDca['palettes']['__selector__'][] = 'publishOnValid';
 
 $arrDca['subpalettes']['addCustomFilterFields']     = 'customFilterFields';
-$arrDca['subpalettes']['addCreateButton']           = 'jumpToCreate,createButtonLabel,createMemberGroups';
+$arrDca['subpalettes']['addCreateButton']           = 'useModalExplanation,useModalForCreate,jumpToCreate,createButtonLabel,createMemberGroups';
 $arrDca['subpalettes']['addEditCol']                = 'useModalExplanation,useModalForEdit,jumpToEdit';
 $arrDca['subpalettes']['noIdBehavior_redirect']     = 'existanceConditions';
 $arrDca['subpalettes']['noIdBehavior_create_until'] = 'existanceConditions';
@@ -89,7 +90,7 @@ $arrFields = [
         'exclude'    => true,
         'inputType'  => 'pageTree',
         'foreignKey' => 'tl_page.title',
-        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr'],
+        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr autoheight'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
     ],
@@ -108,6 +109,7 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
+    'useModalForCreate' => $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'],
     'addCreateButton'         => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
         'exclude'   => true,
@@ -140,7 +142,7 @@ $arrFields = [
         'exclude'    => true,
         'inputType'  => 'pageTree',
         'foreignKey' => 'tl_page.title',
-        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50'],
+        'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 autoheight'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
     ],
@@ -195,20 +197,6 @@ $arrFields = [
     'deleteConditions'        => $arrDca['fields']['formHybridDefaultValues'],
     'addClientsideValidation' => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addClientsideValidation'],
-        'exclude'   => true,
-        'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50 clr'],
-        'sql'       => "char(1) NOT NULL default ''",
-    ],
-    'disableSessionCheck'     => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
-        'exclude'   => true,
-        'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50 clr'],
-        'sql'       => "char(1) NOT NULL default ''",
-    ],
-    'disableAuthorCheck'      => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr'],

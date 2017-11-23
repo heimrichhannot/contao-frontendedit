@@ -4,9 +4,9 @@
 
 <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>">
 
-	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+    <?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
-	<?php echo $this->form ?: ''; ?>
+    <?= $this->form ?: ''; ?>
 </div>
 
 <?php $this->endblock(); ?>

@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.0.0] - 2017-11-21
+
+### Added
+- sessionID/author check to list module
+- support for create mode in modal
+
+### Fixed
+- sortingHeader
+- filter palette issues
+- replace echo by <?=
+
 ## [4.2.0] - 2017-08-18
 
 ### Removed

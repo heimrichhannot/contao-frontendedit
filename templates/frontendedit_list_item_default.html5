@@ -1,38 +1,38 @@
 <div class="<?= $this->class; ?>">
     <?php foreach ($this->fields as $strName => $varValue): ?>
-        <span class="<?php echo $strName; ?>"><?php echo $varValue; ?></span>
+        <span class="<?= $strName; ?>"><?= $varValue; ?></span>
     <?php endforeach; ?>
 
     <?php if ($this->addEditCol): ?>
         <?php if ($this->useModalForEdit): ?>
             <a class="edit" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToEdit; ?>}}&id=<?= $this->idAlias; ?>"
                data-toggle="modal">
-                <?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
+                <?= $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
             </a>
         <?php else: ?>
             <a class="edit" href="<?= $this->editUrl ?>">
-                <?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
+                <?= $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>
             </a>
         <?php endif; ?>
     <?php endif; ?>
     <?php if ($this->addDeleteCol): ?>
-        <a class="delete" href="<?php echo $this->deleteUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>">
-            <?php echo $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>
+        <a class="delete" href="<?= $this->deleteUrl; ?>" data-message="<?= $GLOBALS['TL_LANG']['frontendedit']['deleteConfirm']; ?>">
+            <?= $GLOBALS['TL_LANG']['frontendedit']['deleteTitle']; ?>
         </a>
     <?php endif; ?>
     <?php if ($this->addShareCol && $this->shareUrl): ?>
-        <a class="share" href="<?php echo $this->shareUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareMessage']; ?>">
-            <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareTitle']; ?>
+        <a class="share" href="<?= $this->shareUrl; ?>" data-message="<?= $GLOBALS['TL_LANG']['formhybrid_list']['shareMessage']; ?>">
+            <?= $GLOBALS['TL_LANG']['formhybrid_list']['shareTitle']; ?>
         </a>
     <?php endif; ?>
     <?php if ($this->addPublishCol): ?>
         <?php if ($this->isPublished): ?>
-            <a class="publish" href="<?php echo $this->publishUrl; ?>">
-                <?php echo $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle']; ?>
+            <a class="publish" href="<?= $this->publishUrl; ?>">
+                <?= $GLOBALS['TL_LANG']['frontendedit']['unpublishTitle']; ?>
             </a>
         <?php else: ?>
-            <a class="unpublish" href="<?php echo $this->publishUrl; ?>">
-                <?php echo $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>
+            <a class="unpublish" href="<?= $this->publishUrl; ?>">
+                <?= $GLOBALS['TL_LANG']['frontendedit']['publishTitle']; ?>
             </a>
         <?php endif; ?>
     <?php endif; ?>
@@ -40,11 +40,11 @@
         <?php if ($this->useModal): ?>
             <a class="details" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToDetails; ?>::<?= $this->idAlias; ?>}}"
                data-toggle="modal">
-                <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+                <?= $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
             </a>
         <?php else: ?>
             <a class="details" href="<?= $this->detailsUrl ?>">
-                <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+                <?= $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
             </a>
         <?php endif; ?>
     <?php endif; ?>

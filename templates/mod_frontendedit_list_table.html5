@@ -6,20 +6,25 @@
 
         <?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
-        <?php echo $this->filterForm; ?>
+        <?= $this->filterForm; ?>
 
         <?php if ($this->addCreateButton): ?>
             <div class="nav">
-                <a class="create" href="<?= $this->createUrl ?>"
-                   <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->id; ?>"<?php endif; ?>>
-                    <?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?>
-                </a>
+                <?php if ($this->useModalForCreate): ?>
+                    <a class="create" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToCreate; ?>}}" data-toggle="modal">
+                        <?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create']; ?>
+                    </a>
+                <?php else: ?>
+                    <a class="create" href="<?= $this->createUrl ?>">
+                        <?= $this->createButtonLabel ?: $GLOBALS['TL_LANG']['frontendedit']['create'] ?>
+                    </a>
+                <?php endif; ?>
             </div>
         <?php endif ?>
 
         <div class="block">
             <?php if ($this->showItemCount): ?>
-                <span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
+                <span class="count"><?= sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
             <?php endif; ?>
 
             <?php if (!$this->empty): ?>
@@ -30,14 +35,19 @@
                                 <thead>
                                 <tr>
                                     <?php foreach ($this->header as $i => $arrField): ?>
-                                        <th class="<?php echo $arrField['field']; ?> col_<?php echo $i + 1; ?><?php if ($i
+                                        <th class="<?= $arrField['field']; ?> col_<?= $i + 1; ?><?php if ($i
                                                                                                                         == 0
                                         ): ?> first<?php endif ?><?php if ($i >= count($this->header) - 1): ?> last<?php endif; ?>">
-                                            <a href="<?php echo $arrField['link']; ?>">
-                                                <?php if ($arrField['class']): ?><iclass="fa <?php echo $arrField['class']
+                                            <?php if ($this->sortingHeader): ?>
+                                                <a href="<?= $arrField['link']; ?>">
+                                            <?php endif; ?>
+
+                                                <?php if ($arrField['class']): ?><i class="fa <?= $arrField['class']
                                                                                                         == 'asc' ? 'fa-caret-up' : 'fa-caret-down'; ?>"></i><?php endif; ?>
-                                                <?php echo $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$arrField['field']]['label'][0] ?: $arrField['field']; ?>
-                                            </a>
+                                                <?= $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$arrField['field']]['label'][0] ?: $arrField['field']; ?>
+                                            <?php if ($this->sortingHeader): ?>
+                                                </a>
+                                            <?php endif; ?>
                                         </th>
                                     <?php endforeach; ?>
                                     <?php if ($this->addDetailsCol || $this->addEditCol || $this->addDeleteCol || $this->addPublishCol): ?>
@@ -51,10 +61,10 @@
                             </tbody>
                         </table>
                     </div>
-                    <?php echo $this->pagination; ?>
+                    <?= $this->pagination; ?>
                 <?php endif; ?>
             <?php else: ?>
-                <p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+                <p class="alert alert-warning empty"><?= $this->emptyText; ?></p>
             <?php endif; ?>
         </div>
     </div>

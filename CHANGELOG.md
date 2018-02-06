@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.0.0] - 2018-02-06
+
+### Changed
+- increased dependency to version 4.+ of `heimrichhannot/contao-formhybrid_list` 
+
 ## [5.0.0] - 2017-11-21
 
 ### Added

@@ -92,7 +92,7 @@ $arrFields = [
         'foreignKey' => 'tl_page.title',
         'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr autoheight'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
-        'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
+        'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
     ],
     'useModalForEdit' => $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'],
     'addDeleteCol'            => [
@@ -144,7 +144,7 @@ $arrFields = [
         'foreignKey' => 'tl_page.title',
         'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 autoheight'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
-        'relation'   => ['type' => 'hasOne', 'load' => 'eager'],
+        'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
     ],
     'defaultArchive'          => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['defaultArchive'],
@@ -222,6 +222,7 @@ foreach (['updateConditions', 'deleteConditions'] as $strField)
 
 $arrDca['fields']['jumpToAfterDelete']['label']            = &$GLOBALS['TL_LANG']['tl_module']['jumpToAfterDelete'];
 $arrDca['fields']['jumpToAfterDelete']['eval']['tl_class'] = 'w50';
+$arrDca['fields']['jumpToAfterDelete']['eval']['load'] = 'lazy';
 
 class tl_module_frontendedit
 {

@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.0.1] - 2018-02-16
+
+- load `tl_module` fields of type `pageTree` related pages `lazy`
+
 ## [6.0.0] - 2018-02-06
 
 ### Changed

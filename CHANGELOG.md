@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.0.2] - 2018-03-05
+
+#### Changed
+- added minified version of js
+
 ## [6.0.1] - 2018-02-16
 
 - load `tl_module` fields of type `pageTree` related pages `lazy`

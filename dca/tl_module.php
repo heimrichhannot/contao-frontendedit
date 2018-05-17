@@ -17,7 +17,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 // reader
 $arrDca['palettes'][MODULE_FRONTENDEDIT_READER] = '{title_legend},name,headline,type;'
                                                   . '{entity_legend},formHybridDataContainer,formHybridEditable,formHybridForcePaletteRelation,formHybridAddEditableRequired,formHybridAddReadOnly,formHybridAddPermanentFields,formHybridViewMode;'
-                                                  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,deactivateTokens;'
+                                                  . '{action_legend},formHybridAllowIdAsGetParameter,noIdBehavior,disableSessionCheck,disableAuthorCheck,addUpdateConditions,allowDelete,formHybridAsync,formHybridResetAfterSubmission,formHybridAddPrivacyProtocolEntry,deactivateTokens;'
                                                   . '{email_legend},formHybridSubmissionNotification,formHybridConfirmationNotification,deleteNotification;'
                                                   . '{optin_legend:hide},formHybridAddOptIn;'
                                                   . '{redirect_legend},formHybridAddFieldDependentRedirect,jumpTo,formHybridJumpToPreserveParams,formHybridAddHashToAction;'

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.1.1] - 2018-11-23
+
+#### Fixed
+- callback error with newer php versions in ReaderForm::onSubmitCallback
+
 ## [6.1.0] - 2018-05-17
 
 #### Added

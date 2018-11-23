@@ -43,7 +43,7 @@ class ReaderForm extends \HeimrichHannot\FormHybrid\Form
             {
                 if (is_array($arrCallback) && !empty($arrCallback))
                 {
-                    $arrCallback[0]::$arrCallback[1]($dc);
+                    $arrCallback[0]::{$arrCallback[1]}($dc);
                 }
             }
         }

@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.2.0] - 2018-11-28
+
+#### Added
+- TL_COMPONENT support in order to disable js, css assets on demand
+
 ## [6.1.1] - 2018-11-23
 
 #### Fixed

@@ -53,3 +53,12 @@ if (TL_MODE == 'FE')
 	// js
 	$GLOBALS['TL_JAVASCRIPT']['frontendedit'] = 'system/modules/frontendedit/assets/js/jquery.frontendedit.min.js|static';
 }
+
+$GLOBALS['TL_COMPONENTS']['frontendedit'] = [
+    'js'  => [
+        'system/modules/frontendedit/assets/js/jquery.frontendedit.min.js|static'
+    ],
+    'css' => [
+        'system/modules/frontendedit/assets/css/style.css|static'
+    ]
+];

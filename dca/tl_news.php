@@ -10,7 +10,20 @@
 
 $arrDca = &$GLOBALS['TL_DCA']['tl_news'];
 
-$arrDca['palettes']['default'] = str_replace(',author', ',useMemberAuthor,author,memberAuthor', $arrDca['palettes']['default']);
+/**
+ * Selectors
+ */
+$arrDca['palettes']['__selector__'][] = 'useMemberAuthor';
+
+/**
+ * Palettes
+ */
+$arrDca['palettes']['default'] = str_replace(',author', ',useMemberAuthor,author', $arrDca['palettes']['default']);
+
+/**
+ * Subpalettes
+ */
+$arrDca['subpalettes']['useMemberAuthor'] = 'memberAuthor';
 
 /**
  * Callbacks

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.2.1] - 2019-04-02
+
+#### Fixed
+- toggle `tl_calendar_event.memberAuthor` field shown when `tl_calendar_event.useMemberAuthor` selector is active
+- toggle `tl_news.memberAuthor` field shown when `tl_news.useMemberAuthor` selector is active
+
 ## [6.2.0] - 2018-11-28
 
 #### Added

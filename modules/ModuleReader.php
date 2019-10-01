@@ -202,7 +202,7 @@ class ModuleReader extends \Module
                 }
                 else
                 {
-                    $strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id);
+                    $strFormId = FormHelper::getFormId($this->formHybridDataContainer, $this->id, null, true, ($this->formHybridUseCustomFormIdSuffix ? $this->formHybridCustomFormIdSuffix : ''));
 
                     // get id from FormSession
                     if ($_POST)

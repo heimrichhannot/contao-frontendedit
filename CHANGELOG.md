@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.3.0] - 2019-10-01
+
+#### Added
+- support for formhybrid custom form id suffix
+
 ## [6.2.1] - 2019-04-02
 
 #### Fixed

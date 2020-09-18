@@ -21,8 +21,8 @@ use HeimrichHannot\FormHybrid\FormConfiguration;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
 use HeimrichHannot\FormHybridList\FormHybridList;
+use HeimrichHannot\FrontendEdit\Event\FrontendeditModifyDcEvent;
 use HeimrichHannot\Haste\Dca\General;
-use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\NotificationCenterPlus\MessageModel;
 use HeimrichHannot\StatusMessages\StatusMessage;
@@ -689,5 +689,18 @@ class ModuleReader extends \Module
         return $arrItem;
     }
 
-    public function modifyDC(&$arrDca = null) { }
+    public function modifyDC(&$arrDca = null)
+    {
+        if (isset($GLOBALS['TL_HOOKS'][FrontendeditModifyDcEvent::NAME]) && \is_array($GLOBALS['TL_HOOKS'][FrontendeditModifyDcEvent::NAME]))
+        {
+            $event = new FrontendeditModifyDcEvent($this, $arrDca);
+            foreach ($GLOBALS['TL_HOOKS'][FrontendeditModifyDcEvent::NAME] as $callback)
+            {
+                $this->import($callback[0]);
+                $this->{$callback[0]}->{$callback[1]}($event);
+            }
+
+            $arrDca = $event->getDca();
+        }
+    }
 }

@@ -36,8 +36,10 @@ ClassLoader::addClasses(
 	'HeimrichHannot\FrontendEdit\FrontendEdit'             => 'system/modules/frontendedit/classes/FrontendEdit.php',
 	'HeimrichHannot\FrontendEdit\ReaderForm'               => 'system/modules/frontendedit/classes/ReaderForm.php',
 	'HeimrichHannot\FrontendEdit\ValidatorForm'            => 'system/modules/frontendedit/classes/ValidatorForm.php',
+    'HeimrichHannot\FrontendEdit\Event\FrontendeditModifyDcEvent'            => 'system/modules/frontendedit/classes/Event/FrontendeditModifyDcEvent.php',
 
-	// Models
+
+        // Models
 	'HeimrichHannot\FrontendEdit\FrontendEditQueryBuilder' => 'system/modules/frontendedit/models/FrontendEditQueryBuilder.php',
 	'HeimrichHannot\FrontendEdit\FrontendEditModel'        => 'system/modules/frontendedit/models/FrontendEditModel.php',]
 );

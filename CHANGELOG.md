@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.3.1] - 2020-09-18
+
+#### Added
+- hook to modifyDc in `ModuleReader`
+
 ## [6.3.0] - 2019-10-01
 
 #### Added

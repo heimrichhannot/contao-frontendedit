@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.3.2] - 2020-09-25
+
+- added gitignore
+- removed .idea
+
 ## [6.3.1] - 2020-09-18
 
 #### Added

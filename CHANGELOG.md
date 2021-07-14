@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.3.3] - 2021-07-14
+
+- fixed ondelete_callbacks to have second parameter 0 for undoId
+
 ## [6.3.2] - 2020-09-25
 
 - added gitignore

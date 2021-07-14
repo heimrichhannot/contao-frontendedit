@@ -395,7 +395,7 @@ class ModuleReader extends \Module
                 foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['config']['ondelete_callback'] as $callback)
                 {
                     $this->import($callback[0]);
-                    $this->{$callback[0]}->{$callback[1]}($objDc);
+                    $this->{$callback[0]}->{$callback[1]}($objDc, 0);
                 }
             }
 

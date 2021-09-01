@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.4.0] - 2021-09-01
+
+- Added: php8 support
+
 ## [6.3.3] - 2021-07-14
 
 - fixed ondelete_callbacks to have second parameter 0 for undoId

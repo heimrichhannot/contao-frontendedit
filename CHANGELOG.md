@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.4.1] - 2021-10-06
+- Fixed: php 7.4+ only syntax
+
 ## [6.4.0] - 2021-09-01
 
 - Added: php8 support

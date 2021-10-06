@@ -16,7 +16,7 @@ class FrontendeditModifyDcEvent
     /**
      * @var array
      */
-    private array $dca;
+    private $dca;
 
     /**
      * FormhybridBeforeRenderFormEvent constructor.

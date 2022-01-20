@@ -12,6 +12,7 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use Contao\Module;
 use HeimrichHannot\Ajax\Ajax;
 use HeimrichHannot\Ajax\Response\ResponseData;
 use HeimrichHannot\Ajax\Response\ResponseError;
@@ -20,6 +21,7 @@ use HeimrichHannot\FormHybrid\Form;
 use HeimrichHannot\FormHybrid\FormConfiguration;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\FormHybrid\FormSession;
+use HeimrichHannot\FormHybridList\Dca\SessionField;
 use HeimrichHannot\FormHybridList\FormHybridList;
 use HeimrichHannot\FrontendEdit\Event\FrontendeditModifyDcEvent;
 use HeimrichHannot\Haste\Dca\General;
@@ -29,7 +31,7 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 use HeimrichHannot\Submissions\SubmissionModel;
 use NotificationCenter\Model\Message;
 
-class ModuleReader extends \Module
+class ModuleReader extends Module
 {
     protected $strTemplate        = 'mod_frontendedit_reader';
     protected $arrSubmitCallbacks = [];
@@ -458,19 +460,19 @@ class ModuleReader extends \Module
         {
             if (!$this->disableSessionCheck)
             {
-                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer))
+                if (!\Database::getInstance()->fieldExists(SessionField::FIELD_NAME, $this->formHybridDataContainer))
                 {
                     throw new \Exception(
                         sprintf(
                             'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
                             $this->formHybridDataContainer,
-                            General::PROPERTY_SESSION_ID
+                            SessionField::FIELD_NAME
                         )
                     );
                 }
 
                 $arrConditions[] = [
-                    'field' => General::PROPERTY_SESSION_ID,
+                    'field' => SessionField::FIELD_NAME,
                     'value' => session_id(),
                 ];
             }
@@ -551,19 +553,19 @@ class ModuleReader extends \Module
         {
             if (!$this->disableSessionCheck)
             {
-                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer))
+                if (!\Database::getInstance()->fieldExists(SessionField::FIELD_NAME, $this->formHybridDataContainer))
                 {
                     throw new \Exception(
                         sprintf(
                             'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
                             $this->formHybridDataContainer,
-                            General::PROPERTY_SESSION_ID
+                            SessionField::FIELD_NAME
                         )
                     );
                 }
 
                 $arrConditions[] = [
-                    'field' => General::PROPERTY_SESSION_ID,
+                    'field' => SessionField::FIELD_NAME,
                     'value' => session_id(),
                 ];
             }

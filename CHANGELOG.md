@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.5.0] - 2022-01-20
+- Changed: updated session field integration accordion to contao-formhybrid_list 5.8
+- Changed: updated Module class namespaces to make the inheritable from FragmentControllers
+- Changed: raised contao-formhybrid_list dependency to 5.8.0
+
 ## [6.4.1] - 2021-10-06
 - Fixed: php 7.4+ only syntax
 

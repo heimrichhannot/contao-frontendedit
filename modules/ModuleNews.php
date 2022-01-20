@@ -2,11 +2,13 @@
 
 namespace HeimrichHannot\FrontendEdit;
 
+use Contao\Module;
+
 /**
  * This class is copied and made static from contao's ModuleNews.php since there's no multiple inheritance
  */
 
-abstract class ModuleNews extends \Module
+abstract class ModuleNews extends Module
 {
 	/**
 	 * URL cache array

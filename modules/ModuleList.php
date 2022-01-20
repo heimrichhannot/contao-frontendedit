@@ -13,6 +13,7 @@
 namespace HeimrichHannot\FrontendEdit;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybridList\Dca\SessionField;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\HastePlus\Environment;
@@ -225,19 +226,19 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
         {
             if (!$this->disableSessionCheck)
             {
-                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer))
+                if (!\Database::getInstance()->fieldExists(SessionField::FIELD_NAME, $this->formHybridDataContainer))
                 {
                     throw new \Exception(
                         sprintf(
                             'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
                             $this->formHybridDataContainer,
-                            General::PROPERTY_SESSION_ID
+                            SessionField::FIELD_NAME
                         )
                     );
                 }
 
                 $arrConditions[] = [
-                    'field' => General::PROPERTY_SESSION_ID,
+                    'field' => SessionField::FIELD_NAME,
                     'value' => session_id(),
                 ];
             }

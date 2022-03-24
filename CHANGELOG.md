@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.5.1] - 2022-03-24
+- Fixed: current entity id not correctly determined in ModuleReader 
+
 ## [6.5.0] - 2022-01-20
 - Changed: updated session field integration accordion to contao-formhybrid_list 5.8
 - Changed: updated Module class namespaces to make the inheritable from FragmentControllers

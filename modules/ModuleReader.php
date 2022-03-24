@@ -224,7 +224,7 @@ class ModuleReader extends Module
                         // might trigger this module beforhand and new submission will be created after the submission was transfered to the user and id wont match any more
                         if (Ajax::isRelated(Form::FORMHYBRID_NAME) !== null)
                         {
-                            if ($intId = FormSession::getSubmissionId($strFormId) && ($objItem = $strItemClass::findByPk($intId)) !== null)
+                            if (($intId = FormSession::getSubmissionId($strFormId)) && (($objItem = $strItemClass::findByPk($intId)) !== null))
                             {
                                 $this->intId = $intId;
                             }

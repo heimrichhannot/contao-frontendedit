@@ -19,7 +19,7 @@ $arrDca['palettes']['__selector__'][] = 'useMemberAuthor';
 /**
  * Palettes
  */
-$arrDca['palettes']['default'] = str_replace('author,', 'useMemberAuthor,author,', $arrDca['palettes']['default']);
+$arrDca['palettes']['default'] = str_replace('author,', 'useMemberAuthor,author,', $arrDca['palettes']['default'] ?? '');
 
 /**
  * Subpalettes

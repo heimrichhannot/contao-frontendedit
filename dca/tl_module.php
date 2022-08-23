@@ -94,7 +94,6 @@ $arrFields = [
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'lazy'],
     ],
-    'useModalForEdit' => $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'],
     'addDeleteCol'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDeleteCol'],
         'exclude'   => true,
@@ -109,7 +108,6 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
-    'useModalForCreate' => $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'],
     'addCreateButton'         => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addCreateButton'],
         'exclude'   => true,
@@ -212,6 +210,11 @@ $arrFields = [
 ];
 
 $arrDca['fields'] += $arrFields;
+
+if (!empty($GLOBALS['TL_DCA']['tl_module']['fields']['useModal'])) {
+    $arrDca['fields']['useModalForEdit'] = $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'];
+    $arrDca['fields']['useModalForCreate'] = $GLOBALS['TL_DCA']['tl_module']['fields']['useModal'];
+}
 
 foreach (['updateConditions', 'deleteConditions'] as $strField)
 {

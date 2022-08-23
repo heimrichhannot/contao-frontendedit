@@ -86,14 +86,16 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
             }
         }
 
-        global $objPage;
+        if (class_exists(ModalModel::class)) {
+            global $objPage;
 
-        $this->Template->useModalForCreate = $this->useModalForCreate;
+            $this->Template->useModalForCreate = $this->useModalForCreate;
 
-        if ($this->useModalForCreate) {
-            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage) {
-                if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
-                    $this->Template->modal = $objModal;
+            if ($this->useModalForCreate) {
+                if (($objPageJumpTo = \PageModel::findByPk($this->jumpToCreate)) !== null || $objPageJumpTo = $objPage) {
+                    if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
+                        $this->Template->modal = $objModal;
+                    }
                 }
             }
         }
@@ -155,14 +157,17 @@ class ModuleList extends \HeimrichHannot\FormHybridList\ModuleList
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
         $objTemplate->jumpToEdit      = $this->jumpToEdit;
-        $objTemplate->useModalForEdit = $this->useModalForEdit;
 
-        if ($this->useModalForEdit) {
-            global $objPage;
+        if (class_exists(ModalModel::class)) {
+            $objTemplate->useModalForEdit = $this->useModalForEdit;
 
-            if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage) {
-                if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
-                    $objTemplate->modal = $objModal;
+            if ($this->useModalForEdit) {
+                global $objPage;
+
+                if (($objPageJumpTo = \PageModel::findByPk($this->jumpToEdit)) !== null || $objPageJumpTo = $objPage) {
+                    if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
+                        $objTemplate->modal = $objModal;
+                    }
                 }
             }
         }

@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [6.6.0] - 2022-08-23
+- Changed: make modal optional dependency
+
 ## [6.5.1] - 2022-03-24
 - Fixed: current entity id not correctly determined in ModuleReader 
 
